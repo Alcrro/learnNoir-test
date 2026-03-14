@@ -12,9 +12,7 @@ const AlgorithmInfoCard: FC<AlgorithInfoCardardProps> = ({
 	totalComparedCount,
 }) => {
 	return (
-		<div
-			className={cn("p-5 bg-(--bg-color) text-2xl rounded-2xl max-w-70 w-full")}
-		>
+		<div className={cn("p-5 bg-(--bg-color) text-2xl rounded-2xl w-full ")}>
 			<div className="uppercase text-center text-violet-400">{description}</div>
 			<div className="flex justify-center gap-2 p-5 text-blue-500">
 				{currentComparedCount ? (

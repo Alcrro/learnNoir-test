@@ -3,6 +3,7 @@ import DefaultButton from "../atoms/DefaultButton";
 import Input from "./Input";
 import { useAlgorithmStore } from "../../store/useAlgorithmStore";
 import { generateArray } from "../../libs/utils/generateArray";
+import { ShuffleIcon } from "lucide-react";
 
 type GenerateRandomArrayProps = {
 	size?: number;
@@ -59,22 +60,32 @@ const GenerateRandomArray = ({
 	};
 
 	return (
-		<div className="flex  gap-2 items-center">
+		<div className="flex gap-2 justify-center items-center flex-wrap max-sm:w-full">
 			<DefaultButton
 				variant="primary"
+				size="lg"
 				onClick={onGenerate}
-				className="rounded-xl"
+				className="rounded-xl bg-(--bg-color) max-sm:max-w-66.25 max-sm:w-full max-sm:px-0"
 			>
-				Generate random array
+				<div className="flex gap-2 justify-center max-sm:flex-wrap ">
+					<ShuffleIcon /> <span className="uppercase"> Generate array</span>
+				</div>
 			</DefaultButton>
-			<div className="flex items-center gap-2 relative">
-				<div>Size array:</div>
-				<Input
-					value={size}
-					minValue={3}
-					maxValue={30}
-					onChange={handleSizeChange}
-				/>
+			<div className="flex flex-col gap-2 relative ">
+				<div className="mr-auto capitalize text-xl text-blue-400">
+					<span>elements:</span> <span>{size}</span>
+				</div>
+
+				<div className="bar w-full">
+					<Input
+						value={size}
+						minValue={3}
+						type="range"
+						maxValue={30}
+						onChange={handleSizeChange}
+						className="min-w-70"
+					/>
+				</div>
 				{error && (
 					<div className="text-red-500 absolute left-30 mt-1 whitespace-nowrap">
 						{error}

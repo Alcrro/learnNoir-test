@@ -14,7 +14,7 @@ const TableOfContents = () => {
 	return (
 		<>
 			<div
-				className={cn("relative py-2")}
+				className={cn("relative py-2 xl:hidden")}
 				onClick={(e) => e.stopPropagation()}
 			>
 				<ExtendButton

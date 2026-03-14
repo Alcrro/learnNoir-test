@@ -1,8 +1,9 @@
 import {
 	ArrowLeftCircle,
 	PlayCircle,
-	PauseCircle,
 	ArrowRightCircle,
+	RotateCcw,
+	PauseCircle,
 } from "lucide-react";
 import type { FC } from "react";
 import DefaultButton from "../atoms/DefaultButton";
@@ -15,6 +16,8 @@ type Props = {
 	handlePrevStep: () => void;
 	reset: () => void;
 	setCurrentStep: (value: number) => void;
+	start: () => void;
+	pause: () => void;
 };
 const AlgorithmsControls: FC<Props> = ({
 	currentStep,
@@ -23,6 +26,8 @@ const AlgorithmsControls: FC<Props> = ({
 	handlePrevStep,
 	reset,
 	setCurrentStep,
+	start,
+	pause,
 }) => {
 	return (
 		<div className="mt-4 flex items-center w-full space-x-2 justify-between">
@@ -39,6 +44,7 @@ const AlgorithmsControls: FC<Props> = ({
 						variant="primary"
 						className="size-12 rounded-2xl"
 						size="icon"
+						onClick={start}
 					>
 						<PlayCircle className="size-8" />
 					</DefaultButton>
@@ -46,6 +52,13 @@ const AlgorithmsControls: FC<Props> = ({
 						variant="destructive"
 						className="p-2 bg-red-500 text-white rounded-2xl h-fit"
 						onClick={reset}
+					>
+						<RotateCcw className="size-8" />
+					</DefaultButton>
+					<DefaultButton
+						variant="destructive"
+						className="p-2 bg-gray-500 text-white rounded-2xl h-fit"
+						onClick={pause}
 					>
 						<PauseCircle className="size-8" />
 					</DefaultButton>

@@ -1,15 +1,28 @@
-import React from "react";
+import React, {
+	type HTMLInputTypeAttribute,
+	type InputHTMLAttributes,
+} from "react";
+import { cn } from "../../libs/utils/cn";
 
-type InputProps = {
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 	value: number;
+	type: HTMLInputTypeAttribute;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	minValue?: number;
 	maxValue?: number;
+	className: string;
 };
-const Input = ({ value, onChange, minValue = 0, maxValue }: InputProps) => {
+const Input = ({
+	value,
+	onChange,
+	minValue = 0,
+	maxValue,
+	type = "text",
+	className,
+}: InputProps) => {
 	return (
 		<input
-			type="text"
+			type={type}
 			min={minValue}
 			max={maxValue}
 			value={value}
@@ -19,7 +32,7 @@ const Input = ({ value, onChange, minValue = 0, maxValue }: InputProps) => {
 					e.currentTarget.blur();
 				}
 			}}
-			className="size-8 text-center border rounded-md"
+			className={cn("size-8 text-center border rounded-md", className)}
 		/>
 	);
 };

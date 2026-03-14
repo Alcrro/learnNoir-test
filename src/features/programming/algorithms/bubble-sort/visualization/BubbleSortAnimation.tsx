@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import useCompareHighlight from "../../../visualizer/hooks/useCompareHighlight";
 import { useSearchParams } from "react-router-dom";
 import DocsIntroduction from "../../../../../components/molecules/DocsIntroduction";
@@ -20,11 +20,14 @@ const BubbleSortAnimation = () => {
 
 	const urlStep = Number(searchParams.get("step") ?? "0");
 	const internalStep = urlStep - 1;
+
 	// const [currentStep, setCurrentStep] = useState(internalStep);
 	const [hasStarted, setHasStarted] = useState(false);
 	const [arraySize, setArraySize] = useState(10);
 	const [minValueState, setMinValueState] = useState(0);
 	const [maxValueState, setMaxValueState] = useState(30);
+	const [isPlaying, setIsPlaying] = useState(false);
+
 	const generatedArray = useAlgorithmStore((store) => store.generatedArray);
 	const currentStep = useAlgorithmStore((store) => store.currentStep);
 	const setCurrentStep = useAlgorithmStore((store) => store.setCurrentStep);
@@ -54,17 +57,19 @@ const BubbleSortAnimation = () => {
 	});
 
 	//next steps
-	const handleNextStep = useMemo(
-		() =>
-			nextStep({
-				hasStarted,
-				setHasStarted,
-				setCurrentStep,
-				currentStep,
-				steps,
-			}),
-		[hasStarted, currentStep, steps, setCurrentStep],
-	);
+	const handleNextStep = useCallback(() => {
+		if (currentStep >= steps.length - 1) {
+			setIsPlaying(false);
+			return;
+		}
+		nextStep({
+			hasStarted,
+			setHasStarted,
+			setCurrentStep,
+			currentStep,
+			steps,
+		});
+	}, [currentStep, hasStarted, setCurrentStep, steps]);
 
 	// prev steps
 
@@ -98,9 +103,28 @@ const BubbleSortAnimation = () => {
 
 	const complexity = totalComparisons.length <= n ? "O(n)" : "O(n²)";
 
+	const play = () => {
+		if (currentStep >= steps.length - 1) return;
+		setIsPlaying(true);
+	};
+	const pause = () => setIsPlaying(false);
+
+	useEffect(() => {
+		if (!isPlaying) return;
+
+		if (currentStep >= steps.length - 1) {
+			return;
+		}
+
+		const id = setTimeout(() => {
+			handleNextStep();
+		}, 500);
+
+		return () => clearTimeout(id);
+	}, [isPlaying, currentStep, steps.length, handleNextStep]);
 	return (
 		<div className="flex flex-col gap-2 algorithms py-2 w-full mx-auto">
-			<div className="div flex justify-between items-center">
+			<div className="flex justify-between items-center max-sm:flex-wrap max-sm:justify-center">
 				<GenerateRandomArray
 					setCurrentStep={setCurrentStep}
 					size={arraySize}
@@ -130,10 +154,12 @@ const BubbleSortAnimation = () => {
 					handlePrevStep={handlePrevStep}
 					reset={reset}
 					setCurrentStep={setCurrentStep}
+					start={play}
+					pause={pause}
 				/>
 			</div>
 
-			<div className="flex gap-2">
+			<div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] max-sm:grid-cols-1 gap-2 ">
 				<AlcgorithInfoCard
 					description="comparisons"
 					currentComparedCount={currentComparedItem.toString() ?? undefined}
