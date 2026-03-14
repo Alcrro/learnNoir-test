@@ -1,0 +1,79 @@
+.docs-intro {
+  width: 100%;
+
+  padding: 24px;
+  border-radius: 12px;
+
+  background: #0f172a;
+  border: 1px solid #1e293b;
+
+  color: #e2e8f0;
+  font-family: system-ui, sans-serif;
+}
+
+/* TITLE */
+
+.docs-intro h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #f8fafc;
+}
+
+/* SECTIONS */
+
+.docs-intro section {
+  margin-bottom: 18px;
+}
+
+.docs-intro h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.docs-intro p {
+  line-height: 1.6;
+  font-size: 15px;
+  color: #cbd5f5;
+}
+
+/* LIST */
+
+.docs-intro ul {
+  padding-left: 18px;
+}
+
+.docs-intro li {
+  margin-bottom: 4px;
+  color: #cbd5e1;
+}
+
+/* KEY IDEA BOX */
+
+.docs-intro section:nth-of-type(3) {
+  background: #020617;
+  border: 1px solid #334155;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+/* COMPLEXITY GRID */
+
+.complexity {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.complexity span {
+  background: #020617;
+  border: 1px solid #334155;
+
+  padding: 10px;
+  border-radius: 8px;
+
+  font-size: 14px;
+}

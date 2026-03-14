@@ -1,0 +1,43 @@
+.step-wrapper {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.step-text {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.step-text .current {
+  font-size: 20px;
+  font-weight: 600;
+  color: #4ea1ff;
+}
+
+.step-text .separator {
+  margin: 0 4px;
+  opacity: 0.5;
+}
+
+.step-text .total {
+  opacity: 0.6;
+}
+
+.progress-bar {
+  height: 6px;
+  width: 100%;
+  background: #1f1f1f;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ea1ff, #7c4dff);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
