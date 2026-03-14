@@ -26,6 +26,7 @@ const AlgStepsInfo: FC<AlgStepsInfoProps> = ({
 			<div className="step-text flex gap-2 justify-center items-center">
 				<span>Pas</span>
 				<Input
+					type="text"
 					value={currentStep + 1}
 					onChange={changeHandler}
 					maxValue={steps}

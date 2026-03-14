@@ -10,7 +10,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	minValue?: number;
 	maxValue?: number;
-	className: string;
+	className?: string;
 };
 const Input = ({
 	value,

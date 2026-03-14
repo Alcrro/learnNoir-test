@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import useCompareHighlight from "../../../visualizer/hooks/useCompareHighlight";
 import { useSearchParams } from "react-router-dom";
 import DocsIntroduction from "../../../../../components/molecules/DocsIntroduction";
@@ -57,12 +57,8 @@ const BubbleSortAnimation = () => {
 	});
 
 	//next steps
-	const handleNextStep = useCallback(() => {
-		if (currentStep >= steps.length - 1) {
-			setIsPlaying(false);
-			return;
-		}
-		nextStep({
+	const handleNextStep = useMemo(() => {
+		return nextStep({
 			hasStarted,
 			setHasStarted,
 			setCurrentStep,
