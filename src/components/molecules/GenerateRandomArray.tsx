@@ -1,9 +1,15 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+	useState,
+	type Dispatch,
+	type RefObject,
+	type SetStateAction,
+} from "react";
 import DefaultButton from "../atoms/DefaultButton";
 import Input from "./Input";
 import { useAlgorithmStore } from "../../store/useAlgorithmStore";
 import { generateArray } from "../../libs/utils/generateArray";
 import { ShuffleIcon } from "lucide-react";
+import { useReset } from "../../features/programming/visualizer/hooks/useReset";
 
 type GenerateRandomArrayProps = {
 	size?: number;
@@ -13,18 +19,21 @@ type GenerateRandomArrayProps = {
 	setMinValueState?: Dispatch<SetStateAction<number>>;
 	setMaxValueState?: Dispatch<SetStateAction<number>>;
 	setCurrentStep: (value: number) => void;
-	reset: () => void;
+	boxesRef: RefObject<HTMLDivElement[]>;
 };
 const GenerateRandomArray = ({
 	size = 10,
 	setSize,
 	setCurrentStep,
-	reset,
+	boxesRef,
 }: GenerateRandomArrayProps) => {
 	const setGeneratedArray = useAlgorithmStore(
 		(store) => store.setGeneratedArray,
 	);
 	const [error, setError] = useState("");
+
+	//reset steps
+	const { reset } = useReset(boxesRef, setCurrentStep);
 
 	const onGenerate = () => {
 		if (size < 3 || size > 30) {

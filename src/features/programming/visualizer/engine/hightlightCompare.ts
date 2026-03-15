@@ -9,8 +9,8 @@ export const highlightCompare = (
 	const arrow1 = box1.querySelector(".compare-arrow") as HTMLElement;
 	const arrow2 = box2.querySelector(".compare-arrow") as HTMLElement;
 
-	const bar1 = box1;
-	const bar2 = box2;
+	const bar1 = box1?.querySelector(`[data-role="bar"]`);
+	const bar2 = box2?.querySelector(`[data-role="bar"]`);
 
 	tl
 		.to([arrow1, arrow2], {

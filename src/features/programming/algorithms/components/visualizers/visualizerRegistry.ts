@@ -2,6 +2,8 @@ import type { ForwardRefExoticComponent, RefAttributes } from "react";
 import { BoxAlgorithmVisualization } from "./array/BoxVisualizer";
 import { PillarAlgorithmVisualization } from "./array/PillarVisualizer";
 import { VerticalAlgorithmVisualization } from "./array/VerticalBarVisualizer";
+import BarVisualizer from "./array/BarVisualizer";
+
 type VisualizerProps = {
 	value: number;
 };
@@ -11,6 +13,7 @@ export type VisualizerComponent = ForwardRefExoticComponent<
 
 export const VISUALIZER_REGISTRY: Record<string, VisualizerComponent> = {
 	box: BoxAlgorithmVisualization,
+	bar: BarVisualizer,
 	vertical: VerticalAlgorithmVisualization,
 	pillar: PillarAlgorithmVisualization,
 };

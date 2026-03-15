@@ -20,8 +20,7 @@ const ArrayVisualizer: FC<Props> = ({ currentArray, boxesRef }) => {
 						<ArrayContainer
 							key={num.id}
 							ref={(el) => {
-								if (!el) return;
-								boxesRef.current[index] = el;
+								if (el) boxesRef.current[index] = el;
 							}}
 							method={visualAlgorithm}
 							value={num.value}

@@ -14,7 +14,6 @@ export const VerticalAlgorithmVisualization = forwardRef<
 			<div
 				className="relative h-20 w-6"
 				ref={ref}
-				data-role="box"
 			>
 				<ArrowDown
 					className="compare-arrow absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 text-(--compare-color)"
@@ -26,14 +25,14 @@ export const VerticalAlgorithmVisualization = forwardRef<
 					className={`text-xs text-(--text-secondary) absolute left-1/2 -translate-x-1/2 ${
 						isNegative ? "top-5" : "bottom-5"
 					}`}
-				>
-					{value}
-				</div>
+				></div>
+				<span>{value}</span>
 
 				<div className="absolute top-1/2 w-full h-px bg-(--border-primary)" />
 
 				<div
 					style={{ height }}
+					data-role="bar"
 					className={`absolute left-0 w-full rounded-md
         ${isNegative ? "bg-red-400 top-1/2" : "bg-blue-400 bottom-1/2"}`}
 				/>

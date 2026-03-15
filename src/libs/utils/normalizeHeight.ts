@@ -1,6 +1,6 @@
 const MAX_VALUE = 99;
-const MIN_BAR = 6;
-const MAX_BAR = 80;
+const MIN_BAR = 0;
+const MAX_BAR = 99;
 
 export function normalizeHeight(value: number) {
 	const abs = Math.abs(value);

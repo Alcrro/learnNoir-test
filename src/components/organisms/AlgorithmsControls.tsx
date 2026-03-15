@@ -1,67 +1,61 @@
-import {
-	ArrowLeftCircle,
-	PlayCircle,
-	ArrowRightCircle,
-	RotateCcw,
-	PauseCircle,
-} from "lucide-react";
-import type { FC } from "react";
-import DefaultButton from "../atoms/DefaultButton";
+import { useState, type FC, type RefObject } from "react";
 import AlgStepsInfo from "../molecules/AlgStepsInfo";
+import { startPlayback } from "../../features/programming/visualizer/engine/startPlayback";
+import pausePlayback from "../../features/programming/visualizer/engine/pausePlayback";
+import { useReset } from "../../features/programming/visualizer/hooks/useReset";
+import useAutoPlaySteps from "../../features/programming/visualizer/engine/useAutoPlaySteps";
+import StartButton from "../molecules/algorithmConrolersButtons/StartButton";
+import ResetButton from "../molecules/algorithmConrolersButtons/ResetButton";
+import PauseButton from "../molecules/algorithmConrolersButtons/PauseButton";
+import PrevButton from "../molecules/algorithmConrolersButtons/PrevButton";
+import NextButton from "../molecules/algorithmConrolersButtons/NextButton";
 
 type Props = {
 	currentStep: number;
 	stepsLength: number;
 	handleNextStep: () => void;
 	handlePrevStep: () => void;
-	reset: () => void;
+
 	setCurrentStep: (value: number) => void;
-	start: () => void;
-	pause: () => void;
+	boxesRef: RefObject<HTMLDivElement[]>;
 };
 const AlgorithmsControls: FC<Props> = ({
 	currentStep,
 	stepsLength,
 	handleNextStep,
 	handlePrevStep,
-	reset,
 	setCurrentStep,
-	start,
-	pause,
+	boxesRef,
 }) => {
+	const [isPlaying, setIsPlaying] = useState(false);
+
+	useAutoPlaySteps({
+		isPlaying,
+		currentStep,
+		steps: stepsLength,
+		handleNextStep,
+	});
+	const { play } = startPlayback({
+		currentStep,
+		setIsPlaying,
+		stepNumbers: stepsLength,
+	});
+
+	//reset steps
+	const { reset } = useReset(boxesRef, setCurrentStep);
+
+	const { pause } = pausePlayback(setIsPlaying);
 	return (
 		<div className="mt-4 flex items-center w-full space-x-2 justify-between">
-			<DefaultButton
-				variant={currentStep < 0 ? "ghost" : "icon"}
-				size="icon"
-				onClick={handlePrevStep}
-			>
-				<ArrowLeftCircle className="size-8" />
-			</DefaultButton>
+			<PrevButton
+				currentStep={currentStep}
+				handlePrevStep={handlePrevStep}
+			/>
 			<div className="flex flex-col gap-2">
 				<div className="controls flex justify-center items-center gap-2">
-					<DefaultButton
-						variant="primary"
-						className="size-12 rounded-2xl"
-						size="icon"
-						onClick={start}
-					>
-						<PlayCircle className="size-8" />
-					</DefaultButton>
-					<DefaultButton
-						variant="destructive"
-						className="p-2 bg-red-500 text-white rounded-2xl h-fit"
-						onClick={reset}
-					>
-						<RotateCcw className="size-8" />
-					</DefaultButton>
-					<DefaultButton
-						variant="destructive"
-						className="p-2 bg-gray-500 text-white rounded-2xl h-fit"
-						onClick={pause}
-					>
-						<PauseCircle className="size-8" />
-					</DefaultButton>
+					<StartButton playHandler={play} />
+					<ResetButton resetHandler={reset} />
+					<PauseButton pauseHandler={pause} />
 				</div>
 				<AlgStepsInfo
 					currentStep={currentStep}
@@ -69,14 +63,11 @@ const AlgorithmsControls: FC<Props> = ({
 					setCurrentStep={setCurrentStep}
 				/>
 			</div>
-			<DefaultButton
-				variant={currentStep + 1 === stepsLength ? "ghost" : "icon"}
-				size="icon"
-				onClick={handleNextStep}
-				disabled={currentStep + 1 === stepsLength}
-			>
-				<ArrowRightCircle className="size-8" />
-			</DefaultButton>
+			<NextButton
+				currentStep={currentStep}
+				steps={stepsLength}
+				handleNextStep={handleNextStep}
+			/>
 		</div>
 	);
 };

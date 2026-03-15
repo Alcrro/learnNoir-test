@@ -1,4 +1,3 @@
-import type { Dispatch, SetStateAction } from "react";
 import { gsap } from "gsap";
 import { Flip } from "gsap/Flip";
 import type { Step } from "../../algorithms/shared/AlgorithmTypes";
@@ -7,7 +6,7 @@ gsap.registerPlugin(Flip);
 
 export type nextStepProps = {
 	hasStarted: boolean;
-	setHasStarted: Dispatch<SetStateAction<boolean>>;
+	setHasStarted: (value: string) => void;
 	currentStep: number;
 	setCurrentStep: (value: number) => void;
 	steps: Step[];
@@ -15,20 +14,19 @@ export type nextStepProps = {
 export const nextStep = (ctx: nextStepProps) => {
 	const { hasStarted, setHasStarted, currentStep, setCurrentStep, steps } = ctx;
 
-	const handleNextStep = () => {
-		if (!hasStarted) setHasStarted(true);
+	const createNextStepHandler = () => {
+		if (!hasStarted) setHasStarted("isAutoPlay");
 
 		const nextStepIndex = currentStep + 1;
 		if (nextStepIndex >= steps.length) return; // stop doar când e chiar după ultimul step
 
-		const nextStep = steps[nextStepIndex];
+		const nextStepData = steps[nextStepIndex];
 
 		const state = Flip.getState(`[data-role="box"]`);
 
 		setCurrentStep(nextStepIndex);
-		console.log("swap: ", nextStep.swap);
 
-		if (nextStep?.swap) {
+		if (nextStepData?.swap) {
 			requestAnimationFrame(() => {
 				Flip.from(state, {
 					duration: 0.5,
@@ -36,10 +34,8 @@ export const nextStep = (ctx: nextStepProps) => {
 					stagger: 0.02,
 				});
 			});
-		} else {
-			setCurrentStep(nextStepIndex);
 		}
 	};
 
-	return handleNextStep;
+	return createNextStepHandler;
 };

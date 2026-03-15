@@ -22,17 +22,22 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 		const boxes = boxesRef.current;
 		if (!boxes || !boxes.length) return; // ⭐ important
 
-		gsap.set(boxes, {
-			backgroundColor: "var(--default-color)",
-			color: "var(--text-primary)",
-			scale: 1,
-		});
+		gsap.set(
+			boxes.map((b) => b.querySelector('[data-role="bar"]')).filter(Boolean),
+			{
+				backgroundColor: "var(--color-blue-500)",
+				color: "var(--text-primary)",
+				scale: 1,
+			},
+		);
 
 		const compared = getComparedIndexes(steps, currentStep);
 		const sorted = getSortedIndexes(steps, currentStep);
 
 		gsap.set(
-			[...compared].map((index) => boxes[index]),
+			[...compared].map((index) =>
+				boxes[index]?.querySelector(`[data-role="bar"]`),
+			),
 			{
 				backgroundColor: "var(--compare-color)",
 				color: "var(--text-inverse)",
@@ -40,7 +45,7 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 		);
 
 		gsap.set(
-			[...sorted].map((i) => boxes[i]),
+			[...sorted].map((i) => boxes[i]?.querySelector(`[data-role="bar"]`)),
 			{
 				backgroundColor: "var(--sorted-color)",
 			},
