@@ -10,5 +10,6 @@ export const visualizationMethods: Record<
 	"bubble-sort": ["box", "vertical", "pillar", "bar"],
 	"insertion-sort": ["box", "vertical"],
 	"heap-sort": ["tree"],
-	"binary-tree": ["tree"],
+	"quick-sort": ["bar"],
+	"binary-tree-sort": ["tree"],
 } as const;
