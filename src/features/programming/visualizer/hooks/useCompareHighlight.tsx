@@ -10,10 +10,11 @@ type CompareHighlightProps = {
 	steps: Step[];
 	currentStep: number;
 	boxesRef: RefObject<HTMLDivElement[]>;
+	visualAlgorithm: string;
 };
 
 const useCompareHighlight = (ctx: CompareHighlightProps) => {
-	const { hasStarted, boxesRef, currentStep, steps } = ctx;
+	const { hasStarted, boxesRef, currentStep, steps, visualAlgorithm } = ctx;
 
 	useLayoutEffect(() => {
 		if (currentStep < 0) return;
@@ -64,7 +65,7 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 		if (!boxA || !boxB) return;
 
 		highlightCompare(boxA, boxB);
-	}, [currentStep, steps, hasStarted, boxesRef]);
+	}, [currentStep, steps, hasStarted, boxesRef, visualAlgorithm]);
 };
 
 export default useCompareHighlight;

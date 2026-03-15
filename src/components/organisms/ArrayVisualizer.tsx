@@ -14,7 +14,10 @@ const ArrayVisualizer: FC<Props> = ({ currentArray, boxesRef }) => {
 
 	return (
 		<div className="flex justify-center items-center min-h-60 border-b border-(--border-subtle) ">
-			<div className="relative w-full min-h-full rounded-xl flex justify-center items-center gap-2 p-2 flex-wrap">
+			<div
+				key={visualAlgorithm}
+				className="relative w-full min-h-full rounded-xl flex justify-center items-center gap-2 p-2 flex-wrap"
+			>
 				{currentArray.map((num, index) => {
 					return (
 						<ArrayContainer

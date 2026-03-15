@@ -20,15 +20,15 @@ export const VerticalAlgorithmVisualization = forwardRef<
 					size={20}
 					strokeWidth={3}
 				/>
-
 				<div
-					className={`text-xs text-(--text-secondary) absolute left-1/2 -translate-x-1/2 ${
+					className={` text-xs text-(--text-secondary) absolute left-1/2 -translate-x-1/2 ${
 						isNegative ? "top-5" : "bottom-5"
 					}`}
 				></div>
+
 				<span>{value}</span>
 
-				<div className="absolute top-1/2 w-full h-px bg-(--border-primary)" />
+				{/* <div className="absolute top-1/2 w-full h-px bg-(--border-primary)" /> */}
 
 				<div
 					style={{ height }}
