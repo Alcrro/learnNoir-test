@@ -23,14 +23,17 @@ const AlgStepsInfo: FC<AlgStepsInfoProps> = ({
 	};
 	return (
 		<div className="step-info border border-gray-600 p-2 rounded-2xl">
-			<div className="step-text flex gap-2 justify-center items-center">
+			<div className="step-text flex gap-2 justify-center items-center w-full">
 				<span>Pas</span>
+				<span>{currentStep}</span>
 				<Input
-					type="text"
+					type="range"
 					value={currentStep + 1}
 					onChange={changeHandler}
 					maxValue={steps}
+					className="w-full"
 				/>
+
 				<span>din</span>
 				<span>{steps}</span>
 			</div>

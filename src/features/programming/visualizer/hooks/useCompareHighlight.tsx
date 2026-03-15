@@ -21,6 +21,7 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 
 		const boxes = boxesRef.current;
 		if (!boxes || !boxes.length) return; // ⭐ important
+		console.log({ boxes });
 
 		const bars = boxes
 			.filter(Boolean)
@@ -32,7 +33,6 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 			color: "var(--text-primary)",
 			scale: 1,
 		});
-
 		const compared = getComparedIndexes(steps, currentStep);
 		const sorted = getSortedIndexes(steps, currentStep);
 

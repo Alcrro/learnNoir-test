@@ -10,11 +10,8 @@ export function generateBubbleSortSteps(
 
 	for (let i = 0; i < arr.length - 1; i++) {
 		let swapped = false;
-		steps.push({ array: snapshot(), line: [0, 1] });
 
 		for (let j = 0; j < arr.length - i - 1; j++) {
-			steps.push({ array: snapshot(), line: 2 });
-
 			steps.push({
 				array: snapshot(),
 				compare: [j, j + 1],

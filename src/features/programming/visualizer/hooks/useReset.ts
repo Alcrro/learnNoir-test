@@ -8,16 +8,20 @@ export const useReset = (
 	const reset = () => {
 		if (!boxesRef.current) return;
 
-		boxesRef.current.forEach((box) =>
-			gsap.set(box, {
+		boxesRef.current.forEach((box) => {
+			const bar = box?.querySelector('[data-role="bar"]');
+			if (!bar) return;
+			gsap.killTweensOf(bar);
+
+			gsap.set(bar, {
 				x: 0,
 				y: 0,
 				zIndex: 1,
 				clearProps: "backgroundColor",
 				color: "var(--text-primary)",
 				scale: 1,
-			}),
-		);
+			});
+		});
 
 		setCurrentStep(-1);
 		resetAllHighlights(boxesRef.current);

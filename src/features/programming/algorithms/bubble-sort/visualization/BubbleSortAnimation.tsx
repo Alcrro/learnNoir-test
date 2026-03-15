@@ -61,19 +61,15 @@ const BubbleSortAnimation = () => {
 				currentArray={currentArray}
 				boxesRef={boxesRef}
 			/>
-			<div
-				className="footer"
-				onClick={(e) => e.stopPropagation()}
-			>
-				<AlgorithmsControls
-					currentStep={currentStep}
-					stepsLength={steps.length}
-					handleNextStep={handleNextStep}
-					handlePrevStep={handlePrevStep}
-					boxesRef={boxesRef}
-					setCurrentStep={setCurrentStep}
-				/>
-			</div>
+
+			<AlgorithmsControls
+				currentStep={currentStep}
+				stepsLength={steps.length}
+				handleNextStep={handleNextStep}
+				handlePrevStep={handlePrevStep}
+				boxesRef={boxesRef}
+				setCurrentStep={setCurrentStep}
+			/>
 
 			<AlgorithmStats />
 

@@ -35,7 +35,7 @@ const BarVisualizer = forwardRef<HTMLDivElement, { value: number }>(
 						size={20}
 						strokeWidth={3}
 					/>
-					<span className="text-xs text-white absolute -top-8">{value}</span>
+					<span className="text-xs text-(--text-color) absolute top-0">{value}</span>
 				</div>
 			</div>
 		);

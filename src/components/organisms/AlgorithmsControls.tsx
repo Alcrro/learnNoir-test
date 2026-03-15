@@ -15,7 +15,6 @@ type Props = {
 	stepsLength: number;
 	handleNextStep: () => void;
 	handlePrevStep: () => void;
-
 	setCurrentStep: (value: number) => void;
 	boxesRef: RefObject<HTMLDivElement[]>;
 };
@@ -46,28 +45,33 @@ const AlgorithmsControls: FC<Props> = ({
 
 	const { pause } = pausePlayback(setIsPlaying);
 	return (
-		<div className="mt-4 flex items-center w-full space-x-2 justify-between">
-			<PrevButton
-				currentStep={currentStep}
-				handlePrevStep={handlePrevStep}
-			/>
-			<div className="flex flex-col gap-2">
+		<div
+			className="mt-4 flex items-center w-full space-x-2 justify-center"
+			onClick={(e) => e.stopPropagation()}
+		>
+			<div className="flex flex-col justify-center gap-2">
 				<div className="controls flex justify-center items-center gap-2">
 					<StartButton playHandler={play} />
 					<ResetButton resetHandler={reset} />
 					<PauseButton pauseHandler={pause} />
 				</div>
-				<AlgStepsInfo
-					currentStep={currentStep}
-					steps={stepsLength}
-					setCurrentStep={setCurrentStep}
-				/>
+				<div className="flex gap-2 items-center">
+					<PrevButton
+						currentStep={currentStep}
+						handlePrevStep={handlePrevStep}
+					/>
+					<AlgStepsInfo
+						currentStep={currentStep}
+						steps={stepsLength}
+						setCurrentStep={setCurrentStep}
+					/>
+					<NextButton
+						currentStep={currentStep}
+						steps={stepsLength}
+						handleNextStep={handleNextStep}
+					/>
+				</div>
 			</div>
-			<NextButton
-				currentStep={currentStep}
-				steps={stepsLength}
-				handleNextStep={handleNextStep}
-			/>
 		</div>
 	);
 };
