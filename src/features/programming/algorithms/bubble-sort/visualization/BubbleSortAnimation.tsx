@@ -35,7 +35,7 @@ const BubbleSortAnimation = () => {
 
 	// highlights layouts
 	//get algorithm and set steps
-	useBubbleSortAnimation(boxesRef);
+	useBubbleSortAnimation({ boxesRef });
 
 	//use search params
 	useSetSearchParams({ currentStep, setSearchParams });

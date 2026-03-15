@@ -16,20 +16,22 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 	const { hasStarted, boxesRef, currentStep, steps } = ctx;
 
 	useLayoutEffect(() => {
-		if (currentStep < -1) return;
+		if (currentStep < 0) return;
 		if (!steps.length) return;
 
 		const boxes = boxesRef.current;
 		if (!boxes || !boxes.length) return; // ⭐ important
 
-		gsap.set(
-			boxes.map((b) => b.querySelector('[data-role="bar"]')).filter(Boolean),
-			{
-				backgroundColor: "var(--color-blue-500)",
-				color: "var(--text-primary)",
-				scale: 1,
-			},
-		);
+		const bars = boxes
+			.filter(Boolean)
+			.map((b) => b.querySelector('[data-role="bar"]'))
+			.filter(Boolean);
+
+		gsap.set(bars, {
+			backgroundColor: "var(--color-blue-500)",
+			color: "var(--text-primary)",
+			scale: 1,
+		});
 
 		const compared = getComparedIndexes(steps, currentStep);
 		const sorted = getSortedIndexes(steps, currentStep);
@@ -56,7 +58,12 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 
 		const [a, b] = step.compare;
 
-		highlightCompare(boxes[a], boxes[b]);
+		const boxA = boxes[a];
+		const boxB = boxes[b];
+
+		if (!boxA || !boxB) return;
+
+		highlightCompare(boxA, boxB);
 	}, [currentStep, steps, hasStarted, boxesRef]);
 };
 

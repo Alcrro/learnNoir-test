@@ -9,21 +9,17 @@ export function generateBubbleSortSteps(
 	const snapshot = () => arr.map((o) => ({ ...o }));
 
 	for (let i = 0; i < arr.length - 1; i++) {
-		steps.push({ array: snapshot(), line: 0 });
-
 		let swapped = false;
-		steps.push({ array: snapshot(), line: 1 });
+		steps.push({ array: snapshot(), line: [0, 1] });
 
 		for (let j = 0; j < arr.length - i - 1; j++) {
 			steps.push({ array: snapshot(), line: 2 });
 
-			const step: Step = {
+			steps.push({
 				array: snapshot(),
 				compare: [j, j + 1],
 				line: [3, 4],
-			};
-
-			steps.push(step);
+			});
 
 			if (arr[j].value > arr[j + 1].value) {
 				[arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
