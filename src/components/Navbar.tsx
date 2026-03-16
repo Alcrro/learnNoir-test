@@ -2,7 +2,7 @@ import { ToggleTheme } from "./molecules/ThemeToggle";
 
 const Navbar = () => {
 	return (
-		<nav className="flex items-center justify-between bg-(--bg-secondary) p-4 m-2 rounded-lg">
+		<nav className="flex items-center justify-between bg-(--bg-sidebar) p-4 m-2 rounded-lg">
 			<div className="logo">LearnNoir</div>
 			<div className="flex items-center">
 				<ToggleTheme />

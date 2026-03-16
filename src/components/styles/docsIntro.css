@@ -1,13 +1,11 @@
 .docs-intro {
 	width: 100%;
-
 	padding: 24px;
 	border-radius: 12px;
-
-	background: var(--bg-color);
-
+	background: var(--bg-card);
 	color: var(--text-secondary);
 	font-family: system-ui, sans-serif;
+	border: var(--border-primary);
 }
 
 /* TITLE */
@@ -53,7 +51,7 @@
 /* KEY IDEA BOX */
 
 .docs-intro section:nth-of-type(3) {
-	background: var(--bg-secondary);
+	background: var(--bg-color);
 
 	padding: 12px;
 	border-radius: 8px;
@@ -68,7 +66,7 @@
 }
 
 .complexity span {
-	background: var(--bg-secondary);
+	background: var(--bg-color);
 
 	padding: 10px;
 	border-radius: 8px;

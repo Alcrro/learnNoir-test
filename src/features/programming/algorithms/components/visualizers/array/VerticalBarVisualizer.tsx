@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { normalizeHeight } from "../../../../../../libs/utils/normalizeHeight";
 import { ArrowDown } from "lucide-react";
+import { cn } from "../../../../../../libs/utils/cn";
 
 export const VerticalAlgorithmVisualization = forwardRef<
 	HTMLDivElement,
@@ -12,7 +13,7 @@ export const VerticalAlgorithmVisualization = forwardRef<
 	return (
 		<div className="flex flex-col items-center gap-1 w-10">
 			<div
-				className="relative h-20 w-6"
+				className="relative h-20 w-6 flex flex-col items-center"
 				ref={ref}
 			>
 				<ArrowDown
@@ -26,16 +27,17 @@ export const VerticalAlgorithmVisualization = forwardRef<
 					}`}
 				></div>
 
-				<span>{value}</span>
-
 				{/* <div className="absolute top-1/2 w-full h-px bg-(--border-primary)" /> */}
 
 				<div
 					style={{ height }}
 					data-role="bar"
 					className={`absolute left-0 w-full rounded-md
-        ${isNegative ? "bg-red-400 top-1/2" : "bg-blue-400 bottom-1/2"}`}
+						${isNegative ? "bg-red-400 top-1/2" : "bg-blue-400 bottom-1/2"}`}
 				/>
+				<span className={cn("absolute", isNegative ? "top-0" : "bottom-0")}>
+					{value}
+				</span>
 			</div>
 		</div>
 	);

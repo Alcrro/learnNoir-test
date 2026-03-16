@@ -12,9 +12,11 @@ const AlgorithmPage = () => {
 
 	return (
 		<div>
-			<h1 className="capitalize">
-				{itemId.includes("-") ? itemId.replace("-", " ") : itemId}
-			</h1>
+			<div className="bg-(--bg-card) rounded-xl py-2">
+				<h1 className="capitalize font-semibold tracking-tight text-3xl">
+					{itemId.includes("-") ? itemId.replace("-", " ") : itemId}
+				</h1>
+			</div>
 			{Component && <Component />}
 		</div>
 	);

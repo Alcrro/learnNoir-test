@@ -1,9 +1,28 @@
 html.dark {
 	/* ========= BASE ========= */
+
+	/* PAGE*/
 	--bg-color: #0f172a;
 	--bg-secondary: #020617;
+	--bg-tertiary: #1e293b; //(cards / sections)
 	--surface-color: #111827;
 	--surface-hover: #1f2937;
+
+	/* PAGE */
+	--bg-page: #020617;
+
+	/* LAYOUT */
+	--bg-sidebar: #0f172a;
+	--bg-main: #020617;
+
+	/* COMPONENTS */
+	--bg-card: #111827;
+	--bg-card-hover: #1f2937;
+
+	/* SURFACE */
+	--surface-1: #020617;
+	--surface-2: #0f172a;
+	--surface-3: #111827;
 
 	/* ========= TEXT ========= */
 	--text-primary: #e5e7eb;
@@ -56,6 +75,9 @@ html.dark {
 	/* ========= EFFECT ========= */
 	--shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.35);
 
+	--box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 10px 30px rgba(0, 0, 0, 0.5);
+
 	--default_color: #6366f1;
 	--compare-color: #f59e0b;
 	--swap-color: #ef4444;
@@ -86,8 +108,14 @@ html.dark {
 :root {
 	--bg-color: #f8fafc;
 	--bg-secondary: #ffffff;
+	--bg-tertiary: #f1f5f9; //(cards / sections)
 	--surface-color: #ffffff;
 	--surface-hover: #f1f5f9;
+
+	--bg-page: #f8fafc;
+	--bg-sidebar: #ffffff;
+	--bg-card: #ffffff;
+	--bg-hover: #f1f5f9;
 
 	--text-primary: #0f172a;
 	--text-secondary: #475569;
@@ -113,6 +141,7 @@ html.dark {
 	--card-hover: #f8fafc;
 
 	--shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08);
+	--sidebar-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
 	--btn-primary-bg: #4f46e5;
 	--btn-primary-hover: #4338ca;
@@ -142,7 +171,7 @@ html {
 }
 
 body {
-	background: var(--bg-color);
+	background: var(--bg-page);
 	color: var(--text-primary);
 	transition:
 		background 400ms ease,

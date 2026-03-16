@@ -46,7 +46,7 @@ const AlgorithmsControls: FC<Props> = ({
 	const { pause } = pausePlayback(setIsPlaying);
 	return (
 		<div
-			className="mt-4 flex items-center w-full space-x-2 justify-center"
+			className="p-2 flex items-center w-full space-x-2 justify-center bg-(--bg-card) rounded-xl"
 			onClick={(e) => e.stopPropagation()}
 		>
 			<div className="flex flex-col justify-center gap-2">

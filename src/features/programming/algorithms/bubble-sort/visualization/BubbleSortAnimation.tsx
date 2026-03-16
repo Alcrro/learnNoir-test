@@ -42,34 +42,36 @@ const BubbleSortAnimation = () => {
 
 	return (
 		<div className="flex flex-col gap-2 algorithms py-2 w-full mx-auto">
-			<div className="flex justify-between items-center max-sm:flex-wrap max-sm:justify-center">
-				<GenerateRandomArray
-					setCurrentStep={setCurrentStep}
-					size={arraySize}
-					setSize={setArraySize}
-					minValue={minValueState}
-					maxValue={maxValueState}
-					setMinValueState={setMinValueState}
-					setMaxValueState={setMaxValueState}
+			<div className="flex flex-col max-sm:flex-wrap max-sm:justify-center bg-(--bg-card) p-2 rounded-xl">
+				<div className="flex justify-between  items-center ">
+					<GenerateRandomArray
+						setCurrentStep={setCurrentStep}
+						size={arraySize}
+						setSize={setArraySize}
+						minValue={minValueState}
+						maxValue={maxValueState}
+						setMinValueState={setMinValueState}
+						setMaxValueState={setMaxValueState}
+						boxesRef={boxesRef}
+					/>
+					<div className="vizualizer_controller">
+						<VisualizerMethodSelector />
+					</div>
+				</div>
+				<ArrayVisualizer
+					currentArray={currentArray}
 					boxesRef={boxesRef}
 				/>
-				<div className="vizualizer_controller">
-					<VisualizerMethodSelector />
-				</div>
-			</div>
-			<ArrayVisualizer
-				currentArray={currentArray}
-				boxesRef={boxesRef}
-			/>
 
-			<AlgorithmsControls
-				currentStep={currentStep}
-				stepsLength={steps.length}
-				handleNextStep={handleNextStep}
-				handlePrevStep={handlePrevStep}
-				boxesRef={boxesRef}
-				setCurrentStep={setCurrentStep}
-			/>
+				<AlgorithmsControls
+					currentStep={currentStep}
+					stepsLength={steps.length}
+					handleNextStep={handleNextStep}
+					handlePrevStep={handlePrevStep}
+					boxesRef={boxesRef}
+					setCurrentStep={setCurrentStep}
+				/>
+			</div>
 
 			<AlgorithmStats />
 

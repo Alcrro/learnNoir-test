@@ -34,7 +34,7 @@ const PseudocodContainer = () => {
 		<div onClick={(e) => e.stopPropagation()}>
 			<div
 				className={cn(
-					"bg-(--bg-secondary) rounded-md overflow-hidden transition-all duration-500 ease-in-out",
+					"bg-(--bg-card) rounded-md overflow-hidden transition-all duration-500 ease-in-out",
 					isToggled("pseudocode_container")
 						? "max-h-0 opacity-0"
 						: "max-h-125 opacity-100",

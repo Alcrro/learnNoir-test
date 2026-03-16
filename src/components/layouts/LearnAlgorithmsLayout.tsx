@@ -15,12 +15,12 @@ const LearnAlgorithmsLayout = () => {
 				<div className="breadcrumb"></div>
 				<SidebarDesktop />
 
-				<main className="flex-1 px-1 xl:px-4 py-4  rounded-md bg-(--bg-secondary) text-(--text-primary) group-hover:opacity-80 hover:opacity-100! relative">
+				<main className="flex-1 px-1 rounded-md text-(--text-primary) group-hover:opacity-80 hover:opacity-100! relative">
 					<div className="main">
 						<Outlet />
 					</div>
 				</main>
-				<div className="hidden xl:block px-1 max-w-80 2xl:max-w-120 w-full group-hover:opacity-80 hover:opacity-100! ">
+				<div className="hidden xl:block px-1 max-w-80 2xl:max-w-120 w-full group-hover:opacity-80 hover:opacity-100!">
 					<TableOfContents />
 				</div>
 				<SidebarMobile

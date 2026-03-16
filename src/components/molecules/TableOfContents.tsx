@@ -22,9 +22,9 @@ const TableOfContents = () => {
 					toggle={() => closeDiv("sideBar")}
 				/>
 			</div>
-			<div className={cn("flex flex-col gap-2 rounded-md")}>
+			<div className={cn("flex flex-col gap-2 rounded-md ")}>
 				<PseudocodContainer />
-				<div className="">
+				<div className="bg-(--bg-card)">
 					<ul>
 						<li>bla bla</li>
 						<li>
