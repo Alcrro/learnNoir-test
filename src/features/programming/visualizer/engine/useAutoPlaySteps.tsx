@@ -21,7 +21,7 @@ const useAutoPlaySteps = ({
 
 		const id = setTimeout(() => {
 			handleNextStep();
-		}, 500);
+		}, 1000);
 
 		return () => clearTimeout(id);
 	}, [isPlaying, currentStep, steps, handleNextStep]);

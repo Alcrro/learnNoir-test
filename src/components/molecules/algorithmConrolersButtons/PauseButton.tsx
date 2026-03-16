@@ -5,7 +5,7 @@ const PauseButton = ({ pauseHandler }: { pauseHandler: () => void }) => {
 	return (
 		<DefaultButton
 			variant="destructive"
-			className="p-2 bg-gray-500 text-white rounded-2xl h-fit"
+			className="p-2 bg-gray-500 text-white rounded-2xl h-fit hover:bg-black"
 			onClick={pauseHandler}
 		>
 			<PauseCircle className="size-8" />

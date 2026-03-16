@@ -6,6 +6,6 @@ import { ThemeProveier } from "./context/ThemeProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
 	<ThemeProveier>
-		<RouterProvider router={router} />,
+		<RouterProvider router={router} />
 	</ThemeProveier>,
 );

@@ -30,7 +30,7 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 			.filter(Boolean);
 
 		gsap.set(bars, {
-			backgroundColor: "var(--color-blue-500)",
+			backgroundColor: "var(--default_color)",
 			color: "var(--text-primary)",
 			scale: 1,
 		});

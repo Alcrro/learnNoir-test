@@ -9,7 +9,7 @@ export const BoxAlgorithmVisualization = forwardRef<
 		<div ref={ref}>
 			<div
 				data-role="bar"
-				className="relative size-12 border border-(--border-primary) text-(--text-primary) flex items-center justify-center rounded-full shadow-sm bg-(--background-secondary) font-medium"
+				className="relative size-12 text-(--text-primary) flex items-center justify-center rounded-full shadow-sm bg-(--default_color) font-medium"
 			>
 				<ArrowDown
 					className="compare-arrow absolute -top-6 opacity-0 text-(--compare-color)"

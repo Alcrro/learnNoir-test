@@ -20,7 +20,7 @@ const LearnAlgorithmsLayout = () => {
 						<Outlet />
 					</div>
 				</main>
-				<div className="hidden xl:block px-1 max-w-80 2xl:max-w-120 w-full">
+				<div className="hidden xl:block px-1 max-w-80 2xl:max-w-120 w-full group-hover:opacity-80 hover:opacity-100! ">
 					<TableOfContents />
 				</div>
 				<SidebarMobile

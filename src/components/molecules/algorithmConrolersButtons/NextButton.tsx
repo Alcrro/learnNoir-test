@@ -17,7 +17,7 @@ const NextButton = ({
 			onClick={handleNextStep}
 			disabled={currentStep + 1 === steps}
 		>
-			<ArrowRightCircle className="size-8" />
+			<ArrowRightCircle className="size-8 " />
 		</DefaultButton>
 	);
 };

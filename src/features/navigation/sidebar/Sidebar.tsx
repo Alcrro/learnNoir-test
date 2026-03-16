@@ -28,12 +28,12 @@ const Sidebar = () => {
 								className={({ isActive }) =>
 									`block rounded-lg px-4 py-2 text-sm transition-all duration-200 ${
 										isActive
-											? "bg-(--btn-primary-bg) text-(--text-primary) font-medium shadow-sm"
-											: "text-(--text-primary) hover:bg-(--btn-primary-hover) hover:text-(--text-primary)"
+											? "bg-(--btn-primary-bg) text-white font-medium shadow-sm"
+											: "text-(--text-primary) hover:bg-(--btn-primary-hover) hover:text-white"
 									}`
 								}
 							>
-								{item.name}
+								<span className="">{item.name}</span>
 							</NavLink>
 						))}
 					</Fragment>

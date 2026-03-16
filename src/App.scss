@@ -56,10 +56,10 @@ html.dark {
 	/* ========= EFFECT ========= */
 	--shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.35);
 
-	--default_color: --color-blue-500;
+	--default_color: #6366f1;
 	--compare-color: #f59e0b;
 	--swap-color: #ef4444;
-	--sorted-color: #22c55e;
+	--sorted-color: #34d399;
 	--active-step: #6366f1;
 
 	--font-sans:
@@ -129,6 +129,12 @@ html.dark {
 	--btn-success-hover: #15803d;
 
 	--btn-border: #e2e8f0;
+
+	--default_color: #4f46e5;
+	--compare-color: #f59e0b;
+	--swap-color: #ef4444;
+	--sorted-color: #10b981;
+	--active-step: #6366f1;
 }
 
 html {

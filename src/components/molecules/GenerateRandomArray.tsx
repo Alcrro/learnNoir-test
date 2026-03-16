@@ -4,12 +4,11 @@ import {
 	type RefObject,
 	type SetStateAction,
 } from "react";
-import DefaultButton from "../atoms/DefaultButton";
 import Input from "./Input";
 import { useAlgorithmStore } from "../../store/useAlgorithmStore";
 import { generateArray } from "../../libs/utils/generateArray";
-import { ShuffleIcon } from "lucide-react";
 import { useReset } from "../../features/programming/visualizer/hooks/useReset";
+import GenerateRandomArrayButton from "./GenerateRandomArrayButton";
 
 type GenerateRandomArrayProps = {
 	size?: number;
@@ -70,16 +69,7 @@ const GenerateRandomArray = ({
 
 	return (
 		<div className="flex gap-2 justify-center items-center flex-wrap max-sm:w-full">
-			<DefaultButton
-				variant="primary"
-				size="lg"
-				onClick={onGenerate}
-				className="rounded-xl bg-(--bg-color) max-sm:max-w-66.25 max-sm:w-full max-sm:px-0"
-			>
-				<div className="flex gap-2 justify-center max-sm:flex-wrap ">
-					<ShuffleIcon /> <span className="uppercase"> Generate array</span>
-				</div>
-			</DefaultButton>
+			<GenerateRandomArrayButton generateHandler={onGenerate} />
 			<div className="flex flex-col gap-2 relative ">
 				<div className="mr-auto capitalize text-xl text-blue-400">
 					<span>elements:</span> <span>{size}</span>

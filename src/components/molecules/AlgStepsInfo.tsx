@@ -31,7 +31,7 @@ const AlgStepsInfo: FC<AlgStepsInfoProps> = ({
 					value={currentStep + 1}
 					onChange={changeHandler}
 					maxValue={steps}
-					className="w-full"
+					className="w-full "
 				/>
 
 				<span>din</span>
