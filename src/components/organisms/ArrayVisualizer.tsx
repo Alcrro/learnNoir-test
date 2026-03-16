@@ -13,7 +13,7 @@ const ArrayVisualizer: FC<Props> = ({ currentArray, boxesRef }) => {
 	);
 
 	return (
-		<div className="flex justify-between py-6 items-center min-h-60 h-full border border-(--border-color) rounded-2xl bg-(--bg-card)">
+		<div className="flex justify-between py-6 items-center min-h-80 h-full border border-(--border-color) rounded-2xl bg-(--bg-card)">
 			<div
 				key={visualAlgorithm}
 				className="relative w-full h-100 min-h-full rounded-xl flex justify-center items-center gap-2 p-2 flex-wrap"

@@ -4,6 +4,7 @@ import { cn } from "../../libs/utils/cn";
 import { useLectureStore } from "../../store/useLectureStore";
 import { useToggleStore } from "../../store/usetoggleStore";
 import ExtendButton from "../atoms/ExtendButton";
+import LearnContainer from "./LearnContainer";
 
 const TableOfContents = () => {
 	const { activeLecture } = useLectureStore((store) => store);
@@ -24,18 +25,20 @@ const TableOfContents = () => {
 			</div>
 			<div className={cn("flex flex-col gap-2 rounded-md ")}>
 				<PseudocodContainer />
-				<div className="bg-(--bg-card)">
-					<ul>
-						<li>bla bla</li>
-						<li>
-							{compareElements[activeLecture!] ?? (
-								<div className="text-sm text-(--text-muted) text-center">
-									Not yet documentation
-								</div>
-							)}
-						</li>
-					</ul>
-				</div>
+				<LearnContainer containerName="BlaBla">
+					<div className="bg-(--bg-card)">
+						<ul>
+							<li>bla bla</li>
+							<li>
+								{compareElements[activeLecture!] ?? (
+									<div className="text-sm text-(--text-muted) text-center">
+										Not yet documentation
+									</div>
+								)}
+							</li>
+						</ul>
+					</div>
+				</LearnContainer>
 			</div>
 		</>
 	);

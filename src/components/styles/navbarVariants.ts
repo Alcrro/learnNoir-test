@@ -4,4 +4,4 @@ export const navItemBase =
 export const navItemActive = "bg-(--btn-primary-bg)/10 text-(--btn-primary-bg)";
 
 export const navItemInactive =
-	"text-(--text-primary) hover:bg-(--bg-hover) hover:text-(--text-primary)";
+	"text-(--text-primary) hover:bg-(--bg-card-hover) hover:text-(--text-primary)";
