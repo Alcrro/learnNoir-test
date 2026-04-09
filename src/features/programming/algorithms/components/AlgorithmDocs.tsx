@@ -14,7 +14,7 @@ type AlgDocsProps = {
 	currentStep: number;
 };
 const AlgorithmDocs: FC<AlgDocsProps> = ({ showAllSteps, currentStep }) => {
-	const [prevStep, setPrevStep] = useState<number | null>(null);
+	const [_prevStep, setPrevStep] = useState<number | null>(null);
 	const steps = useAlgorithmStore((store) => store.steps);
 
 	const stepValues = useExtractStepsValues();

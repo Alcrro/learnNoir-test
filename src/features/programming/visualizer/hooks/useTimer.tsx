@@ -19,7 +19,7 @@ const useTimer = () => {
 		if (timer === 0) navigate("/");
 	}, [timer, navigate]);
 
-	return timer;
+	return { timer };
 };
 
 export default useTimer;

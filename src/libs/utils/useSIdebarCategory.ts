@@ -1,4 +1,4 @@
-import { sidebarMap, type SidebarItem } from "../../content/sidebarData";
+import { algorithms, type SidebarItem } from "../../content/sidebarData";
 
 export function useSidebarCategory(pathname: string) {
 	let themeKey: string | null = null;
@@ -6,7 +6,7 @@ export function useSidebarCategory(pathname: string) {
 	if (pathname.includes("/algorithms")) themeKey = "algorithms";
 	else if (pathname.includes("/data-structures")) themeKey = "dataStructures";
 
-	const items: SidebarItem[] = themeKey ? sidebarMap[themeKey] : [];
+	const items: SidebarItem[] = themeKey ? algorithms[themeKey] : [];
 
 	return { themeKey: !themeKey ? "Unknown" : themeKey, items };
 }

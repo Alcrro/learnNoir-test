@@ -10,7 +10,7 @@ import LectureText from "./LectureText";
 
 const TableOfContents = () => {
 	const lectures = useLectureStore((store) => store.lectures);
-	const isToggled = useToggleStore((store) => store.isToggled);
+	// const isToggled = useToggleStore((store) => store.isToggled);
 	const active = useToggleStore((s) => s.toggle.has("sideBar"));
 	const closeDiv = useToggleStore((s) => s.closeToggle);
 	// console.log("isToggled ", isToggled("sideBar"));

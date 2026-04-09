@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import LoginModal from "./components/modal/LoginModal";
+// import LoginModal from "./components/modal/LoginModal";
 
 const Subjects = () => {
 	const location = useLocation();

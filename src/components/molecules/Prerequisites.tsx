@@ -13,8 +13,8 @@ const Prerequisites: FC<Props> = ({ prerequisites }) => {
 
 	const currentStep = useAlgorithmStore((store) => store.currentStep);
 	const setToggled = useToggleStore((store) => store.setToggle);
-	const active = useToggleStore((s) => s.toggle.has("sideBar"));
-	const openDiv = useToggleStore((s) => s.openToggle);
+	// const active = useToggleStore((s) => s.toggle.has("sideBar"));
+	// const openDiv = useToggleStore((s) => s.openToggle);
 	const toggle = useToggleStore((s) => s.openToggle);
 
 	return (

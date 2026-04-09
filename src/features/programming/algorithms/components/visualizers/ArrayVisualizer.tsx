@@ -3,7 +3,6 @@ import ArrayContainer from "../../../../../components/molecules/ArrayContainer";
 import type { AlgorithmTypeProp } from "../../data/algorithmArray";
 import { useVisualAlgorithmUIStore } from "../../../../../store/useVisualAlgorithmUIStore";
 import { ChevronDownSquare } from "lucide-react";
-import PseudocodContainer from "../PseudocodContainer";
 import { useToggleStore } from "../../../../../store/usetoggleStore";
 import { cn } from "../../../../../libs/utils/cn";
 

@@ -1,8 +1,8 @@
-import AlgorithmCard from "./AlgorithmCard";
+import AlgorithmCard, { AlgorithmCardProps } from "./AlgorithmCard";
 
 type Category = {
 	category: string;
-	items: any[];
+	items: AlgorithmCardProps[];
 };
 
 const CategorySection = ({ category }: { category: Category }) => {

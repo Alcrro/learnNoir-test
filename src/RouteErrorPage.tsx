@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import useTimer from "./features/programming/visualizer/hooks/useTimer";
 
 const RouteErrorPage = () => {
 	const error = useRouteError();
-	const [timer, setTimer] = useState(5);
-	useTimer(timer, setTimer);
+	const { timer } = useTimer();
 
 	if (isRouteErrorResponse(error)) {
 		return (

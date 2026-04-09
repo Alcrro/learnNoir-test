@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import ProgressBar from "./ProgressBar";
 
-const AlgorithmCard = ({ item }: { item: any }) => {
+export type AlgorithmCardProps = {
+	progress: number;
+	path: string;
+	name: string;
+};
+const AlgorithmCard = ({ item }: { item: AlgorithmCardProps }) => {
 	const progress = item.progress ?? 0;
 
 	return (

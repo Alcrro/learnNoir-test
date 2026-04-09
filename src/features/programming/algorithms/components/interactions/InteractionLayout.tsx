@@ -10,7 +10,9 @@ const InteractionLayout = ({
 }: {
 	stepValues: Record<"first" | "second", number>;
 }) => {
-	const [answers, setAnswers] = useState<Record<string, AnswerOptionType>>({});
+	const [answers, setAnswers] = useState<
+		Record<string, boolean | string[] | AnswerOptionType[]>
+	>({});
 
 	const currentInteraction = interactionMapper[1] ?? [];
 
@@ -22,13 +24,16 @@ const InteractionLayout = ({
 
 			if (!selected) return;
 
-			const isCorrect = interaction.validate({ a: first, b: second }, selected);
+			const isCorrect = interaction.validate(
+				{ a: first, b: second },
+				selected as boolean | string[],
+			);
 
 			console.log(interaction.id, isCorrect);
 		});
 	};
 
-	const handleSelect = useCallback((id: string, value: AnswerOptionType) => {
+	const handleSelect = useCallback((id: string, value: AnswerOptionType[]) => {
 		setAnswers((prev) => ({ ...prev, [id]: value }));
 	}, []);
 	return (
@@ -51,7 +56,7 @@ const InteractionLayout = ({
 							{interaction.type === "single_choice" && (
 								<AnswerOption
 									options={interaction.options ?? []}
-									onSelect={(value) => handleSelect(interaction.id, value)}
+									onSelect={(value) => handleSelect(interaction.id, [value])}
 								/>
 							)}
 
@@ -75,7 +80,7 @@ const InteractionLayout = ({
 							{interaction.type === "boolean" && (
 								<AnswerOption
 									options={interaction.options}
-									onSelect={(value) => handleSelect(interaction.id, value)}
+									onSelect={(value) => handleSelect(interaction.id, [value])}
 								/>
 							)}
 						</div>
