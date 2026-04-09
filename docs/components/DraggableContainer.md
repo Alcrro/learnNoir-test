@@ -1,0 +1,5 @@
+# DraggableContainer
+
+```ts
+() => void
+```

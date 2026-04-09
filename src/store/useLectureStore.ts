@@ -1,16 +1,35 @@
 import { create } from "zustand";
+import type { LectureType } from "../features/programming/algorithms/bubble-sort/docs/compareElements";
+import { persist } from "zustand/middleware";
 
 type LectureStore = {
-  activeLecture: string | null;
-  openLecture: (id: string) => void;
-  closeLecture: () => void;
+	activeStep: number | null;
+	lectures: LectureType[];
+	addLecture: (lecture: LectureType, step: number) => void;
+	clearAll: () => void;
 };
-export const useLectureStore = create<LectureStore>((set) => ({
-  activeLecture: null,
-  openLecture(id) {
-    set(() => ({ activeLecture: id }));
-  },
-  closeLecture() {
-    set(() => ({ activeLecture: null }));
-  },
-}));
+export const useLectureStore = create<LectureStore>()(
+	persist(
+		(set) => ({
+			activeStep: null,
+			lectures: [],
+			addLecture(activeLectureId, step) {
+				set((state) => {
+					const isNewStep = state.activeStep !== step;
+					if (isNewStep) return { activeStep: step, lectures: [activeLectureId] };
+
+					if (state.lectures.includes(activeLectureId)) return state;
+					return {
+						...state,
+						lectures: [...state.lectures, activeLectureId],
+					};
+				});
+			},
+
+			clearAll() {
+				set(() => ({ lectures: [], activeStep: null }));
+			},
+		}),
+		{ name: "lectures-by-steps" },
+	),
+);

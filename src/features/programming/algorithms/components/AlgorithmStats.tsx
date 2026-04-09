@@ -15,7 +15,7 @@ const AlgorithmStats = () => {
 		useMemo(() => getAlgorithmStats(steps, currentStep), [steps, currentStep]);
 
 	return (
-		<div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] max-sm:grid-cols-1 gap-2 ">
+		<div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] max-sm:grid-cols-1 gap-2">
 			<AlcgorithInfoCard description="comparisons">
 				<ComparisonCard
 					currentComparedCount={currentComparisons ?? undefined}

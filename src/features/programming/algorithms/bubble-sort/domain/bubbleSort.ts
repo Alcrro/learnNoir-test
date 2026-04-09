@@ -14,6 +14,7 @@ export function generateBubbleSortSteps(
 		for (let j = 0; j < arr.length - i - 1; j++) {
 			steps.push({
 				array: snapshot(),
+				type: "compare",
 				compare: [j, j + 1],
 				line: [3, 4],
 			});
@@ -23,6 +24,7 @@ export function generateBubbleSortSteps(
 
 				steps.push({
 					array: snapshot(),
+					type: "swap",
 					swap: [j, j + 1],
 					line: [5, 6],
 				});
@@ -32,20 +34,23 @@ export function generateBubbleSortSteps(
 
 		steps.push({
 			array: snapshot(),
+			type: "noSwap",
 			sorted: [arr.length - 1 - i],
-			line: 7,
+			line: [7, 8],
 		});
 
-		steps.push({
-			array: snapshot(),
-			line: 8,
-		});
+		// steps.push({
+		// 	array: snapshot(),
+		// 	type: "noSwap",
 
+		// 	line: 8,
+		// });
 		if (!swapped) break;
 	}
 
 	steps.push({
 		array: snapshot(),
+		type: "noSwap",
 		sorted: [0],
 		line: 7,
 	});

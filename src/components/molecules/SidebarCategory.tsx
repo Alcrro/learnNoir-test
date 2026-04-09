@@ -12,7 +12,7 @@ const SidebarCategory = ({ category, items }: SidebarCategoryProps) => {
 				{category}
 			</div>
 
-			<div className="flex flex-col gap-1 bg-(--bg-color) rounded-md">
+			<div className="flex flex-col gap-1 bg-(--bg-cards) rounded-md">
 				{items.map((item) => (
 					<SidebarItem
 						key={item.id}

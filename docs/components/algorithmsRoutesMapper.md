@@ -1,0 +1,5 @@
+# algorithmsRoutesMapper
+
+```ts
+RouteObject[]
+```

@@ -18,12 +18,13 @@ export type Step = {
 
 	compare?: [number, number];
 	swap?: [number, number];
-
+	type?: StepType | "noSwap";
 	sorted?: number[];
 	active?: number[];
 	line?: number | number[];
 };
 
+export type StepType = "compare" | "swap" | "sorted";
 export type ComplexityType = "best" | "average" | "worst" | "space";
 
 export type ComplexityValue = "O(n)" | "O(n²)" | "O(n²)" | "O(1)";

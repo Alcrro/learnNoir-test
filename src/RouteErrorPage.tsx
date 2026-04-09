@@ -1,25 +1,32 @@
 import { useState } from "react";
-import { useRouteError } from "react-router-dom";
+import { isRouteErrorResponse, useRouteError } from "react-router-dom";
 import useTimer from "./features/programming/visualizer/hooks/useTimer";
 
-type RouteErrorPageProps = {
-	errorMessage?: string;
-};
-const RouteErrorPage = ({ errorMessage }: RouteErrorPageProps) => {
-	const [timer, setTimer] = useState(5);
-
+const RouteErrorPage = () => {
 	const error = useRouteError();
+	const [timer, setTimer] = useState(5);
 	useTimer(timer, setTimer);
 
-	return (
-		<>
-			<div>{(error as Error)?.message}</div>
-			<div className={"h-screen flex flex-col justify-center items-center"}>
-				<div>{errorMessage}</div>
-				Ruta nu exista. Redirect la home page in {timer}
+	if (isRouteErrorResponse(error)) {
+		return (
+			<div className="h-screen flex flex-col justify-center items-center">
+				<div>{error.status}</div>
+				<div>{error.data}</div>
+				Redirect in {timer}
 			</div>
-		</>
-	);
+		);
+	}
+
+	if (error instanceof Error) {
+		return (
+			<div className="h-screen flex flex-col justify-center items-center">
+				<div>{error.message}</div>
+				Redirect in {timer}
+			</div>
+		);
+	}
+
+	return <div>Unknown error. Redirect in {timer}</div>;
 };
 
 export default RouteErrorPage;

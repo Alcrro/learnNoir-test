@@ -1,3 +1,4 @@
+import MathPageLayout from "../../features/mathematics/components/MathPageLayout";
 import { compareElements } from "../../features/programming/algorithms/bubble-sort/docs/compareElements";
 import PseudocodContainer from "../../features/programming/algorithms/components/PseudocodContainer";
 import { cn } from "../../libs/utils/cn";
@@ -5,12 +6,14 @@ import { useLectureStore } from "../../store/useLectureStore";
 import { useToggleStore } from "../../store/usetoggleStore";
 import ExtendButton from "../atoms/ExtendButton";
 import LearnContainer from "./LearnContainer";
+import LectureText from "./LectureText";
 
 const TableOfContents = () => {
-	const { activeLecture } = useLectureStore((store) => store);
-
+	const lectures = useLectureStore((store) => store.lectures);
+	const isToggled = useToggleStore((store) => store.isToggled);
 	const active = useToggleStore((s) => s.toggle.has("sideBar"));
 	const closeDiv = useToggleStore((s) => s.closeToggle);
+	// console.log("isToggled ", isToggled("sideBar"));
 
 	return (
 		<>
@@ -25,20 +28,31 @@ const TableOfContents = () => {
 			</div>
 			<div className={cn("flex flex-col gap-2 rounded-md ")}>
 				<PseudocodContainer />
-				<LearnContainer containerName="BlaBla">
-					<div className="bg-(--bg-card)">
-						<ul>
-							<li>bla bla</li>
-							<li>
-								{compareElements[activeLecture!] ?? (
-									<div className="text-sm text-(--text-muted) text-center">
-										Not yet documentation
-									</div>
-								)}
-							</li>
-						</ul>
-					</div>
-				</LearnContainer>
+				{lectures
+					? lectures.map((key) => {
+							const lecture = compareElements[key];
+							// console.log("lecture", !!compareElements[key]);
+
+							return (
+								<LearnContainer
+									containerName={key}
+									key={key}
+								>
+									<MathPageLayout>
+										<div className="title pb-2 font-semibold text-xl capitalize text-center">
+											{lecture.title}
+										</div>
+										<div className="flex flex-col gap-2 pl-14">
+											<LectureText
+												text={lecture.description}
+												isOpen={!!compareElements[key]}
+											/>
+										</div>
+									</MathPageLayout>
+								</LearnContainer>
+							);
+						})
+					: null}
 			</div>
 		</>
 	);

@@ -18,7 +18,6 @@ const useBubbleSortAnimation = ({
 	);
 
 	const hasStarted = useToggleStore((s) => s.isToggled("isAutoPlay"));
-	console.log(boxesRef);
 
 	useCompareHighlight({
 		hasStarted,

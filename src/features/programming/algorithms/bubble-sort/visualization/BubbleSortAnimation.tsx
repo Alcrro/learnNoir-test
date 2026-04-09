@@ -1,6 +1,6 @@
 import useSetSearchParams from "../../../../../hooks/useSetSearchParams";
-import ArrayVisualizer from "../../../../../components/organisms/ArrayVisualizer";
-import AlgorithmsControls from "../../../../../components/organisms/AlgorithmsControls";
+import ArrayVisualizer from "../../components/visualizers/ArrayVisualizer";
+import AlgorithmsControls from "../../components/visualizers/AlgorithmsControls";
 import GenerateRandomArray from "../../../../../components/molecules/GenerateRandomArray";
 import { useAlgorithmStore } from "../../../../../store/useAlgorithmStore";
 import VisualizerMethodSelector from "../../../../../components/molecules/VisualizerMethodSelector";
@@ -28,6 +28,7 @@ const BubbleSortAnimation = () => {
 	const currentStep = useAlgorithmStore((store) => store.currentStep);
 	const setCurrentStep = useAlgorithmStore((store) => store.setCurrentStep);
 	const steps = useAlgorithmStore((store) => store.steps);
+	console.log(steps);
 
 	const currentArray = useCurrentArray();
 
@@ -41,9 +42,9 @@ const BubbleSortAnimation = () => {
 	useSetSearchParams({ currentStep, setSearchParams });
 
 	return (
-		<div className="flex flex-col gap-2 algorithms py-2 w-full mx-auto">
-			<div className="flex flex-col max-sm:flex-wrap max-sm:justify-center bg-(--bg-card) p-2 rounded-xl">
-				<div className="flex justify-between  items-center ">
+		<div className="flex flex-col gap-2 algorithms md:p-4 w-full mx-auto">
+			<div className="flex flex-col max-sm:flex-wrap max-sm:justify-center bg-(--bg-card) rounded-xl">
+				<div className="flex justify-between items-center max-[420px]:flex-wrap">
 					<GenerateRandomArray
 						setCurrentStep={setCurrentStep}
 						size={arraySize}
@@ -54,7 +55,7 @@ const BubbleSortAnimation = () => {
 						setMaxValueState={setMaxValueState}
 						boxesRef={boxesRef}
 					/>
-					<div className="vizualizer_controller">
+					<div className="vizualizer_controller max-[420px]:mx-auto pb-4">
 						<VisualizerMethodSelector />
 					</div>
 				</div>

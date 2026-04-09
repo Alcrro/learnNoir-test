@@ -1,7 +1,7 @@
 .step-card {
 	padding: 20px;
 	border-radius: 16px;
-	background: var(--bg-card);
+	// background: var(--bg-card);
 	transition: all 0.3s ease;
 	opacity: 0.5;
 	transform: scale(0.98);
@@ -10,7 +10,7 @@
 .step-card.active {
 	opacity: 1;
 	transform: scale(1);
-	background: var(--surface-color);
+	// background: var(--surface-color);
 	box-shadow: var(--shadow-soft);
 	transition:
 		transform 0.2s ease,
@@ -54,4 +54,36 @@
 	margin-top: 18px;
 	font-size: 13px;
 	opacity: 0.7;
+}
+
+.math-step {
+	margin-left: 20px;
+	margin-bottom: 18px;
+}
+
+.math-line {
+	line-height: 1.8;
+}
+
+.math-step-index {
+	font-weight: bold;
+	color: var(--math-accent);
+	margin-right: 6px;
+}
+
+.math-step-title {
+	font-weight: 600;
+}
+
+.subtle {
+	color: var(--text-secondary);
+}
+
+.mnemonic {
+	background: var(--math-highlight-bg);
+	color: var(--math-highlight-text);
+	display: inline-block;
+	padding: 4px 8px;
+	border-radius: 6px;
+	margin-top: 4px;
 }

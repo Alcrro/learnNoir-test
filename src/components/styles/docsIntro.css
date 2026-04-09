@@ -73,3 +73,30 @@
 	color: var(--text-primary);
 	font-size: 14px;
 }
+
+.math-block {
+	margin-left: 60px;
+	margin-bottom: 16px;
+	font-size: x-large;
+}
+
+.math-title {
+	font-size: 34px;
+	font-weight: bold;
+}
+
+.math-label {
+	font-weight: bold;
+	color: var(--math-accent);
+}
+
+.math-content {
+	line-height: 1.8;
+}
+
+.highlight {
+	background: var(--math-highlight-bg);
+	color: var(--math-highlight-text);
+	padding: 8px;
+	border-radius: 6px;
+}

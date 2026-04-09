@@ -21,7 +21,7 @@ export type ButtonVariantType =
 	| "icon";
 
 export const buttonSizes: Record<ButtonSizeType, string> = {
-	default: "h-10 px-4 py-2",
+	default: "px-4 py-2",
 	sm: "h-8 px-3",
 	lg: "h-12 px-6",
 	icon: "h-10 w-10 p-0 flex items-center justify-center",

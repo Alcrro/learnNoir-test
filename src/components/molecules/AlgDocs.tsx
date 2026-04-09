@@ -1,43 +1,23 @@
 import { type FC } from "react";
-import type { StepDocumentation } from "../../features/programming/algorithms/bubble-sort/docs/bubbleSortDocs";
+import type { StepDocumentationV2 } from "../../features/programming/algorithms/bubble-sort/docs/bubbleSortDocs";
 import "../styles/algDocs.scss";
 
-import Title from "./Title";
-import { Explanation } from "./Explanation";
-import Mnemonic from "./Mnemonic";
-import Prerequisites from "./Prerequisites";
-import Logic from "./Logic";
-
-type AlgDocsProp = StepDocumentation & {
+type AlgDocsProp = StepDocumentationV2 & {
 	currentStep: number;
 	index: number;
+	stepValues: Record<"first" | "second", number>;
 };
 
-const AlgDocs: FC<AlgDocsProp> = ({
-	currentStep,
-	index,
-	title,
-	explanation,
-	logic,
-	mnemonic,
-	prerequisites,
-}) => {
-	if (!prerequisites?.length) return <>Test</>;
+const AlgDocs: FC<AlgDocsProp> = ({ currentStep, index, title }) => {
+	const isActive = currentStep === index;
+
 	return (
-		<div className={`step-card ${currentStep === index ? "active" : ""}`}>
-			<div className="step-header">
-				<span className="step-badge">Pas {index + 1}</span>
-				<Title title={title} />
+		<div className={`flex-1 flex flex-col text-2xl ${isActive ? "active" : ""}`}>
+			{/* Pas */}
+			<div className="math-line h-full">
+				<span className="math-step-index">Pas {index + 1}:</span>
+				<span className="math-step-title">{title}</span>
 			</div>
-
-			<Explanation explanation={explanation} />
-			{logic && <Logic logic={logic} />}
-
-			{mnemonic && <Mnemonic mnemonic={mnemonic} />}
-
-			{prerequisites?.length > 0 && (
-				<Prerequisites prerequisites={prerequisites} />
-			)}
 		</div>
 	);
 };

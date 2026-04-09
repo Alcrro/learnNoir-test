@@ -3,6 +3,7 @@ import { cn } from "../../../../libs/utils/cn";
 import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
 import { bubblePseudo } from "../data/pseudocode";
 import LearnContainer from "../../../../components/molecules/LearnContainer";
+import MathPageLayout from "../../../mathematics/components/MathPageLayout";
 
 const PseudocodContainer = () => {
 	const isToggled = useToggleStore((store) => store.isToggled);
@@ -18,42 +19,44 @@ const PseudocodContainer = () => {
 
 	return (
 		<LearnContainer containerName="pseudocode_container">
-			<div className="py-2">Pseudocode</div>
+			<MathPageLayout>
+				<div className="py-2 text-center text-2xl">Pseudocode</div>
 
-			<div className="rounded-md p-4 font-mono text-sm">
-				{bubblePseudo.map((line, index) => {
-					const isActive = activeLines.includes(index);
+				<div className="rounded-md pl-14 text-xl">
+					{bubblePseudo.map((line, index) => {
+						const isActive = activeLines.includes(index);
 
-					return (
-						<div
-							key={index}
-							style={{
-								paddingLeft: line.indent * 16,
-								transitionDelay: `${index * 40}ms`,
-							}}
-							className={cn(
-								"flex gap-4 py-1 transition-all duration-300 text-(--text-muted)",
-								isToggled("pseudocode_container")
-									? "opacity-0 -translate-y-2"
-									: "opacity-100 translate-y-0",
-								isActive && "text-(--text-primary) border-l-2 border-(--subtle)",
-							)}
-						>
-							<span className={cn("text-gray-400 w-6 text-right select-none")}>
-								{index + 1}
-							</span>
-
-							<span
+						return (
+							<div
+								key={index}
+								style={{
+									paddingLeft: line.indent * 16,
+									transitionDelay: `${index * 40}ms`,
+								}}
 								className={cn(
-									isActive && "bg-(--color-primary-hover) text-white px-1 rounded-md",
+									"flex gap-4 py-1 transition-all duration-300 text-(--text-muted)",
+									isToggled("pseudocode_container")
+										? "opacity-0 -translate-y-2"
+										: "opacity-100 translate-y-0",
+									isActive && "text-(--text-primary) border-l-2 border-(--subtle)",
 								)}
 							>
-								{line.text}
-							</span>
-						</div>
-					);
-				})}
-			</div>
+								<span className={cn("text-gray-400 w-6 text-right select-none")}>
+									{index + 1}
+								</span>
+
+								<span
+									className={cn(
+										isActive && "bg-(--color-primary-hover) text-white px-1 rounded-md",
+									)}
+								>
+									{line.text}
+								</span>
+							</div>
+						);
+					})}
+				</div>
+			</MathPageLayout>
 		</LearnContainer>
 	);
 };

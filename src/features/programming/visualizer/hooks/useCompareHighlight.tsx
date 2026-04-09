@@ -22,7 +22,7 @@ const useCompareHighlight = (ctx: CompareHighlightProps) => {
 
 		const boxes = boxesRef.current;
 		if (!boxes || !boxes.length) return; // ⭐ important
-		console.log({ boxes });
+		// console.log({ boxes });
 
 		const bars = boxes
 			.filter(Boolean)

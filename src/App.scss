@@ -90,6 +90,19 @@ html.dark {
 
 	--font-mono: JetBrains Mono, Fira Code, Consolas, monospace;
 
+	//notebook
+	--math-bg: #1e1e1e;
+	--math-grid-line: #2a2a2a;
+	--math-margin-line: #ff5a5a;
+
+	--math-highlight-bg: #2c2c1f;
+	--math-highlight-text: #f1e9b0;
+
+	--math-accent: #4dabf7;
+	--math-hover-cell: rgba(255, 255, 255, 0.05);
+
+	--math-border: #333333;
+
 	font-family: var(--font-sans);
 
 	/* ========= TEXT ========= */
@@ -164,6 +177,22 @@ html.dark {
 	--swap-color: #ef4444;
 	--sorted-color: #10b981;
 	--active-step: #6366f1;
+
+	/* notebook specific */
+	--math-bg: #ffffff;
+	--math-grid-line: #e0e0e0;
+	--math-margin-line: #ff4d4d;
+
+	/* highlight */
+	--math-highlight-bg: #fff3b0;
+	--math-highlight-text: #5c4b00;
+
+	/* interactive */
+	--math-accent: #3b82f6;
+	--math-hover-cell: rgba(0, 0, 0, 0.05);
+
+	/* optional */
+	--math-border: #dddddd;
 }
 
 html {
@@ -182,7 +211,6 @@ body {
 #root {
 	/* max-width: 1280px; */
 	width: 100%;
-	text-align: center;
 	height: 100vh;
 }
 

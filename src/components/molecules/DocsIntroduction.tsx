@@ -1,3 +1,4 @@
+import MathPageLayout from "../../features/mathematics/components/MathPageLayout";
 import "../styles/docsIntro.css";
 
 type Complexity = {
@@ -25,43 +26,54 @@ const DocsIntroduction = ({
 	complexity,
 }: DocsIntroProps) => {
 	return (
-		<div className="docs-intro">
-			<h2>{title}</h2>
-
-			<section>
-				<h3>What is it?</h3>
-				<p>{description}</p>
-			</section>
-
-			<section>
-				<h3>Why does it exist?</h3>
-				<p>{why}</p>
-			</section>
-
-			<section>
-				<h3>Key Idea</h3>
-				<p>{keyIdea}</p>
-			</section>
-
-			<section>
-				<h3>When to use</h3>
-				<ul>
-					{whenToUse.map((item, i) => (
-						<li key={i}>{item}</li>
-					))}
-				</ul>
-			</section>
-
-			<section>
-				<h3>Complexity</h3>
-				<div className="complexity">
-					<span>Best: {complexity.best}</span>
-					<span>Average: {complexity.average}</span>
-					<span>Worst: {complexity.worst}</span>
-					<span>Space: {complexity.space}</span>
+		// <div className="docs-intro">
+		<MathPageLayout>
+			<div className="math-container ml-1 ">
+				<div className="math-block text-center ">
+					<h2 className="math-title ">{title}</h2>
 				</div>
-			</section>
-		</div>
+
+				{/* DEFINIȚIE */}
+				<div className="math-block">
+					<div className="math-label">Def:</div>
+					<div className="math-content">{description}</div>
+				</div>
+
+				{/* INTUIȚIE */}
+				<div className="math-block">
+					<div className="math-label">Intuiție:</div>
+					<div className="math-content">{why}</div>
+				</div>
+
+				{/* IDEE CHEIE */}
+				<div className="math-block highlight">
+					<div className="math-label">💡 Idee:</div>
+					<div className="math-content">{keyIdea}</div>
+				</div>
+
+				{/* CÂND FOLOSEȘTI */}
+				<div className="math-block">
+					<div className="math-label">Când:</div>
+					<div className="math-content">
+						{whenToUse.map((item, i) => (
+							<div key={i}>- {item}</div>
+						))}
+					</div>
+				</div>
+
+				{/* COMPLEXITATE */}
+				<div className="math-block">
+					<div className="math-label">Comp:</div>
+					<div className="math-content grid grid-cols-2 gap-2">
+						<div>Best: {complexity.best}</div>
+						<div>Avg: {complexity.average}</div>
+						<div>Worst: {complexity.worst}</div>
+						<div>Space: {complexity.space}</div>
+					</div>
+				</div>
+			</div>
+		</MathPageLayout>
+		// </div>
 	);
 };
 

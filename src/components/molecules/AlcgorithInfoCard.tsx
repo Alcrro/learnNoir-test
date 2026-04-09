@@ -12,7 +12,7 @@ const AlgorithmInfoCard: FC<AlgorithInfoCardardProps> = ({
 	return (
 		<div
 			className={cn(
-				"p-5 bg-(--bg-card) border border-(--border-subtle) text-2xl rounded-2xl w-full ",
+				"p-5 bg-(--bg-tertiary) border border-(--border-subtle) text-2xl rounded-2xl w-full ",
 			)}
 		>
 			<div className="uppercase text-center text-violet-400">{description}</div>
