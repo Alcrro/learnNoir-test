@@ -1,39 +1,37 @@
 import { useState, type FC } from "react";
-import { bubbleSortDocsV2 } from "../bubble-sort/docs/bubbleSortDocs";
-import AlgDocs from "../../../../components/molecules/AlgDocs";
+import { bubbleSortDocs } from "../bubble-sort/docs/bubbleSortDocs";
 import MathPageLayout from "../../../mathematics/components/MathPageLayout";
 import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
-import { StepType } from "../shared/AlgorithmTypes";
 import { useExtractStepsValues } from "../hooks/useExtractStepsValues";
 import NextStepInteractionBtn from "../../../../components/molecules/buttons/NextStepInteractionBtn";
 import PrevStepInteractionBtn from "../../../../components/molecules/buttons/PrevStepInteractionBtn";
 import InteractionLayout from "./interactions/InteractionLayout";
+import AlgorithmStepDocs from "./lesson/AlgorithmStepDocs";
 
 type AlgDocsProps = {
 	showAllSteps: boolean;
 	currentStep: number;
 };
-const AlgorithmDocs: FC<AlgDocsProps> = ({ showAllSteps, currentStep }) => {
-	const [_prevStep, setPrevStep] = useState<number | null>(null);
+
+type AlgorithmDocsContentProps = {
+	currentStep: number;
+	stepValues: NonNullable<ReturnType<typeof useExtractStepsValues>>;
+};
+
+const AlgorithmDocsContent = ({
+	currentStep,
+	stepValues,
+}: AlgorithmDocsContentProps) => {
 	const steps = useAlgorithmStore((store) => store.steps);
-
-	const stepValues = useExtractStepsValues();
-	console.log(stepValues);
-
 	const [currentStepInteraction, setCurrentStepInteraction] =
 		useState<number>(-1);
 
-	if (showAllSteps) return null;
-	if (!stepValues) return null;
-
 	const goNextInteraction = () => {
 		if (currentStepInteraction === -1) {
-			setPrevStep(-1);
 			setCurrentStepInteraction(0);
 			return;
 		}
 
-		setPrevStep(currentStepInteraction);
 		setCurrentStepInteraction((prev) => prev + 1);
 	};
 
@@ -41,20 +39,17 @@ const AlgorithmDocs: FC<AlgDocsProps> = ({ showAllSteps, currentStep }) => {
 		if (currentStepInteraction === -1) return;
 
 		if (currentStepInteraction === 0) {
-			setPrevStep(0);
 			setCurrentStepInteraction(-1);
 			return;
 		}
 
-		setPrevStep(currentStepInteraction);
 		setCurrentStepInteraction((prev) => prev - 1);
 	};
 
 	const step = steps[currentStep];
 
-	const current = bubbleSortDocsV2[step?.type as StepType];
-
 	const isDoc = currentStepInteraction === -1;
+	const stepDocumentation = bubbleSortDocs(step);
 
 	return (
 		<MathPageLayout>
@@ -68,11 +63,10 @@ const AlgorithmDocs: FC<AlgDocsProps> = ({ showAllSteps, currentStep }) => {
 				{/* PAGINA NOUĂ */}
 				<div className="flex-1 flex flex-col p-4 h-full">
 					{isDoc ? (
-						<AlgDocs
-							{...current}
+						<AlgorithmStepDocs
+							{...stepDocumentation}
 							index={0}
 							currentStep={currentStep}
-							stepValues={stepValues}
 						/>
 					) : (
 						<InteractionLayout stepValues={stepValues} />
@@ -87,6 +81,21 @@ const AlgorithmDocs: FC<AlgDocsProps> = ({ showAllSteps, currentStep }) => {
 				</div>
 			</div>
 		</MathPageLayout>
+	);
+};
+
+const AlgorithmDocs: FC<AlgDocsProps> = ({ showAllSteps, currentStep }) => {
+	const stepValues = useExtractStepsValues();
+
+	if (showAllSteps) return null;
+	if (!stepValues) return null;
+
+	return (
+		<AlgorithmDocsContent
+			key={currentStep}
+			currentStep={currentStep}
+			stepValues={stepValues}
+		/>
 	);
 };
 

@@ -1,18 +1,19 @@
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
 
 const useStepFromUrl = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const setCurrentStep = useAlgorithmStore((s) => s.setCurrentStep);
 
-	const urlStep = Number(searchParams.get("step") ?? "0");
-	const internalStep = urlStep - 1;
+	const step = Number(searchParams.get("step") ?? "1") - 1;
 
-	useEffect(() => {
-		setCurrentStep(internalStep);
-	}, [internalStep, setCurrentStep]);
+	const updateStep = (newStep: number) => {
+		const params = new URLSearchParams(searchParams);
 
-	return { searchParams, setSearchParams };
+		if (params.get("tab") === "vizTab") {
+			params.set("step", String(newStep + 1));
+			setSearchParams(params);
+		}
+	};
+
+	return { step, updateStep };
 };
 export default useStepFromUrl;

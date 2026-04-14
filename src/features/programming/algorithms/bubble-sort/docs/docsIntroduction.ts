@@ -1,3 +1,28 @@
+import { ComplexityValue } from "../../shared/AlgorithmTypes";
+
+export type BubbleSortCompLessonType = {
+	label: string;
+	value: ComplexityValue;
+	desc: string;
+};
+export const bubbleSortComplexityLesson = [
+	{
+		label: "cel mai rau",
+		value: "O(n²)",
+		desc: "array sortat invers",
+	},
+	{
+		label: "mediu",
+		value: "O(n²)",
+		desc: "date aleatoare",
+	},
+	{
+		label: "cel mai bun",
+		value: "O(n)",
+		desc: "array deja sortat",
+	},
+] satisfies BubbleSortCompLessonType[];
+
 export const docsIntroduction = {
 	bubbleSort: {
 		title: "Bubble Sort",
@@ -16,11 +41,6 @@ export const docsIntroduction = {
 		keyIdea:
 			"Larger elements 'bubble' to the end of the array after each iteration.",
 
-		complexity: {
-			best: "O(n)",
-			average: "O(n²)",
-			worst: "O(n²)",
-			space: "O(1)",
-		},
+		complexities: bubbleSortComplexityLesson,
 	},
 };

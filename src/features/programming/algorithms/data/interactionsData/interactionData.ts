@@ -1,4 +1,4 @@
-import { Interaction } from "../../shared/engineInteractionTye";
+import { Interaction } from "../../shared/engineInteractionType";
 
 export const compareInteraction: Interaction = {
 	id: "compare",

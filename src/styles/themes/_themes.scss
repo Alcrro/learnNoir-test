@@ -1,0 +1,115 @@
+@use "../semantic/dark_theme" as dark;
+@use "../semantic/light_theme" as light;
+@use "../tokens/colors" as c;
+
+html.dark {
+	--bg-page: #{dark.$bg-page};
+	--bg-card: #{dark.$bg-card};
+	--bg-elevated: #{dark.$bg-elevated};
+	--bg-sidebar: #{dark.$bg-sidebar};
+	--border: #{dark.$border};
+	--border-strong: #{dark.$border-strong};
+
+	--teal: #{dark.$teal};
+	--teal-bg: #{dark.$teal-bg};
+	--teal-text: #{dark.$teal-text};
+	--teal-border: #{dark.$teal-border};
+
+	--blue: #{dark.$blue};
+	--blue-bg: #{dark.$blue-bg};
+	--blue-text: #{dark.$blue-text};
+	--blue-border: #{dark.$blue-border};
+
+	--amber-bg: #{dark.$amber-bg};
+	--amber-text: #{dark.$amber-text};
+
+	--text-primary: #{dark.$text-primary};
+	--text-secondary: #{c.$text-secondary};
+	--text-muted: #{c.$text-muted};
+
+	/* ── TALE: butoane ── */
+	--btn-primary-bg: #{c.$btn-primary-bg-dark};
+	--btn-primary-hover: #{c.$btn-primary-hover-dark};
+	--btn-primary-text: #{c.$btn-primary-text-dark};
+
+	--btn-secondary-bg: #{c.$btn-secondary-bg-dark};
+	--btn-secondary-hover: #{c.$btn-secondary-hover-dark};
+	--btn-secondary-text: #{c.$btn-secondary-text-dark};
+
+	--btn-danger-bg: #{c.$btn-danger-bg-dark};
+	--btn-danger-hover: #{c.$btn-danger-hover-dark};
+
+	--btn-success-bg: #{c.$btn-success-bg-dark};
+	--btn-success-hover: #{c.$btn-success-hover-dark};
+
+	--btn-border: #{c.$btn-border-dark};
+
+	/* ── TALE: math notebook ── */
+	--math-bg: #{dark.$math-bg};
+	--math-grid-line: #{dark.$math-grid-line};
+	--math-margin-line: #{dark.$math-margin-line};
+	--math-highlight-bg: #{dark.$math-highlight-bg};
+	--math-highlight-text: #{dark.$math-highlight-text};
+	--math-accent: #{dark.$math-accent};
+	--math-hover-cell: #{dark.$math-hover-cell};
+	--math-border: #{dark.$math-border};
+}
+
+:root {
+	--bg-page: #{light.$bg-page};
+	--bg-card: #{light.$bg-card};
+	--bg-elevated: #{light.$bg-elevated};
+	--bg-sidebar: #{light.$bg-sidebar};
+	--border: #{light.$border};
+	--border-strong: #{light.$border-strong};
+
+	--teal: #{light.$teal};
+	--teal-bg: #{light.$teal-bg};
+	--teal-text: #{light.$teal-text};
+	--teal-border: #{light.$teal-border};
+
+	--blue: #{light.$blue};
+	--blue-bg: #{light.$blue-bg};
+	--blue-text: #{light.$blue-text};
+	--blue-border: #{light.$blue-border};
+
+	--amber-bg: #{light.$amber-bg};
+	--amber-text: #{light.$amber-text};
+
+	--text-primary: #{light.$text-primary};
+	--text-secondary: #{c.$text-muted};
+	--text-muted: #{c.$text-secondary};
+
+	--yellow: #{light.$warning};
+
+	--primary: #{light.$primary};
+
+	/* button */
+
+	/* ── TALE: butoane ── */
+	--btn-primary-bg: #{c.$btn-primary-bg-light};
+	--btn-primary-hover: #{c.$btn-primary-hover-light};
+	--btn-primary-text: #{c.$btn-primary-text-light};
+
+	--btn-secondary-bg: #{c.$btn-secondary-bg-light};
+	--btn-secondary-hover: #{c.$btn-secondary-hover-light};
+	--btn-secondary-text: #{c.$btn-secondary-text-light};
+
+	--btn-danger-bg: #{c.$btn-danger-bg-light};
+	--btn-danger-hover: #{c.$btn-danger-hover-light};
+
+	--btn-success-bg: #{c.$btn-success-bg-light};
+	--btn-success-hover: #{c.$btn-success-hover-light};
+
+	--btn-border: #{c.$btn-border-light};
+
+	/* ── TALE: math notebook ── */
+	--math-bg: #{light.$math-bg};
+	--math-grid-line: #{light.$math-grid-line};
+	--math-margin-line: #{light.$math-margin-line};
+	--math-highlight-bg: #{light.$math-highlight-bg};
+	--math-highlight-text: #{light.$math-highlight-text};
+	--math-accent: #{light.$math-accent};
+	--math-hover-cell: #{light.$math-hover-cell};
+	--math-border: #{light.$math-border};
+}

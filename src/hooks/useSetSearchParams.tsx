@@ -1,15 +1,27 @@
 import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
-type SearchParams = {
+type Props = {
 	currentStep: number;
-	setSearchParams: (value: Record<string, string>) => void;
 };
-const useSetSearchParams = ({ currentStep, setSearchParams }: SearchParams) => {
-	return useEffect(() => {
-		const urlStewp = currentStep + 1;
 
-		setSearchParams({ step: String(urlStewp) });
-	}, [currentStep, setSearchParams]);
+const useSetSearchParams = ({ currentStep }: Props) => {
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	useEffect(() => {
+		const urlStep = String(currentStep + 1);
+
+		if (searchParams.get("step") === urlStep) return;
+
+		const params = new URLSearchParams(searchParams);
+
+		const isVizTab = params.get("tab") === "vizTab";
+
+		if (isVizTab) {
+			params.set("step", urlStep);
+			setSearchParams(params);
+		}
+	}, [currentStep, searchParams, setSearchParams]);
 };
 
 export default useSetSearchParams;

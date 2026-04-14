@@ -1,6 +1,6 @@
 import DefaultButton from "../../../../components/atoms/DefaultButton";
 import EmailFormGroup from "../../../../components/molecules/forms/EmailFormGroup";
-import PassworFormGroup from "../../../../components/molecules/PassworFormGroup";
+import PasswordFormGroup from "../../../../components/molecules/PasswordFormGroup";
 import { LoginError, LoginResponse } from "../../types/LoginTypes.type";
 
 type LoginProps = {
@@ -19,7 +19,7 @@ const LoginForm = ({ handleSubmit, data, isPending, error }: LoginProps) => {
 				<EmailFormGroup />
 			</div>
 			<div className="form_group flex flex-col gap-2">
-				<PassworFormGroup />
+				<PasswordFormGroup />
 			</div>
 			<DefaultButton
 				variant="primary"

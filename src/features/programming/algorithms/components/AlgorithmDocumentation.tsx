@@ -1,6 +1,6 @@
 import { useState } from "react";
-import DocsIntroduction from "../../../../components/molecules/DocsIntroduction";
 import AlgorithmDocs from "./AlgorithmDocs";
+import AlgorithmDocsIntroduction from "./lesson/AlgorithmDocsIntroduction";
 import { docsIntroduction } from "../bubble-sort/docs/docsIntroduction";
 import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
 
@@ -17,7 +17,7 @@ const AlgorithmDocumentation = () => {
 					currentStep={currentStep}
 				/>
 			)}
-			<DocsIntroduction {...docsIntroduction.bubbleSort} />
+			<AlgorithmDocsIntroduction {...docsIntroduction.bubbleSort} />
 			<div onClick={() => setShowAllSteps((prev) => !prev)}>Show all steps</div>
 		</>
 	);

@@ -9,6 +9,8 @@ const Navbar = () => {
 	const location = useLocation();
 	const { data } = profile;
 
+	console.log(data);
+
 	return (
 		<nav className="flex items-center justify-between bg-(--bg-sidebar) p-4 m-2 rounded-lg">
 			<div className="logo">LearnNoir</div>

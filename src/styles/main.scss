@@ -1,0 +1,17 @@
+// main.scss
+
+/* 1. TOKENS */
+@use "../styles/tokens/colors";
+@use "../styles/tokens/spacing";
+@use "../styles/tokens/typography";
+
+/* 2. SEMANTIC */
+@use "./semantic/_light_theme";
+@use "./semantic/_dark_theme";
+
+/* 3. THEMES (CSS vars) */
+@use "../styles/themes/themes";
+
+/* 4. COMPONENTS */
+@use "../styles/components/button";
+@use "../styles/components/card";

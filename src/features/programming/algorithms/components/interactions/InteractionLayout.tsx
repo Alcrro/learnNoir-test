@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import DefaultButton from "../../../../../components/atoms/DefaultButton";
 import AnswerOption from "../../../../../components/molecules/interactions/AnswerOption";
 import StepInteraction from "./StepInteraction";
-import { AnswerOptionType } from "../../shared/engineInteractionTye";
+import { AnswerOptionType } from "../../shared/engineInteractionType";
 import { interactionMapper } from "../../data/interactionsData/stepInteractionLayoutMapper";
 
 const InteractionLayout = ({
@@ -44,7 +44,7 @@ const InteractionLayout = ({
 						key={interaction.id}
 						className="pl-4"
 					>
-						<div className="rounded-xl shadow-sm p-5 border border-gray-200 pl6">
+						<div className="rounded-xl shadow-sm p-5 border border-(--border) pl6">
 							{/* Question */}
 							<div className="mb-3 text-sm text-gray-500">Question {index + 1}</div>
 

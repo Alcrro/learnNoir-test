@@ -1,6 +1,6 @@
 import { FC } from "react";
 import DefaultButton from "../../atoms/DefaultButton";
-import { AnswerOptionProps } from "../../../features/programming/algorithms/shared/engineInteractionTye";
+import { AnswerOptionProps } from "../../../features/programming/algorithms/shared/engineInteractionType";
 import { cn } from "../../../libs/utils/cn";
 
 const AnswerOption: FC<AnswerOptionProps> = ({

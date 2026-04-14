@@ -1,0 +1,51 @@
+// tokens/_light-colors.scss
+
+$light-bg-page: #f9f9f8;
+$light-bg-sidebar: #ffffff;
+$light-bg-elevated: rgba(255, 255, 255, 1);
+$light-bg-nav-active: #f4f4f2;
+
+$light-text-primary: #1a1a19;
+$light-text-secondary: #555555;
+$light-text-muted: #888888;
+
+$light-border-default: rgba(0, 0, 0, 0.1);
+$light-border-strong: rgba(0, 0, 0, 0.2);
+
+/* teal — nav activ, progres, sorted, quiz corect */
+$teal: #1d9e75;
+$teal-bg: #e1f5ee;
+$teal-text: #0f6e56;
+$teal-border: #1d9e75;
+/* blue — tabs, comparare, step nums */
+$blue: #378add;
+$blue-bg: #e6f1fb;
+$blue-text: #185fa5;
+$blue-border: #378add;
+/* amber — badge durată */
+$amber-bg: #faeeda;
+$amber-text: #854f0b;
+/* green — sorted array box */
+$green-bg: #eaf3de;
+$green-text: #3b6d11;
+$green-border: #639922;
+
+$green: #0f6e56;
+$red: #a32d2d;
+$yellow: #c5b418e5;
+
+/* syntax */
+$code-keyword: #7f77dd;
+$code-function: #185fa5;
+$code-number: #0f6e56;
+$code-comment: #aaaaaa;
+
+/* ── TALE: math notebook ── */
+$math-bg-light: #ffffff;
+$math-grid-line-light: #e0e0e0;
+$math-margin-line-light: #ff4d4d;
+$math-highlight-bg-light: #fff3b0;
+$math-highlight-text-light: #5c4b00;
+$math-accent-light: #3b82f6;
+$math-hover-cell-light: rgba(0, 0, 0, 0.05);
+$math-border-light: #dddddd;

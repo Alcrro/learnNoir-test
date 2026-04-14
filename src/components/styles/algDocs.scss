@@ -87,3 +87,125 @@
 	border-radius: 6px;
 	margin-top: 4px;
 }
+
+.alg-docs {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 16px 20px;
+	height: 100%;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+
+		.alg-docs__index {
+			font-size: 1.65rem;
+			opacity: 0.45;
+			text-transform: uppercase;
+			letter-spacing: 0.08em;
+		}
+
+		.alg-docs__title {
+			font-size: 1.95rem;
+			opacity: 0.55;
+			font-weight: 400;
+		}
+	}
+
+	&__explanation {
+		font-size: 1.55rem;
+		font-weight: 600;
+		line-height: 1.75;
+		color: var(--color-primary); // your magenta/purple
+		margin: 0;
+	}
+
+	&__logic {
+		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		padding-left: 12px;
+
+		summary {
+			font-size: 1.65rem;
+			opacity: 0.45;
+			cursor: pointer;
+			user-select: none;
+			list-style: none; // remove default triangle
+
+			&::before {
+				content: "▶ ";
+				font-size: 1.25rem;
+			}
+		}
+
+		&[open] summary::before {
+			content: "▼ ";
+		}
+
+		p {
+			font-size: 1.65rem;
+			opacity: 0.7;
+			margin-top: 8px;
+			line-height: 1.5;
+		}
+	}
+
+	&__mnemonic {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		padding: 8px 12px;
+		background: rgba(255, 255, 255, 0.04);
+		border-radius: 6px;
+
+		p {
+			font-size: 1.65rem;
+			font-style: italic;
+			opacity: 0.6;
+			margin: 0;
+		}
+	}
+
+	&__prerequisites {
+		margin-top: auto; // pushes to bottom of container
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+
+		span {
+			font-size: 1.48rem;
+			opacity: 0.35;
+			text-transform: uppercase;
+			letter-spacing: 0.06em;
+		}
+
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px;
+			padding: 0;
+			margin: 0;
+			list-style: none;
+		}
+
+		button {
+			font-size: 1.68rem;
+			padding: 6px 14px;
+			border-radius: 4px;
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			background: transparent;
+			color: inherit;
+			opacity: 0.6;
+			cursor: pointer;
+			transition:
+				opacity 0.15s,
+				border-color 0.15s;
+
+			&:hover {
+				opacity: 1;
+				border-color: var(--color-primary);
+			}
+		}
+	}
+}

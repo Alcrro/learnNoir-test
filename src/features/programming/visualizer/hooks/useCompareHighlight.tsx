@@ -1,5 +1,5 @@
 import { useLayoutEffect, type RefObject } from "react";
-import { highlightCompare } from "../engine/hightlightCompare";
+import { highlightCompare } from "../engine/highlightCompare";
 import { gsap } from "gsap";
 import { getComparedIndexes } from "../engine/getComparedIndex";
 import { getSortedIndexes } from "../engine/getSortedIndexes";

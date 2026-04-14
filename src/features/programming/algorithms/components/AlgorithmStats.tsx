@@ -1,4 +1,4 @@
-import AlcgorithInfoCard from "../../../../components/molecules/AlcgorithInfoCard";
+import AlgorithmInfoCard from "../../../../components/molecules/AlgorithmInfoCard";
 import ComparisonCard from "./ComparisonCard";
 import ComplexityCard from "./ComplexityCard";
 import SwapCard from "./SwapCard";
@@ -16,24 +16,24 @@ const AlgorithmStats = () => {
 
 	return (
 		<div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] max-sm:grid-cols-1 gap-2">
-			<AlcgorithInfoCard description="comparisons">
+			<AlgorithmInfoCard description="comparisons">
 				<ComparisonCard
 					currentComparedCount={currentComparisons ?? undefined}
 					totalComparedCount={totalComparisons}
 				/>
-			</AlcgorithInfoCard>
-			<AlcgorithInfoCard description="swaps">
+			</AlgorithmInfoCard>
+			<AlgorithmInfoCard description="swaps">
 				<SwapCard
 					swap={currentSwaps}
 					totalSwaps={totalSwaps}
 				/>
-			</AlcgorithInfoCard>
-			<AlcgorithInfoCard description="time">
+			</AlgorithmInfoCard>
+			<AlgorithmInfoCard description="time">
 				<TimeComplexityCard />
-			</AlcgorithInfoCard>
-			<AlcgorithInfoCard description="complexity">
+			</AlgorithmInfoCard>
+			<AlgorithmInfoCard description="complexity">
 				<ComplexityCard complexity={"average"} />
-			</AlcgorithInfoCard>
+			</AlgorithmInfoCard>
 		</div>
 	);
 };

@@ -1,9 +1,9 @@
 import { useRef, type FC } from "react";
 import { cn } from "../../../../libs/utils/cn";
-import TableOfContents from "../../../../components/molecules/TableOfContents";
 import ExtendButton from "../../../../components/atoms/ExtendButton";
-import useToggleDIv from "../../../programming/visualizer/hooks/useToggleDIv";
-import { useToggleStore } from "../../../../store/usetoggleStore";
+import AlgorithmTableOfContents from "../../../programming/algorithms/components/lesson/AlgorithmTableOfContents";
+import useToggleDiv from "../../../programming/visualizer/hooks/useToggleDiv";
+import { useToggleStore } from "../../../../store/useToggleStore";
 
 type SidebarMobileProps = {
 	active: boolean;
@@ -16,7 +16,7 @@ const SidebarMobile: FC<SidebarMobileProps> = () => {
 	const closeDiv = useToggleStore((s) => s.closeToggle);
 	const openDiv = useToggleStore((s) => s.openToggle);
 
-	useToggleDIv({
+	useToggleDiv({
 		ref,
 		active,
 		setActive: () => closeDiv("sideBar"),
@@ -39,7 +39,7 @@ const SidebarMobile: FC<SidebarMobileProps> = () => {
 					className=""
 					aria-label="table of contents"
 				>
-					<TableOfContents />
+					<AlgorithmTableOfContents />
 				</nav>
 			</div>
 			<div

@@ -1,14 +1,15 @@
-import type { SidebarItem } from "../../content/sidebarData";
+type GroupableItem = {
+	group?: string;
+};
 
-type SidebarGroup = SidebarItem & { progress: number };
-export function useSidebarGroup(items: SidebarItem[]) {
+export function useSidebarGroup<T extends GroupableItem>(items: T[]) {
 	const grouped = Object.entries(
-		items.reduce<Record<string, SidebarGroup[]>>((acc, item) => {
+		items.reduce<Record<string, T[]>>((acc, item) => {
 			const key = item.group ?? "default";
 
 			if (!acc[key]) acc[key] = [];
 
-			acc[key].push({ ...item, progress: 0 });
+			acc[key].push(item);
 			return acc;
 		}, {}),
 	).map(([category, items]) => ({

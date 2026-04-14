@@ -1,6 +1,6 @@
 import { type FC } from "react";
 
-import { useToggleStore } from "../../store/usetoggleStore";
+import { useToggleStore } from "../../store/useToggleStore";
 import { useLectureStore } from "../../store/useLectureStore";
 import type { PrerequisiteProp } from "../../features/programming/algorithms/bubble-sort/docs/bubbleSortDocs";
 import { useAlgorithmStore } from "../../store/useAlgorithmStore";

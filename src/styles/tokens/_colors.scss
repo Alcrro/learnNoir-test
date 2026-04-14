@@ -1,0 +1,65 @@
+// tokens/_colors.scss
+$white: #ffffff;
+$black: #000000;
+
+$gray-50: #f8fafc;
+$gray-100: #f1f5f9;
+$gray-300: #cbd5e1;
+$gray-900: #0f172a;
+
+$indigo-500: #4f46e5;
+$indigo-600: #4338ca;
+
+$text-secondary: #9e9b94;
+$text-muted: #5c5b56;
+
+// tokens/_colors.scss
+
+/* LIGHT */
+/* ── TALE: butoane ── */
+$btn-primary-bg-light: #4f46e5;
+$btn-primary-hover-light: #4338ca;
+$btn-primary-text-light: #ffffff;
+$btn-secondary-bg-light: #f1f5f9;
+$btn-secondary-hover-light: #e2e8f0;
+$btn-secondary-text-light: #0f172a;
+$btn-danger-bg-light: #dc2626;
+$btn-danger-hover-light: #b91c1c;
+$btn-success-bg-light: #16a34a;
+$btn-success-hover-light: #15803d;
+$btn-border-light: #e2e8f0;
+
+/* DARK */
+$btn-primary-bg-dark: #6366f1;
+$btn-primary-hover-dark: #4f46e5;
+$btn-primary-text-dark: #ffffff;
+$btn-secondary-bg-dark: #1f2937;
+$btn-secondary-hover-dark: #374151;
+$btn-secondary-text-dark: #e5e7eb;
+$btn-danger-bg-dark: #ef4444;
+$btn-danger-hover-dark: #dc2626;
+$btn-danger-text-dark: #ffffff;
+$btn-success-bg-dark: #22c55e;
+$btn-success-hover-dark: #16a34a;
+$btn-success-text-dark: #ffffff;
+$btn-border-dark: #374151;
+
+/* ── TALE: math notebook ── */
+$math-bg-dark: #1e1e1e;
+$math-grid-line-dark: #2a2a2a;
+$math-margin-line-dark: #ff5a5a;
+$math-highlight-bg-dark: #2c2c1f;
+$math-highlight-text-dark: #f1e9b0;
+$math-accent-dark: #4dabf7;
+$math-hover-cell-dark: rgba(255, 255, 255, 0.05);
+$math-border-dark: #333333;
+
+/* ── TALE: math notebook ── */
+$math-bg-light: #ffffff;
+$math-grid-line-light: #e0e0e0;
+$math-margin-line-light: #ff4d4d;
+$math-highlight-bg-light: #fff3b0;
+$math-highlight-text-light: #5c4b00;
+$math-accent-light: #3b82f6;
+$math-hover-cell-light: rgba(0, 0, 0, 0.05);
+$math-border-light: #dddddd;

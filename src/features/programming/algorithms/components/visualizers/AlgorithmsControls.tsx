@@ -1,14 +1,14 @@
 import { useState, type FC, type RefObject } from "react";
-import AlgStepsInfo from "../../../../../components/molecules/AlgStepsInfo";
+import AlgorithmStepsInfo from "./controls/AlgorithmStepsInfo";
 import { startPlayback } from "../../../visualizer/engine/startPlayback";
 import pausePlayback from "../../../visualizer/engine/pausePlayback";
 import { useReset } from "../../../visualizer/hooks/useReset";
 import useAutoPlaySteps from "../../../visualizer/engine/useAutoPlaySteps";
-import StartButton from "../../../../../components/molecules/algorithmConrolersButtons/StartButton";
-import ResetButton from "../../../../../components/molecules/algorithmConrolersButtons/ResetButton";
-import PauseButton from "../../../../../components/molecules/algorithmConrolersButtons/PauseButton";
-import PrevButton from "../../../../../components/molecules/algorithmConrolersButtons/PrevButton";
-import NextButton from "../../../../../components/molecules/algorithmConrolersButtons/NextButton";
+import StartButton from "../../../../../components/molecules/algorithmControllerButtons/StartButton";
+import ResetButton from "../../../../../components/molecules/algorithmControllerButtons/ResetButton";
+import PauseButton from "../../../../../components/molecules/algorithmControllerButtons/PauseButton";
+import PrevButton from "../../../../../components/molecules/algorithmControllerButtons/PrevButton";
+import NextButton from "../../../../../components/molecules/algorithmControllerButtons/NextButton";
 
 type Props = {
 	currentStep: number;
@@ -46,10 +46,10 @@ const AlgorithmsControls: FC<Props> = ({
 	const { pause } = pausePlayback(setIsPlaying);
 	return (
 		<div
-			className="p-2 flex items-center w-full space-x-2 justify-center bg-(--bg-card) rounded-xl"
+			className="p-2 flex items-center w-full space-x-2 justify-center bg-(--lp-bg-page) rounded-b-xl border border-t-0 border-(--border)"
 			onClick={(e) => e.stopPropagation()}
 		>
-			<div className="flex flex-col justify-center gap-2">
+			<div className="flex flex-col justify-center gap-2 p-2">
 				<div className="controls flex justify-center items-center gap-2">
 					<StartButton playHandler={play} />
 					<ResetButton resetHandler={reset} />
@@ -60,7 +60,7 @@ const AlgorithmsControls: FC<Props> = ({
 						currentStep={currentStep}
 						handlePrevStep={handlePrevStep}
 					/>
-					<AlgStepsInfo
+					<AlgorithmStepsInfo
 						currentStep={currentStep}
 						steps={stepsLength}
 						setCurrentStep={setCurrentStep}

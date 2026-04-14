@@ -1,9 +1,9 @@
-import { useToggleStore } from "../../../../store/usetoggleStore";
+import { useToggleStore } from "../../../../store/useToggleStore";
 import { cn } from "../../../../libs/utils/cn";
 import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
 import { bubblePseudo } from "../data/pseudocode";
-import LearnContainer from "../../../../components/molecules/LearnContainer";
 import MathPageLayout from "../../../mathematics/components/MathPageLayout";
+import LearningSection from "./lesson/LearningSection";
 
 const PseudocodContainer = () => {
 	const isToggled = useToggleStore((store) => store.isToggled);
@@ -18,7 +18,7 @@ const PseudocodContainer = () => {
 				: [step.line];
 
 	return (
-		<LearnContainer containerName="pseudocode_container">
+		<LearningSection containerName="pseudocode_container">
 			<MathPageLayout>
 				<div className="py-2 text-center text-2xl">Pseudocode</div>
 
@@ -38,7 +38,7 @@ const PseudocodContainer = () => {
 									isToggled("pseudocode_container")
 										? "opacity-0 -translate-y-2"
 										: "opacity-100 translate-y-0",
-									isActive && "text-(--text-primary) border-l-2 border-(--subtle)",
+									isActive && "text-(--text-primary) border-l-2 border-(--border)",
 								)}
 							>
 								<span className={cn("text-gray-400 w-6 text-right select-none")}>
@@ -57,7 +57,7 @@ const PseudocodContainer = () => {
 					})}
 				</div>
 			</MathPageLayout>
-		</LearnContainer>
+		</LearningSection>
 	);
 };
 

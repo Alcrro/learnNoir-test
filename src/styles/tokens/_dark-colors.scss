@@ -1,0 +1,54 @@
+// tokens/_dark-colors.scss
+
+$dark-bg-page: #141413;
+$dark-bg-sidebar: #1c1c1b;
+$dark-bg-elevated: rgba(48, 48, 46, 1);
+$dark-bg-nav-active: #2a2a28;
+
+$dark-text-primary: #f0ede8;
+$dark-text-secondary: #9e9b94;
+$dark-text-muted: #5c5b56;
+
+$dark-border-default: rgba(255, 255, 255, 0.08);
+$dark-border-strong: rgba(255, 255, 255, 0.15);
+
+/* accents */
+$teal: #1d9e75;
+$teal-bg: rgba(29, 158, 117, 0.12);
+$teal-text: #5dcaa5;
+$teal-border: rgba(29, 158, 117, 0.4);
+
+/* blue */
+$blue: #378add;
+$blue-bg: rgba(55, 138, 221, 0.12);
+$blue-text: #85b7eb;
+$blue-border: rgba(55, 138, 221, 0.4);
+
+/* amber */
+$amber-bg: rgba(186, 56, 23, 0.15);
+$amber-text: #ef9f27;
+
+/* green */
+$green-bg: rgba(99, 153, 34, 0.12);
+$green-text: #97c459;
+$green-border: rgba(99, 153, 34, 0.4);
+
+$green: #5dcaa5;
+$red: #f09595;
+$yellow: #e7e416;
+
+/* syntax */
+$code-keyword: #afa9ec;
+$code-function: #85b7eb;
+$code-number: #5dcaa5;
+$code-comment: #5c5b56;
+
+/* ── TALE: math notebook ── */
+$math-bg-dark: #1e1e1e;
+$math-grid-line-dark: #2a2a2a;
+$math-margin-line-dark: #ff5a5a;
+$math-highlight-bg-dark: #2c2c1f;
+$math-highlight-text-dark: #f1e9b0;
+$math-accent-dark: #4dabf7;
+$math-hover-cell-dark: rgba(255, 255, 255, 0.05);
+$math-border-dark: #333333;

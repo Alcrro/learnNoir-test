@@ -10,7 +10,7 @@ export function useGetMe() {
 
 		refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes to keep profile data fresh
 
-		refetchOnMount: false, // Refetch when the component mounts to ensure we have the latest profile data
+		refetchOnMount: true, // Refetch when the component mounts to ensure we have the latest profile data
 		refetchOnWindowFocus: false,
 	});
 }

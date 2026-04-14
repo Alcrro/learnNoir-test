@@ -1,0 +1,8 @@
+// components/_button.scss
+.button {
+	--btn-bg: var(--primary);
+	--btn-text: #fff;
+
+	background: var(--btn-bg);
+	color: var(--btn-text);
+}

@@ -1,3 +1,4 @@
+import { Step, StepType } from "../../shared/AlgorithmTypes";
 import type { LectureType } from "./compareElements";
 
 export type StepDocumentation = {
@@ -30,49 +31,54 @@ export type StepDocumentationV2 = {
 	logic: string;
 };
 
-export const bubbleSortDocs = (firstItem: number, secondItem: number) => {
-	return {
-		step1: {
-			title: "Pas 1 – Comparare și swap",
-			explanation:
-				"Comparam primul și al doilea element. Dacă primul e mai mare decât al doilea, facem swap.",
+export const bubbleSortDocs = (step: Step): StepDocumentation => {
+	const j = step.compare?.[0] ?? step.swap?.[0] ?? 0;
+	const firstItem = step.array[j]?.value;
+	const secondItem = step.array[j + 1]?.value;
+
+	const docs: Record<StepType | "noSwap", StepDocumentation> = {
+		compare: {
+			title: "Comparare",
+			explanation: `array[${j}] = ${firstItem} și array[${j + 1}] = ${secondItem}. Verificăm dacă e nevoie de swap.`,
 			logic:
-				"Bubble Sort mută elementele mari spre finalul array-ului, comparând perechi vecine.",
+				"Comparăm fiecare pereche adiacentă pentru a decide dacă se schimbă locurile.",
 			prerequisites: [
-				{ id: 0, prereqId: "array_doc", value: "Ce e un array" },
-				{ id: 1, prereqId: "swap_doc", value: "Ce e swap" },
-				{ id: 2, prereqId: "concept_compare_doc", value: "Concept de comparare" },
+				{ id: 0, prereqId: "concept_compare_doc", value: "Concept de comparare" },
 			],
-			mnemonic: "Imaginează-ți că bulele mari urcă la suprafață.",
+			mnemonic: "Privim două elemente vecine și întrebăm: e ordinea corectă?",
 		},
-		step2: {
-			title: "Pas 2 – Comparare fără swap",
-			explanation: `Comparăm ${firstItem} și ${secondItem}. ${firstItem} < ${firstItem}, deci nu facem swap.`,
+
+		swap: {
+			title: "Swap",
+			explanation: `${firstItem} > ${secondItem} → swap. ${firstItem} se mută la dreapta.`,
+			logic: "Elementul mai mare avansează spre dreapta, spre poziția sa finală.",
+			prerequisites: [{ id: 0, prereqId: "swap_doc", value: "Ce e swap" }],
+			mnemonic: "Bula mare urcă la suprafață.",
+		},
+
+		noSwap: {
+			title: "Fără swap",
+			explanation: `${firstItem} < ${secondItem} → ordinea e corectă. Nu facem swap.`,
+			logic: "Perechea e deja ordonată. Trecem mai departe.",
+			prerequisites: [
+				{ id: 0, prereqId: "concept_compare_doc", value: "Concept de comparare" },
+			],
+			mnemonic: "Bula mică rămâne la stânga.",
+		},
+
+		sorted: {
+			title: "Element sortat",
+			explanation: `${firstItem} a ajuns la poziția finală. Nu va mai fi atins.`,
 			logic:
-				"Dacă elementul curent e mai mic decât următorul, îl lăsăm la locul lui.",
-			prerequisites: [
-				{
-					id: 0,
-					prereqId: "compare_elements_doc",
-					value: "Comparare elemente adiacente",
-				},
-			],
-			mnemonic: "Bula mică rămâne jos/stanga.",
+				"După fiecare pas, cel mai mare element nesort at se fixează la final.",
+			prerequisites: [{ id: 0, prereqId: "array_doc", value: "Ce e un array" }],
+			mnemonic: "Elementele sortate se acumulează de la dreapta spre stânga.",
 		},
-		step3: {
-			title: "Pas 3 – Comparare fără swap",
-			explanation: "Comparăm 5 și 8. 5 < 8, deci nu facem swap.",
-			logic:
-				"Dacă elementul curent e mai mic decât următorul, îl lăsăm la locul lui.",
-			prerequisites: [
-				{ id: 0, prereqId: "comp_doc", value: "Comparare elemente adiacente" },
-			],
-			mnemonic: "Bula mică rămâne jos.",
-		},
-		// ... restul documentației
-	} satisfies Record<string, StepDocumentation>;
+	};
+
+	return docs[step.type ?? "compare"];
 };
-export const bubbleSortDocsV2 = {
+export const bubbleSortDocsInteractionV2 = {
 	compare: {
 		title: "Comparare elemente",
 

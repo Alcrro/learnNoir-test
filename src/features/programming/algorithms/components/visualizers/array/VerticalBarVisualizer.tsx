@@ -27,7 +27,7 @@ export const VerticalAlgorithmVisualization = forwardRef<
 					}`}
 				></div>
 
-				{/* <div className="absolute top-1/2 w-full h-px bg-(--border-primary)" /> */}
+				{/* <div className="absolute top-1/2 w-full h-px bg-(--border)" /> */}
 
 				<div
 					style={{ height }}

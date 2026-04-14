@@ -9,7 +9,7 @@ export const buttonVariants: Record<ButtonVariantType, string> = {
 
 	destructive: "bg-red-500 text-white hover:bg-red-600",
 
-	icon: "text-(--text-muted) hover:text-(--text-primary)",
+	icon: "text-(--text-muted) hover:text-(--btn-secondary-text)",
 } as const;
 
 export type ButtonVariantType =

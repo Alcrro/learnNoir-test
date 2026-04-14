@@ -1,4 +1,4 @@
-import { createServices } from "./services/compositon/createServices";
+import { createServices } from "./services/composition/createServices";
 
 export const getBubbleSortDocs = async () => {
 	const { cacheService, aiService } = createServices();

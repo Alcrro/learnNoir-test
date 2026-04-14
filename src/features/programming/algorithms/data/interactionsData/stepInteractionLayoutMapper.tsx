@@ -1,4 +1,4 @@
-import { Interaction } from "../../shared/engineInteractionTye";
+import { Interaction } from "../../shared/engineInteractionType";
 import { compareInteraction, mcq, swapAction } from "./interactionData";
 
 export const interactionMapper: Record<number, Interaction[]> = {

@@ -1,21 +1,17 @@
 import useSetSearchParams from "../../../../../hooks/useSetSearchParams";
 import ArrayVisualizer from "../../components/visualizers/ArrayVisualizer";
 import AlgorithmsControls from "../../components/visualizers/AlgorithmsControls";
-import GenerateRandomArray from "../../../../../components/molecules/GenerateRandomArray";
+import GenerateRandomArrayControls from "../../components/visualizers/controls/GenerateRandomArrayControls";
 import { useAlgorithmStore } from "../../../../../store/useAlgorithmStore";
-import VisualizerMethodSelector from "../../../../../components/molecules/VisualizerMethodSelector";
+import VisualizationMethodSelector from "../../components/visualizers/controls/VisualizationMethodSelector";
 import AlgorithmStats from "../../components/AlgorithmStats";
 import AlgorithmDocumentation from "../../components/AlgorithmDocumentation";
 import useArraySettings from "../../../visualizer/hooks/useArraySettings";
-import useBubbleSortController from "../../../visualizer/hooks/useBubbleSortController";
-import useStepFromUrl from "../../../visualizer/hooks/useStepFromUrl";
 import useCurrentArray from "../../../visualizer/hooks/useCurrentArray";
 import useBubbleSortAnimation from "../../../visualizer/hooks/useBubbleSortAnimation";
+import useAlgorithmController from "../../../visualizer/hooks/useAlgorithmController";
 
 const BubbleSortAnimation = () => {
-	//use current search params into currentstepp
-	const { setSearchParams } = useStepFromUrl();
-
 	const {
 		arraySize,
 		setArraySize,
@@ -28,24 +24,23 @@ const BubbleSortAnimation = () => {
 	const currentStep = useAlgorithmStore((store) => store.currentStep);
 	const setCurrentStep = useAlgorithmStore((store) => store.setCurrentStep);
 	const steps = useAlgorithmStore((store) => store.steps);
-	console.log(steps);
 
 	const currentArray = useCurrentArray();
 
-	const { boxesRef, handleNextStep, handlePrevStep } = useBubbleSortController();
+	const { boxesRef, handleNextStep, handlePrevStep } = useAlgorithmController();
 
 	// highlights layouts
 	//get algorithm and set steps
 	useBubbleSortAnimation({ boxesRef });
 
 	//use search params
-	useSetSearchParams({ currentStep, setSearchParams });
+	useSetSearchParams({ currentStep });
 
 	return (
 		<div className="flex flex-col gap-2 algorithms md:p-4 w-full mx-auto">
 			<div className="flex flex-col max-sm:flex-wrap max-sm:justify-center bg-(--bg-card) rounded-xl">
 				<div className="flex justify-between items-center max-[420px]:flex-wrap">
-					<GenerateRandomArray
+					<GenerateRandomArrayControls
 						setCurrentStep={setCurrentStep}
 						size={arraySize}
 						setSize={setArraySize}
@@ -56,7 +51,7 @@ const BubbleSortAnimation = () => {
 						boxesRef={boxesRef}
 					/>
 					<div className="vizualizer_controller max-[420px]:mx-auto pb-4">
-						<VisualizerMethodSelector />
+						<VisualizationMethodSelector />
 					</div>
 				</div>
 				<ArrayVisualizer

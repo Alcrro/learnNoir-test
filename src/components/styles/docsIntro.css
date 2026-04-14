@@ -5,7 +5,7 @@
 	background: var(--bg-card);
 	color: var(--text-secondary);
 	font-family: system-ui, sans-serif;
-	border: var(--border-primary);
+	border: var(--border);
 }
 
 /* TITLE */

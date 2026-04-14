@@ -1,0 +1,47 @@
+@use "../tokens/dark-colors" as dark;
+
+$bg-page: dark.$dark-bg-page;
+$bg-card: dark.$dark-bg-elevated;
+$bg-elevated: dark.$dark-bg-elevated;
+$bg-sidebar: dark.$dark-bg-sidebar;
+$bg-hover: dark.$dark-bg-nav-active;
+
+$text-primary: dark.$dark-text-primary;
+$text-secondary: dark.$dark-text-secondary;
+$text-muted: dark.$dark-text-muted;
+
+$border: dark.$dark-border-default;
+$border-strong: dark.$dark-border-strong;
+
+$primary: dark.$blue;
+$accent: dark.$teal;
+
+$success: dark.$green;
+$danger: dark.$red;
+$warning: dark.$yellow;
+
+/* teal */
+$teal: dark.$teal;
+$teal-bg: dark.$teal-bg;
+$teal-text: dark.$teal-text;
+$teal-border: rgba(29, 158, 117, 0.4);
+
+/* blue */
+$blue: dark.$blue;
+$blue-bg: dark.$blue-bg;
+$blue-text: dark.$blue-text;
+$blue-border: dark.$blue-text;
+
+/* amber */
+$amber-bg: dark.$amber-bg;
+$amber-text: dark.$amber-text;
+
+/* ── TALE: math notebook ── */
+$math-bg: dark.$math-bg-dark;
+$math-grid-line: dark.$math-grid-line-dark;
+$math-margin-line: dark.$math-margin-line-dark;
+$math-highlight-bg: dark.$math-highlight-bg-dark;
+$math-highlight-text: dark.$math-highlight-text-dark;
+$math-accent: dark.$math-accent-dark;
+$math-hover-cell: dark.$math-hover-cell-dark;
+$math-border: dark.$math-border-dark;

@@ -1,26 +1,16 @@
-import { Link, Outlet } from "react-router-dom";
-import { CrumbsGenerator } from "../../../../../libs/utils/crumbsGenerator";
+import { Outlet } from "react-router-dom";
+import { Breadcrumb } from "../../../../../components/molecules/Breadcrumb";
+import Sidebar from "../../../../mathematics/navigation/sidebar/Sidebar";
 
 const LearnAlgorithmsLayout = () => {
-	const { crumbs } = CrumbsGenerator();
-
 	return (
-		<div className="min-h-screen flex transition-colors duration-300 group relative overflow-hidden">
-			<main className="flex-1 px-1 rounded-md text-(--text-primary) group-hover:opacity-80 hover:opacity-100! relative">
-				<div className="breadcrumb p-2 text-sm text-(--text-muted)">
-					{crumbs.map((c, i) => (
-						<span key={c.path}>
-							<Link
-								to={c.path}
-								className="hover:text-(--text-primary)"
-							>
-								{c.label}
-							</Link>
-							{i < crumbs.length - 1 && " / "}
-						</span>
-					))}
+		<div className="min-h-screen flex transition-colors duration-300 group relative overflow-hidden bg-(--lp-bg-page) px-2">
+			<main className="flex-1 flex gap-2 px-1 rounded-md group-hover:opacity-80 hover:opacity-100! relative">
+				<div className="sidebar min-w-30 min-h-100 p-2 bg-(--bg-sidebar) rounded-l-md border-r border-(--border)">
+					<Sidebar />
 				</div>
-				<div className="main">
+				<div className="main w-full">
+					<Breadcrumb />
 					<Outlet />
 				</div>
 			</main>

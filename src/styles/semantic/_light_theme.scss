@@ -1,0 +1,47 @@
+@use "../tokens/light-colors" as light;
+
+$bg-page: light.$light-bg-page;
+$bg-card: light.$light-bg-sidebar;
+$bg-elevated: light.$light-bg-elevated;
+$bg-sidebar: light.$light-bg-sidebar;
+$bg-hover: light.$light-bg-elevated;
+
+$text-primary: light.$light-text-primary;
+$text-secondary: light.$light-text-secondary;
+$text-muted: light.$light-text-muted;
+
+$border: light.$light-border-default;
+$border-strong: light.$light-border-strong;
+
+/* teal */
+$teal: light.$teal;
+$teal-bg: light.$teal-bg;
+$teal-text: light.$teal-text;
+$teal-border: rgba(29, 158, 117, 0.4);
+
+/* blue */
+$blue: light.$blue;
+$blue-bg: light.$blue-bg;
+$blue-text: light.$blue-text;
+$blue-border: light.$blue-text;
+
+/* amber */
+$amber-bg: light.$amber-bg;
+$amber-text: light.$amber-text;
+
+$primary: light.$blue;
+$accent: light.$teal;
+
+$success: light.$green;
+$danger: light.$red;
+$warning: light.$yellow;
+
+/* ── TALE: math notebook ── */
+$math-bg: light.$math-bg-light;
+$math-grid-line: light.$math-grid-line-light;
+$math-margin-line: light.$math-margin-line-light;
+$math-highlight-bg: light.$math-highlight-bg-light;
+$math-highlight-text: light.$math-highlight-text-light;
+$math-accent: light.$math-accent-light;
+$math-hover-cell: light.$math-hover-cell-light;
+$math-border: light.$math-border-light;

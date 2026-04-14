@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import useGetAlgorithm from "../../../../hooks/useGetAlgorithm";
 import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
-import { useToggleStore } from "../../../../store/usetoggleStore";
+import { useToggleStore } from "../../../../store/useToggleStore";
 import useCompareHighlight from "./useCompareHighlight";
 import { useVisualAlgorithmUIStore } from "../../../../store/useVisualAlgorithmUIStore";
 
