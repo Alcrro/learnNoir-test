@@ -1,0 +1,656 @@
+/* Scoped port of `theory_page_senior.html` styles. */
+.theory-senior * {
+	box-sizing: border-box;
+}
+
+.theory-senior {
+	color: var(--color-text-primary);
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+.theory-senior .layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 260px;
+	gap: 20px;
+	/* padding: 1.5rem; */
+	max-width: 1080px;
+}
+
+@media (max-width: 1024px) {
+	.theory-senior .layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+.theory-senior .main {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.theory-senior .sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+/* breadcrumb + header */
+.theory-senior .bc {
+	font-size: 11px;
+	color: var(--color-text-tertiary);
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin-bottom: 4px;
+}
+
+.theory-senior .bc b {
+	color: var(--color-text-secondary);
+	font-weight: 400;
+}
+
+.theory-senior .lesson-head {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.theory-senior .lesson-title {
+	font-size: 20px;
+	font-weight: 500;
+}
+
+.theory-senior .pills {
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+	margin-top: 6px;
+}
+
+.theory-senior .pill {
+	font-size: 10px;
+	font-weight: 500;
+	padding: 2px 8px;
+	border-radius: 99px;
+}
+
+.theory-senior .pill-teal {
+	background: #e1f5ee;
+	color: #085041;
+}
+
+.theory-senior .pill-blue {
+	background: #e6f1fb;
+	color: #0c447c;
+}
+
+.theory-senior .pill-amber {
+	background: #faeeda;
+	color: #633806;
+}
+
+.theory-senior .pill-gray {
+	background: var(--color-background-secondary);
+	color: var(--color-text-secondary);
+	border: 0.5px solid var(--color-border-tertiary);
+}
+
+.theory-senior .read-time {
+	font-size: 11px;
+	color: var(--color-text-tertiary);
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	white-space: nowrap;
+	margin-top: 2px;
+}
+
+/* progress strip */
+.theory-senior .progress-strip {
+	background: var(--bg-page);
+	border: 0.5px solid var(--border);
+	border-radius: var(--border-radius-lg);
+	padding: 12px 14px;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.theory-senior .strip-label {
+	font-size: 11px;
+	color: var(--text-secondary);
+	white-space: nowrap;
+}
+
+.theory-senior .strip-track {
+	flex: 1;
+	height: 4px;
+	background: var(--border);
+	border-radius: 99px;
+	overflow: hidden;
+}
+
+.theory-senior .strip-fill {
+	height: 100%;
+	background: #1d9e75;
+	border-radius: 99px;
+}
+
+.theory-senior .strip-pct {
+	font-size: 11px;
+	font-weight: 500;
+	color: #1d9e75;
+	white-space: nowrap;
+}
+
+.theory-senior .strip-steps {
+	display: flex;
+	gap: 4px;
+	margin-left: 8px;
+}
+
+.theory-senior .step-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--border);
+}
+
+.theory-senior .step-dot.done {
+	background: #1d9e75;
+}
+
+.theory-senior .step-dot.current {
+	background: #378add;
+}
+
+/* section card */
+.theory-senior .card {
+	background: var(--bg-elevated);
+	border: 0.5px solid var(--border);
+	border-radius: var(--border-radius-lg);
+	overflow: hidden;
+}
+
+.theory-senior .card-header {
+	padding: 12px 14px;
+	border-bottom: 0.5px solid var(--border);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.theory-senior .card-header-icon {
+	width: 20px;
+	height: 20px;
+	border-radius: var(--border-radius-md);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.theory-senior .icon-blue {
+	background: #e6f1fb;
+}
+
+.theory-senior .icon-teal {
+	background: #e1f5ee;
+}
+
+.theory-senior .icon-amber {
+	background: #faeeda;
+}
+
+.theory-senior .icon-purple {
+	background: #eeedfe;
+}
+
+.theory-senior .card-header-title {
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.theory-senior .card-header-sub {
+	font-size: 11px;
+	color: var(--text-secondary);
+	margin-left: auto;
+}
+
+.theory-senior .card-body {
+
+	padding: 14px;
+}
+
+/* key idea block */
+.theory-senior .key-idea {
+	background: var(--bg-secondary);
+	border-left: 3px solid #378add;
+	border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+	padding: 10px 12px;
+	margin-bottom: 12px;
+}
+
+.theory-senior .key-idea p {
+	font-size: 13px;
+	color: var(--text-primary);
+	line-height: 1.6;
+}
+
+.theory-senior .key-idea-label {
+	font-size: 10px;
+	font-weight: 500;
+	color: #185fa5;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 4px;
+}
+
+/* steps */
+.theory-senior .steps {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.theory-senior .step-row {
+	display: flex;
+	gap: 12px;
+	padding: 8px 0;
+	border-bottom: 0.5px solid var(--border);
+}
+
+.theory-senior .step-row:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.theory-senior .step-num {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #e6f1fb;
+	color: #185fa5;
+	font-size: 11px;
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	margin-top: 1px;
+}
+
+.theory-senior .step-content {
+	flex: 1;
+}
+
+.theory-senior .step-title {
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--text-primary);
+	margin-bottom: 2px;
+}
+
+.theory-senior .step-desc {
+	font-size: 12px;
+	color: var(--text-secondary);
+}
+
+.theory-senior .step-code {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
+	font-size: 11px;
+	background: var(--color-background-secondary);
+	padding: 2px 6px;
+	border-radius: 4px;
+	color: #185fa5;
+	margin-top: 4px;
+	display: inline-block;
+}
+
+/* complexity table */
+.theory-senior .cx-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 8px;
+}
+
+@media (max-width: 640px) {
+	.theory-senior .cx-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.theory-senior .cx-card {
+	background: var(--bg-card);
+	border-radius: var(--border-radius-md);
+	padding: 10px 12px;
+}
+
+.theory-senior .cx-case {
+	font-size: 10px;
+	color: var(--text-seconday);
+	margin-bottom: 4px;
+}
+
+.theory-senior .cx-val {
+	font-size: 17px;
+	font-weight: 500;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
+}
+
+.theory-senior .cx-val.red {
+	color: #a32d2d;
+}
+
+.theory-senior .cx-val.amber {
+	color: #854f0b;
+}
+
+.theory-senior .cx-val.green {
+	color: #0f6e56;
+}
+
+.theory-senior .cx-why {
+	font-size: 11px;
+	color: var(--color-text-secondary);
+	margin-top: 3px;
+}
+
+.theory-senior .cx-bar {
+	height: 3px;
+	border-radius: 99px;
+	margin-top: 6px;
+}
+
+.theory-senior .cx-bar.red {
+	background: #e24b4a;
+}
+
+.theory-senior .cx-bar.amber {
+	background: #ba7517;
+}
+
+.theory-senior .cx-bar.green {
+	background: #1d9e75;
+}
+
+/* analogy block */
+.theory-senior .analogy {
+	background: #eeedfe;
+	border-radius: var(--border-radius-md);
+	padding: 12px 14px;
+}
+
+.theory-senior .analogy-label {
+	font-size: 10px;
+	font-weight: 500;
+	color: #534ab7;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 6px;
+}
+
+.theory-senior .analogy p {
+	font-size: 12px;
+	color: #3c3489;
+	line-height: 1.6;
+}
+
+/* when to use */
+.theory-senior .use-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px;
+}
+
+@media (max-width: 640px) {
+	.theory-senior .use-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.theory-senior .use-card {
+	border-radius: var(--border-radius-md);
+	padding: 10px 12px;
+}
+
+.theory-senior .use-yes {
+	background: #e1f5ee;
+	border: 0.5px solid rgba(29, 158, 117, 0.2);
+}
+
+.theory-senior .use-no {
+	background: #fcebeb;
+	border: 0.5px solid rgba(226, 75, 74, 0.2);
+}
+
+.theory-senior .use-label {
+	font-size: 10px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 6px;
+}
+
+.theory-senior .use-yes .use-label {
+	color: #085041;
+}
+
+.theory-senior .use-no .use-label {
+	color: #791f1f;
+}
+
+.theory-senior .use-item {
+	font-size: 12px;
+	line-height: 1.6;
+}
+
+.theory-senior .use-yes .use-item {
+	color: #0f6e56;
+}
+
+.theory-senior .use-no .use-item {
+	color: #a32d2d;
+}
+
+/* ── SIDEBAR ── */
+.theory-senior .sb-card {
+	background: var(--bg-card);
+	border: 0.5px solid var(--border);
+	border-radius: var(--border-radius-lg);
+	overflow: hidden;
+}
+
+.theory-senior .sb-header {
+	padding: 10px 12px;
+	border-bottom: 0.5px solid var(--border);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--text-primary);
+}
+
+.theory-senior .sb-body {
+	padding: 10px 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+/* prereq */
+.theory-senior .prereq-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 0;
+	border-bottom: 0.5px solid var(--border);
+}
+
+.theory-senior .prereq-item:last-child {
+	border-bottom: none;
+}
+
+.theory-senior .prereq-status {
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.theory-senior .ps-done {
+	background: #1d9e75;
+}
+
+.theory-senior .ps-missing {
+	background: #faeeda;
+	border: 1.5px solid #ba7517;
+}
+
+.theory-senior .prereq-name {
+	font-size: 12px;
+	color: var(--color-text-primary);
+	flex: 1;
+}
+
+.theory-senior .prereq-tag {
+	font-size: 10px;
+	color: var(--text-secondary);
+}
+
+.theory-senior .checkmark {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--text-primary);
+}
+
+/* related */
+.theory-senior .related-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 0;
+	border-bottom: 0.5px solid var(--color-border-tertiary);
+	cursor: pointer;
+}
+
+.theory-senior .related-item:last-child {
+	border-bottom: none;
+}
+
+.theory-senior .rel-left {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+}
+
+.theory-senior .rel-name {
+	font-size: 12px;
+	color: var(--color-text-primary);
+}
+
+.theory-senior .rel-why {
+	font-size: 10px;
+	color: var(--text-secondary);
+}
+
+.theory-senior .rel-arrow {
+	font-size: 12px;
+	color: var(--text-secondary);
+}
+
+/* memory tip */
+.theory-senior .mem-tip {
+	background: #eeedfe;
+	border-radius: var(--border-radius-md);
+	padding: 10px 12px;
+}
+
+.theory-senior .mem-tip-label {
+	font-size: 10px;
+	font-weight: 500;
+	color: #534ab7;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 5px;
+}
+
+.theory-senior .mem-tip p {
+	font-size: 12px;
+	color: #3c3489;
+	line-height: 1.5;
+}
+
+/* misconception */
+.theory-senior .misc-item {
+	background: #faeeda;
+	border-radius: var(--border-radius-md);
+	padding: 10px 12px;
+	margin-bottom: 6px;
+}
+
+.theory-senior .misc-item:last-child {
+	margin-bottom: 0;
+}
+
+.theory-senior .misc-label {
+	font-size: 10px;
+	font-weight: 500;
+	color: #633806;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 4px;
+}
+
+.theory-senior .misc-item p {
+	font-size: 12px;
+	color: #854f0b;
+	line-height: 1.5;
+}
+
+/* next lesson */
+.theory-senior .next-card {
+	background: var(--bg-card);
+	border: 0.5px solid var(--border);
+	border-radius: var(--border-radius-lg);
+	padding: 12px 14px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.theory-senior .next-icon {
+	width: 36px;
+	height: 36px;
+	background: var(--bg-secondary);
+	border-radius: var(--border-radius-md);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	font-size: 16px;
+}
+
+.theory-senior .next-label {
+	font-size: 10px;
+	color: var(--text-secondary);
+	margin-bottom: 2px;
+}
+
+.theory-senior .next-title {
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.theory-senior .next-arrow {
+	margin-left: auto;
+	color: var(--text-secondary);
+	font-size: 16px;
+}
+

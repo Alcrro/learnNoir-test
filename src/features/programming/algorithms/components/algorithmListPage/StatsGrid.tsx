@@ -1,16 +1,20 @@
-import { Algorithm } from "../../data/algorithmsData";
+import { ProgrammingCatalogItem } from "../../../catalog/types/catalog.types";
 import StatCard from "./statsGrid/StatCard";
 
 type Props = {
-	algorithms: Algorithm[];
+	algorithms: ProgrammingCatalogItem[];
 };
 
 const StatsGrid = ({ algorithms }: Props) => {
 	const total = algorithms.length;
-
+	const findInProgressCounter = algorithms.filter(
+		(f) => f.status === "in-progress",
+	).length;
+	const completedCounter = algorithms.filter(
+		(f) => f.status === "completed",
+	).length;
 	// TODO: derive real values
-	const completed = 3;
-	const inProgress = 2;
+
 	const remainingTime = "~4h";
 
 	return (
@@ -21,12 +25,12 @@ const StatsGrid = ({ algorithms }: Props) => {
 			/>
 			<StatCard
 				label="Completed"
-				value={completed}
+				value={completedCounter}
 				color="text-[#1D9E75]"
 			/>
 			<StatCard
 				label="In progress"
-				value={inProgress}
+				value={findInProgressCounter}
 				color="text-[#378ADD]"
 			/>
 			<StatCard

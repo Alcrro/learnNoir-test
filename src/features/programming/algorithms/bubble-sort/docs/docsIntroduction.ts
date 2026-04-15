@@ -1,10 +1,5 @@
-import { ComplexityValue } from "../../shared/AlgorithmTypes";
+import type { LessonComplexityCard } from "../../components/lesson/AlgorithmDocsIntroduction";
 
-export type BubbleSortCompLessonType = {
-	label: string;
-	value: ComplexityValue;
-	desc: string;
-};
 export const bubbleSortComplexityLesson = [
 	{
 		label: "cel mai rau",
@@ -21,7 +16,7 @@ export const bubbleSortComplexityLesson = [
 		value: "O(n)",
 		desc: "array deja sortat",
 	},
-] satisfies BubbleSortCompLessonType[];
+] satisfies LessonComplexityCard[];
 
 export const docsIntroduction = {
 	bubbleSort: {

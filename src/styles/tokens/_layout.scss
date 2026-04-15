@@ -1,0 +1,12 @@
+// tokens/_layout.scss
+//
+// Layout primitives that are theme-agnostic (radii) + theme-aware effects (shadows).
+
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 18px;
+$radius-pill: 999px;
+
+$shadow-soft-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+$shadow-soft-dark: 0 4px 20px rgba(0, 0, 0, 0.35);

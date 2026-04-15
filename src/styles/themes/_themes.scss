@@ -1,12 +1,18 @@
 @use "../semantic/dark_theme" as dark;
 @use "../semantic/light_theme" as light;
 @use "../tokens/colors" as c;
+@use "../tokens/layout" as layout;
 
 html.dark {
 	--bg-page: #{dark.$bg-page};
 	--bg-card: #{dark.$bg-card};
 	--bg-elevated: #{dark.$bg-elevated};
+	--bg-secondary: #{dark.$bg-secondary};
 	--bg-sidebar: #{dark.$bg-sidebar};
+	--bg-color: #{dark.$bg-page};
+
+
+	--bg-tertiary: #{dark.$bg-tertiary};
 	--border: #{dark.$border};
 	--border-strong: #{dark.$border-strong};
 
@@ -26,6 +32,16 @@ html.dark {
 	--text-primary: #{dark.$text-primary};
 	--text-secondary: #{c.$text-secondary};
 	--text-muted: #{c.$text-muted};
+
+	--color-primary: #{dark.$primary};
+
+	--border-radius-sm: #{layout.$radius-sm};
+	--border-radius-md: #{layout.$radius-md};
+	--border-radius-lg: #{layout.$radius-lg};
+	--border-radius-xl: #{layout.$radius-xl};
+	--border-radius-pill: #{layout.$radius-pill};
+
+	--shadow-soft: #{layout.$shadow-soft-dark};
 
 	/* ── TALE: butoane ── */
 	--btn-primary-bg: #{c.$btn-primary-bg-dark};
@@ -59,10 +75,13 @@ html.dark {
 	--bg-page: #{light.$bg-page};
 	--bg-card: #{light.$bg-card};
 	--bg-elevated: #{light.$bg-elevated};
+	--bg-secondary: #{light.$bg-secondary};
 	--bg-sidebar: #{light.$bg-sidebar};
+	--bg-color: #{light.$bg-page};
 	--border: #{light.$border};
 	--border-strong: #{light.$border-strong};
 
+	--bg-tertiary: #{light.$bg-tertiary};
 	--teal: #{light.$teal};
 	--teal-bg: #{light.$teal-bg};
 	--teal-text: #{light.$teal-text};
@@ -83,6 +102,16 @@ html.dark {
 	--yellow: #{light.$warning};
 
 	--primary: #{light.$primary};
+
+	--color-primary: #{light.$primary};
+
+	--border-radius-sm: #{layout.$radius-sm};
+	--border-radius-md: #{layout.$radius-md};
+	--border-radius-lg: #{layout.$radius-lg};
+	--border-radius-xl: #{layout.$radius-xl};
+	--border-radius-pill: #{layout.$radius-pill};
+
+	--shadow-soft: #{layout.$shadow-soft-light};
 
 	/* button */
 

@@ -1,6 +1,11 @@
 import MathPageLayout from "../../../../mathematics/components/MathPageLayout";
-import { BubbleSortCompLessonType } from "../../bubble-sort/docs/docsIntroduction";
 import "../../../../../components/styles/docsIntro.css";
+
+export type LessonComplexityCard = {
+	label: string;
+	value: string;
+	desc: string;
+};
 
 type DocsIntroProps = {
 	title: string;
@@ -8,7 +13,7 @@ type DocsIntroProps = {
 	why: string;
 	whenToUse: string[];
 	keyIdea: string;
-	complexities: BubbleSortCompLessonType[];
+	complexities: LessonComplexityCard[];
 };
 
 const AlgorithmDocsIntroduction = ({

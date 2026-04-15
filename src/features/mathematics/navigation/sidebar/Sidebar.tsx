@@ -10,7 +10,7 @@ const Sidebar = () => {
 	const { grouped } = useSidebarGroup(items);
 
 	return (
-		<aside className="min-w-30 shrink-0 rounded-md max-md:hidden p-1">
+		<aside className="min-w-30 shrink-0 rounded-md max-md:hidden p-1 bg-(--bg-sidebar) rounded-l-md border-r border-(--border)">
 			<div className="px-2 py-4 border-b border-(--border) mb-4">
 				<SidebarTitle themeKey={themeKey} />
 				<div className="total_progress py-2">
