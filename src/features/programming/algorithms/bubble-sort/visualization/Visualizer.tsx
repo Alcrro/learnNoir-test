@@ -38,7 +38,7 @@ const Visualizer = () => {
 	useSetSearchParams({ currentStep: step });
 
 	return (
-		<div className="flex flex-col max-sm:flex-wrap max-sm:justify-center rounded-xl pb-4 ">
+		<div className="flex flex-col rounded-xl pb-4 ">
 			<div className="flex justify-between items-center max-[420px]:flex-wrap">
 				<GenerateRandomArrayControls
 					setCurrentStep={setCurrentStep}
