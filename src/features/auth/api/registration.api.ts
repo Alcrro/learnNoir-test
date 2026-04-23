@@ -1,4 +1,6 @@
-const API_URI = import.meta.env.VITE_API_URI || "http://localhost:3000/api";
+import { API_URI, readApiResponse } from "../lib/authApi.shared";
+import { RegistrationResponse } from "../types/LoginTypes.type";
+
 export async function registration(email: string, password: string) {
 	try {
 		const response = await fetch(`${API_URI}/auth/registration`, {
@@ -6,10 +8,14 @@ export async function registration(email: string, password: string) {
 			headers: {
 				"Content-Type": "application/json",
 			},
+			credentials: "include",
 			body: JSON.stringify({ email, password }),
 		});
-		const data = await response.json();
-		return data;
+
+		return readApiResponse<RegistrationResponse>(
+			response,
+			"We couldn't create your account right now. Please try again.",
+		);
 	} catch (error) {
 		if (error instanceof Error) {
 			throw new Error(error.message);

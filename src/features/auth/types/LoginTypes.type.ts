@@ -3,13 +3,20 @@ export type LoginCredentials = {
 	password: string;
 };
 
-export type LoginResponse = {
-	token: string;
-	userId: string;
-	expiresIn: number;
+export type AuthSuccessResponse = {
+	message?: string;
+	token?: string;
+	userId?: string;
+	expiresIn?: number;
+	data?: Record<string, unknown> | null;
 };
 
-export type LoginError = {
+export type AuthErrorResponse = {
 	message: string;
-	code: number;
+	code?: number;
+	errors?: string[];
 };
+
+export type LoginResponse = AuthSuccessResponse;
+export type LoginError = AuthErrorResponse;
+export type RegistrationResponse = AuthSuccessResponse;

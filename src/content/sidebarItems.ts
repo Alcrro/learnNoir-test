@@ -13,6 +13,7 @@ type SidebarItem = {
 	label: string;
 	path: string;
 	icon: keyof typeof Icons;
+	description: string;
 	roles?: ("teacher" | "student" | "admin")[];
 	group?: "main" | "teaching" | "management";
 };
@@ -22,6 +23,7 @@ export const sidebarItems: SidebarItem[] = [
 		label: "Overview",
 		path: "/dashboard",
 		icon: "dashboard",
+		description: "Command center",
 		group: "main",
 	},
 
@@ -30,8 +32,9 @@ export const sidebarItems: SidebarItem[] = [
 		label: "Courses",
 		path: "/dashboard/courses",
 		icon: "courses",
+		description: "Tracks and cohorts",
 		group: "teaching",
-		roles: ["teacher"],
+		roles: ["teacher", "student"],
 	},
 
 	{
@@ -39,8 +42,9 @@ export const sidebarItems: SidebarItem[] = [
 		label: "Lessons",
 		path: "/dashboard/lessons",
 		icon: "lessons",
+		description: "Live, draft and review",
 		group: "teaching",
-		roles: ["teacher"],
+		roles: ["teacher", "student"],
 	},
 
 	{
@@ -48,6 +52,7 @@ export const sidebarItems: SidebarItem[] = [
 		label: "Students",
 		path: "/dashboard/students",
 		icon: "students",
+		description: "Individual progress",
 		group: "management",
 		roles: ["teacher"],
 	},
@@ -57,8 +62,9 @@ export const sidebarItems: SidebarItem[] = [
 		label: "Analytics",
 		path: "/dashboard/analytics",
 		icon: "analytics",
+		description: "Progress intelligence",
 		group: "management",
-		roles: ["teacher"],
+		roles: ["teacher", "student"],
 	},
 
 	{
@@ -66,14 +72,7 @@ export const sidebarItems: SidebarItem[] = [
 		label: "Settings",
 		path: "/dashboard/settings",
 		icon: "settings",
-		group: "main",
-	},
-
-	{
-		id: "logout",
-		label: "Logout",
-		path: "/logout",
-		icon: "logout",
+		description: "Workspace preferences",
 		group: "main",
 	},
 ];

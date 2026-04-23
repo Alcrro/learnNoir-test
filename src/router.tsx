@@ -4,9 +4,10 @@ import Home from "./public/home/Home";
 import RouteErrorPage from "./RouteErrorPage";
 import { authRoutes } from "./features/auth/router/auth.routes";
 import { dashboardRoutes } from "./features/dashboards/router/dashboardRoutes";
-import { programmingRoutes } from "./features/programming/programming.routes";
-import { mathematics } from "./features/mathematics/router/math.routes";
+import { computerScienceRoutes } from "./features/computer-science/computerScience.routes";
+import { mathematicsRoutes } from "./features/mathematics/router/math.routes";
 import Subjects from "./features/auth/Subjects";
+import SubjectsLayout from "./components/organisms/layout/SubjectsLayout";
 
 export const router = createBrowserRouter([
 	{
@@ -23,7 +24,12 @@ export const router = createBrowserRouter([
 			{
 				path: "subjects",
 				element: <Subjects />,
-				children: [programmingRoutes, mathematics],
+
+				children: [
+					{ index: true, element: <SubjectsLayout /> },
+					computerScienceRoutes,
+					mathematicsRoutes,
+				],
 			},
 		],
 	},

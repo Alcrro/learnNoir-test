@@ -1,0 +1,52 @@
+export type AlgorithmTypes =
+  | "bubble-sort"
+  | "insertion-sort"
+  | "heap-sort"
+  | "quick-sort"
+  | "binary-tree-sort";
+
+export const algorithms = [""];
+export type VisualizationMethod =
+  | "box"
+  | "vertical"
+  | "pillar"
+  | "tree"
+  | "bar";
+
+export type Step = {
+  array: { id: number; value: number }[];
+
+  compare?: [number, number];
+  swap?: [number, number];
+  type?: StepType | "noSwap";
+  sorted?: number[];
+  active?: number[];
+  line?: number | number[];
+};
+
+type TextBlock = {
+  type: "text";
+  content: Array<
+    | { type: "paragraph"; text: string }
+    | { type: "inlineCode"; code: string }
+    | { type: "label"; text: string }
+  >;
+};
+export type StepType = "compare" | "swap" | "sorted";
+export type ComplexityType = "best" | "average" | "worst" | "space";
+
+export type ComplexityValue = "O(n)" | "O(n²)" | "O(n²)" | "O(1)";
+
+export type AlgorithmComplexity = Record<ComplexityType, ComplexityValue>;
+
+export type ComplexityInfoProps = {
+  name: string;
+  complexity: AlgorithmComplexity;
+};
+
+export type AlgorithmStatsType = {
+  totalComparisons: string;
+  totalSwaps: string;
+  currentComparisons: string;
+  currentSwaps: string;
+};

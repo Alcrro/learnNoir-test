@@ -1,10 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../api/me.api";
+import { authQueryKeys } from "../lib/authQueryKeys";
 
 export function useGetMe() {
 	return useQuery({
-		queryKey: ["geMe"],
+		queryKey: authQueryKeys.me,
 		queryFn: () => getMe(),
+		retry: false,
 
 		staleTime: 1000 * 60 * 10,
 

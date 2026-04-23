@@ -1,11 +1,10 @@
-import { LoginResponse, LoginError } from "../types/LoginTypes.type";
-
-const API_URI = import.meta.env.VITE_API_URI || "http://localhost:3000";
+import { API_URI, readApiResponse } from "../lib/authApi.shared";
+import { LoginResponse } from "../types/LoginTypes.type";
 
 export async function loginWithCredentials(
 	email: string,
 	password: string,
-): Promise<LoginResponse | LoginError> {
+): Promise<LoginResponse> {
 	try {
 		const response = await fetch(`${API_URI}/auth/login`, {
 			method: "POST",
@@ -13,11 +12,12 @@ export async function loginWithCredentials(
 			credentials: "include",
 			body: JSON.stringify({ email, password }),
 		});
-		const data = await response.json();
-		console.log({ data });
-		return data;
+
+		return readApiResponse<LoginResponse>(
+			response,
+			"Invalid email or password. Please try again.",
+		);
 	} catch (error) {
-		console.log("Login error: ", error);
 		if (error instanceof Error) {
 			throw new Error(error.message);
 		}

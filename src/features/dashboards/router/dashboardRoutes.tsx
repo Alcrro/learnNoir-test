@@ -1,4 +1,3 @@
-import { Settings } from "lucide-react";
 import { RouteObject } from "react-router-dom";
 import Analytics from "../components/Analytics";
 import Courses from "../components/Courses";
@@ -7,6 +6,7 @@ import Overview from "../components/Overview";
 import Students from "../components/Students";
 import { requireAuth } from "../../../hooks/requireAuth";
 import Dashboard from "../../../pages/Dashboard";
+import Settings from "../components/Settings";
 
 export const dashboardRoutes: RouteObject = {
 	path: "/dashboard",

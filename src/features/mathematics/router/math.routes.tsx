@@ -1,9 +1,11 @@
 import { RouteObject } from "react-router-dom";
 import MathPage from "../pages/MathPage";
+import MathLayout from "../components/layouts/MathLayout";
 
-export const mathematics: RouteObject = {
+export const mathematicsRoutes: RouteObject = {
 	path: "mathematics",
-	handle: { crumb: "Mathematics" },
+	handle: { crumb: "Mathematics", subject: "mathematics" },
+	element: <MathLayout />,
 	children: [
 		{
 			path: "thales",

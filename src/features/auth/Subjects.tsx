@@ -1,18 +1,12 @@
-import React from "react";
-import { Outlet, useLocation } from "react-router-dom";
-// import LoginModal from "./components/modal/LoginModal";
+import { Outlet } from "react-router-dom";
+import DefaultLayout from "../../components/layouts/DefaultLayout";
 
 const Subjects = () => {
-	const location = useLocation();
-	const state = location.state as { backgroundLocation?: Location };
-	// console.log("state din subjects", state);
-
-	const isModal =
-		state?.backgroundLocation && location.pathname === "/auth/login";
-
-	if (isModal) return <Outlet />;
-
-	return <Outlet />;
+	return (
+		<DefaultLayout>
+			<Outlet />
+		</DefaultLayout>
+	);
 };
 
 export default Subjects;

@@ -11,3 +11,5 @@ export type InteractionStep = {
 	difficulty: Difficulty;
 	data: InteractionData;
 };
+
+export type Subject = "computer-science" | "mathematics";

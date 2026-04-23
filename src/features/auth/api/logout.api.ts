@@ -1,4 +1,4 @@
-const API_URI = import.meta.env.VITE_API_URI || "http://localhost:3000";
+import { API_URI, readApiResponse } from "../lib/authApi.shared";
 
 export const logout = async () => {
 	try {
@@ -10,10 +10,11 @@ export const logout = async () => {
 			throw new Error("Failed to logout");
 		}
 
-		const data = await response.json();
-		return data ?? null;
+		return readApiResponse<Record<string, unknown> | null>(
+			response,
+			"Failed to logout",
+		);
 	} catch (error) {
-		console.log("Logout error: ", error);
 		if (error instanceof Error) {
 			throw new Error(error.message);
 		}

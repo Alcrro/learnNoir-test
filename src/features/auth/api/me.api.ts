@@ -1,4 +1,5 @@
-const API_URI = import.meta.env.VITE_API_URI || "http://localhost:3000/api";
+import { API_URI, readApiResponse } from "../lib/authApi.shared";
+
 export async function getMe(): Promise<{ userId: string } | null> {
 	try {
 		const response = await fetch(`${API_URI}/auth/me`, {
@@ -13,13 +14,12 @@ export async function getMe(): Promise<{ userId: string } | null> {
 			return null;
 		}
 
-		const { data } = await response.json();
-		console.log("mere", { data });
-
+		const { data } = await readApiResponse<{ data: { userId: string } | null }>(
+			response,
+			"We couldn't verify your session.",
+		);
 		return data;
-	} catch (error) {
-		console.log(error);
-
+	} catch {
 		throw new Error("internal auth me error");
 	}
 }

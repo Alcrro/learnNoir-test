@@ -1,56 +1,80 @@
-import { Link, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Icons, sidebarItems } from "../../../content/sidebarItems";
+import { cn } from "../../../libs/utils/cn";
+import { getRoleLabel, type WorkspaceRole } from "../../../features/dashboards/data/dashboardData";
 
-const Sidebar = () => {
-	const location = useLocation();
+type SidebarProps = {
+	previewRole: WorkspaceRole;
+	className?: string;
+	onNavigate?: () => void;
+};
+
+const Sidebar = ({ previewRole, className, onNavigate }: SidebarProps) => {
+	const visibleItems = sidebarItems.filter(
+		(item) => !item.roles || item.roles.includes(previewRole),
+	);
 
 	return (
-		<aside className="min-h-full bg-(--bg-color) text-zinc-200 border-r rounded-md border-zinc-800 flex flex-col">
-			{/* Navigation */}
-			<nav className="flex-1 px-3 py-4 space-y-6 overflow-y-auto">
+		<aside
+			className={cn(
+				"flex min-h-full flex-col rounded-[28px] border border-[color:var(--border)] bg-[var(--bg-card)] text-[var(--text-primary)] shadow-sm",
+				className,
+			)}
+		>
+			<div className="border-b border-[color:var(--border)] px-4 py-5">
+				<div className="inline-flex rounded-full border border-[color:var(--blue-border)] bg-[var(--blue-bg)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--blue-text)]">
+					{getRoleLabel(previewRole)} workspace
+				</div>
+				<h2 className="mt-4 text-lg font-semibold tracking-tight text-[var(--text-primary)]">
+					Academic OS
+				</h2>
+				<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+					Lessons, cohorts, progress, grading and follow-up in one place.
+				</p>
+			</div>
+
+			<nav className="flex-1 space-y-6 overflow-y-auto px-3 py-4">
 				{["main", "teaching", "management"].map((group) => {
-					const items = sidebarItems.filter((i) => i.group === group);
+					const items = visibleItems.filter((item) => item.group === group);
 
 					if (!items.length) return null;
 
 					return (
 						<div key={group}>
-							<p className="px-3 mb-2 text-xs uppercase text-zinc-500 tracking-wider">
+							<p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--text-muted)]">
 								{group}
 							</p>
 
 							<ul className="space-y-1">
 								{items.map((item) => {
 									const Icon = Icons[item.icon];
-									const isActive = location.pathname.endsWith(item.path);
 
 									return (
 										<li key={item.id}>
-											<Link
+											<NavLink
 												to={item.path}
-												className={`
-													group flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-													${
+												end={item.path === "/dashboard"}
+												onClick={onNavigate}
+												className={({ isActive }) =>
+													cn(
+														"group flex items-start gap-3 rounded-2xl px-3 py-3 text-sm transition",
 														isActive
-															? "bg-(--bg-tertiary) text-white"
-															: "text-zinc-400 hover:bg-zinc-900 hover:text-white"
-													}
-												`}
+															? "bg-[var(--blue-bg)] text-[var(--blue-text)]"
+															: "text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]",
+													)
+												}
 											>
 												<Icon
 													size={18}
-													className={`transition ${
-														isActive ? "text-white" : "text-zinc-500 group-hover:text-white"
-													}`}
+													className="mt-0.5 shrink-0 transition"
 												/>
-
-												<span className="truncate">{item.label}</span>
-
-												{/* Active indicator */}
-												{isActive && (
-													<div className="ml-auto w-1.5 h-1.5 rounded-full bg-white" />
-												)}
-											</Link>
+												<span className="min-w-0 flex-1">
+													<span className="block truncate font-medium">{item.label}</span>
+													<span className="mt-1 block truncate text-xs opacity-80">
+														{item.description}
+													</span>
+												</span>
+											</NavLink>
 										</li>
 									);
 								})}
@@ -60,18 +84,15 @@ const Sidebar = () => {
 				})}
 			</nav>
 
-			{/* Footer */}
-			<div className="p-4 border-t border-zinc-800">
-				<Link
-					to="/dashboard/settings"
-					className="flex items-center gap-3 text-sm text-zinc-400 hover:text-white"
-				>
-					{(() => {
-						const Icon = Icons.settings;
-						return <Icon size={18} />;
-					})()}
-					Settings
-				</Link>
+			<div className="border-t border-[color:var(--border)] p-4">
+				<div className="rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-4">
+					<p className="text-sm font-semibold text-[var(--text-primary)]">
+						Grade engine
+					</p>
+					<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+						Final score is prepared from lesson progress, attendance and quiz accuracy.
+					</p>
+				</div>
 			</div>
 		</aside>
 	);

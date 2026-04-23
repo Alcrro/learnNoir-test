@@ -1,4 +1,4 @@
-import type { AlgorithmTypeProp } from "../../features/programming/algorithms/data/algorithmArray";
+import type { AlgorithmTypeProp } from "../../features/computer-science/algorithms/data/algorithmArray";
 
 export function generateArray(
 	size: number,

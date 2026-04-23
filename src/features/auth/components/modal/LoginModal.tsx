@@ -18,13 +18,12 @@ const LoginModal = () => {
 		navigate(-1); // back = închide modalul
 	};
 
-	console.log("STATE:", location.state);
 	return (
 		<Modal
 			open={isLoginModal}
 			onClose={closeModal}
 		>
-			<Login />
+			<Login variant="modal" />
 		</Modal>
 	);
 };

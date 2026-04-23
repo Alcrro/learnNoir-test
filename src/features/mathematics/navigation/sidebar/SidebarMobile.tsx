@@ -1,13 +1,13 @@
 import { useRef, type FC } from "react";
 import { cn } from "../../../../libs/utils/cn";
 import ExtendButton from "../../../../components/atoms/ExtendButton";
-import AlgorithmTableOfContents from "../../../programming/algorithms/components/lesson/AlgorithmTableOfContents";
-import useToggleDiv from "../../../programming/visualizer/hooks/useToggleDiv";
+import AlgorithmTableOfContents from "../../../computer-science/algorithms/components/lesson/AlgorithmTableOfContents";
+import useToggleDiv from "../../../computer-science/visualizer/hooks/useToggleDiv";
 import { useToggleStore } from "../../../../store/useToggleStore";
 
 type SidebarMobileProps = {
 	active: boolean;
-	toggle: () => void;
+	toggle: (val: string) => void;
 };
 
 const SidebarMobile: FC<SidebarMobileProps> = () => {

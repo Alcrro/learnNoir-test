@@ -1,9 +1,27 @@
 import React, { FormEvent } from "react";
 import RegisterForm from "./forms/RegisterForm";
 import { useRegistration } from "../hooks/useRegistration";
+import { useNavigate } from "react-router-dom";
+import { useRedirectCountdown } from "../hooks/useRedirectCountdown";
 
 const Register = () => {
-	const { mutateAsync, data, isPending, error } = useRegistration();
+	const { mutateAsync, isPending, error, isSuccess } = useRegistration();
+	const navigate = useNavigate();
+	const [registeredEmail, setRegisteredEmail] = React.useState("");
+
+	const redirectCountdown = useRedirectCountdown({
+		enabled: isSuccess,
+		seconds: 3,
+		onComplete: () => {
+			navigate("/auth/login", {
+				replace: true,
+				state: {
+					justRegistered: true,
+					registeredEmail,
+				},
+			});
+		},
+	});
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -13,15 +31,22 @@ const Register = () => {
 		const password = formData.get("password") as string;
 
 		await mutateAsync({ email, password });
+		setRegisteredEmail(email);
 	};
 	return (
 		<div>
-			<h2 className="text-3xl text-center">Register</h2>
 			<RegisterForm
 				handleSubmit={handleSubmit}
-				data={data}
 				isPending={isPending}
-				error={error}
+				errorMessage={
+					error
+						? error instanceof Error
+						? error.message
+						: "An error occurred while trying to register. Please try again later."
+						: null
+				}
+				successCountdown={redirectCountdown}
+				defaultEmail={registeredEmail}
 			/>
 		</div>
 	);
