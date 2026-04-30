@@ -47,7 +47,7 @@ export const SUBJECT_DOMAINS: SubjectDomain[] = [
 		track: "mathematics",
 		availability: "available",
 		accent: "emerald",
-		href: "/subjects/mathematics/thales",
+		href: "/subjects/mathematics",
 		modules: 4,
 		completedModules: 1,
 		lessons: 64,

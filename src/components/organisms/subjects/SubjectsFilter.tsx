@@ -1,11 +1,9 @@
 // components/SubjectsFilter.jsx
 
-const DIFFICULTIES = [
-	{ value: "all", label: "All levels" },
-	{ value: "beginner", label: "Beginner" },
-	{ value: "intermediate", label: "Intermediate" },
-	{ value: "advanced", label: "Advanced" },
-];
+import ChipBtn from "../../molecules/buttons/SubjectChipBtn";
+import SubjectSearchButn from "../../molecules/buttons/SubjectSearchButn";
+import SubjectInput from "../../molecules/subjects/SubjectInput";
+import SubjectSelectDifficulty from "../../molecules/subjects/SubjectSelectDifficulty";
 
 // ── SubjectsFilter ────────────────────────────────────────────────────────────
 // Props:
@@ -42,7 +40,7 @@ export default function SubjectsFilter({
 			<div className="relative max-w-sm">
 				<div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
 					<svg
-						className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500"
+						className="w-3.5 h-3.5 text-(--text-secondary)"
 						fill="none"
 						viewBox="0 0 24 24"
 						stroke="currentColor"
@@ -55,42 +53,11 @@ export default function SubjectsFilter({
 						/>
 					</svg>
 				</div>
-				<input
-					type="search"
-					value={search}
-					onChange={(e) => onSearch(e.target.value)}
-					placeholder="Search subjects or tags..."
-					className={[
-						"w-full h-9 pl-9 pr-8 text-xs",
-						"bg-white dark:bg-gray-900",
-						"border border-gray-200 dark:border-gray-800",
-						"rounded-lg text-gray-900 dark:text-gray-100",
-						"placeholder:text-gray-400 dark:placeholder:text-gray-600",
-						"focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-400 dark:focus:border-indigo-600",
-						"transition-colors duration-150",
-					].join(" ")}
+				<SubjectInput
+					search={search}
+					onSearch={onSearch}
 				/>
-				{search && (
-					<button
-						onClick={() => onSearch("")}
-						aria-label="Clear search"
-						className="absolute inset-y-0 right-2.5 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-					>
-						<svg
-							className="w-3 h-3"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							strokeWidth={2.5}
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
-				)}
+				{search && <SubjectSearchButn onSearch={onSearch} />}
 			</div>
 
 			{/* Category tabs + difficulty */}
@@ -101,78 +68,29 @@ export default function SubjectsFilter({
 					aria-label="Filter by category"
 					className="flex items-center gap-1.5 flex-wrap"
 				>
-					<Chip
+					<ChipBtn
 						active={activeCategory === "all"}
 						onClick={() => onCategory("all")}
 					>
 						All
-					</Chip>
+					</ChipBtn>
 					{categories.map((cat) => (
-						<Chip
+						<ChipBtn
 							key={cat.id}
 							active={activeCategory === cat.id}
 							onClick={() => onCategory(cat.id)}
 						>
 							{cat.label}
-						</Chip>
+						</ChipBtn>
 					))}
 				</div>
 
 				{/* Difficulty select */}
-				<select
-					value={activeDiff}
-					onChange={(e) => onDiff(e.target.value)}
-					aria-label="Filter by difficulty"
-					className={[
-						"h-8 px-3 text-xs",
-						"bg-white dark:bg-gray-900",
-						"border border-gray-200 dark:border-gray-800",
-						"rounded-lg text-gray-600 dark:text-gray-400",
-						"focus:outline-none focus:ring-2 focus:ring-indigo-500/30",
-						"cursor-pointer",
-					].join(" ")}
-				>
-					{DIFFICULTIES.map((d) => (
-						<option
-							key={d.value}
-							value={d.value}
-						>
-							{d.label}
-						</option>
-					))}
-				</select>
+				<SubjectSelectDifficulty
+					activeDiff={activeDiff}
+					onDiff={onDiff}
+				/>
 			</div>
 		</div>
-	);
-}
-
-type ChipProps = {
-	active: boolean;
-	onClick: () => void;
-	children: React.ReactNode;
-};
-// ── Chip ──────────────────────────────────────────────────────────────────────
-function Chip({ active, onClick, children }: ChipProps) {
-	return (
-		<button
-			role="tab"
-			aria-selected={active}
-			onClick={onClick}
-			className={[
-				"h-8 px-3 text-xs font-medium rounded-full",
-				"transition-all duration-150",
-				"focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40",
-				active
-					? "bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-sm"
-					: [
-							"text-gray-500 dark:text-gray-400",
-							"border border-gray-200 dark:border-gray-800",
-							"hover:text-gray-700 dark:hover:text-gray-200",
-							"hover:border-gray-300 dark:hover:border-gray-700",
-						].join(" "),
-			].join(" ")}
-		>
-			{children}
-		</button>
 	);
 }

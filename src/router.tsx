@@ -8,6 +8,10 @@ import { computerScienceRoutes } from "./features/computer-science/computerScien
 import { mathematicsRoutes } from "./features/mathematics/router/math.routes";
 import Subjects from "./features/auth/Subjects";
 import SubjectsLayout from "./components/organisms/layout/SubjectsLayout";
+import SubjectsPage from "./features/subjects/pages/SubjectsPage";
+import CategoriesListPage from "./features/categories/pages/CategoriesListPage";
+import { subjectLoader } from "./features/subjects/utils/subjectLoader";
+import { slugToText } from "./libs/utils/slugToText";
 
 export const router = createBrowserRouter([
 	{
@@ -24,11 +28,25 @@ export const router = createBrowserRouter([
 			{
 				path: "subjects",
 				element: <Subjects />,
+				handle: { crumb: "subjects", subject: "subjects" },
 
 				children: [
-					{ index: true, element: <SubjectsLayout /> },
-					computerScienceRoutes,
-					mathematicsRoutes,
+					{ index: true, loader: subjectLoader, element: <SubjectsLayout /> },
+					{
+						path: ":subject",
+						handle: {
+							crumb: (_: unknown, params: { subject?: string }) =>
+								params.subject ? slugToText(params.subject) : "Unknown",
+						},
+
+						element: <SubjectsPage />,
+						children: [
+							{ index: true, element: <CategoriesListPage /> },
+							{
+								children: [computerScienceRoutes, mathematicsRoutes],
+							},
+						],
+					},
 				],
 			},
 		],

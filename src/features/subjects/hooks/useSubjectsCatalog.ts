@@ -1,9 +1,10 @@
 import { useMemo, useState } from "react";
-import type { SubjectDomain, SubjectsCatalogFilters } from "../types/types";
-import {
-	buildSubjectsCatalogStats,
-	filterSubjectsCatalog,
-} from "../libs/utils/subjectsCatalog.utils";
+import type {
+	SubjectDomain,
+	SubjectsCatalogFilters,
+} from "../../../types/types";
+import { buildSubjectsCatalogStats } from "../utils/buildSubjectsCatalogStats";
+import { filterSubjectsCatalog } from "../utils/filterSubjectsCatalog";
 
 const INITIAL_FILTERS: SubjectsCatalogFilters = {
 	search: "",

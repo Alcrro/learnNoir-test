@@ -1,8 +1,7 @@
 import { Outlet } from "react-router-dom";
-import SubjectsPage from "../../../components/organisms/subjects/SubjectsPage";
 
 const ComputerSciencePages = () => {
-	return <SubjectsPage />;
+	return <Outlet />;
 };
 
 export default ComputerSciencePages;

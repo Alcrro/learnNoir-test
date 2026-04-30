@@ -11,7 +11,9 @@ import {
 } from "../lib/catalogUtils";
 import type { ProgrammingCategory } from "../types/catalog.types";
 
-function isProgrammingCategory(value: string | undefined): value is ProgrammingCategory {
+function isProgrammingCategory(
+	value: string | undefined,
+): value is ProgrammingCategory {
 	return value === "algorithms" || value === "data-structures";
 }
 
@@ -74,7 +76,7 @@ const ProgrammingCatalogPage = () => {
 	if (!isProgrammingCategory(category)) return null;
 
 	return (
-		<div className="space-y-8 rounded-[28px]  p-4 md:p-6">
+		<div className="space-y-8 rounded-[28px]">
 			<ProgrammingCatalogContent
 				key={category}
 				category={category}

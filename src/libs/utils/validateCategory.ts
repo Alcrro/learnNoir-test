@@ -1,17 +1,21 @@
 import type { LoaderFunctionArgs } from "react-router-dom";
+import { SUBJECTS } from "../../features/subjects/data/subjects.data";
 
-const allowedCategories = ["algorithms", "data-structures"] as const;
+const allowedCategories = SUBJECTS.map((item) =>
+	item.category.toLocaleLowerCase(),
+);
+
 type Category = (typeof allowedCategories)[number];
 
 export const validateCategory = ({ params }: LoaderFunctionArgs) => {
-  const { category } = params;
-  if (!category || !allowedCategories.includes(category as Category)) {
-    throw new Response("Not Found", { status: 404 });
-  }
+	const { category } = params;
+	if (!category || !allowedCategories.includes(category as Category)) {
+		throw new Response("Not Found", { status: 404 });
+	}
 
-  if (!allowedCategories.includes(category as Category)) {
-    throw new Response("Not Found", { status: 404 });
-  }
+	if (!allowedCategories.includes(category as Category)) {
+		throw new Response("Not Found", { status: 404 });
+	}
 
-  return null;
+	return null;
 };

@@ -42,7 +42,7 @@ export function useRedirectCountdown({
 		return () => {
 			window.clearInterval(intervalId);
 		};
-	}, [enabled, handleComplete, seconds]);
+	}, [enabled, seconds]);
 
 	return enabled ? remainingSeconds : null;
 }

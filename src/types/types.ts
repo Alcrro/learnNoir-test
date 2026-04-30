@@ -37,3 +37,17 @@ export type FilterOption<T extends string> = {
 	value: T;
 	label: string;
 };
+
+export type ModuleDifficulty = "beginner" | "intermediate" | "advanced";
+
+export type Module = {
+	id: string;
+	title: string;
+	description: string;
+	totalLessons: number;
+	completedLessons: number;
+	estimatedHours: number;
+	difficulty: ModuleDifficulty;
+	tags: string[];
+	featured?: boolean;
+};

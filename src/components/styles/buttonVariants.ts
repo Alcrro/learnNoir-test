@@ -1,15 +1,46 @@
 export const buttonVariants: Record<ButtonVariantType, string> = {
-	primary: "bg-indigo-500 text-white hover:bg-indigo-600",
+	primary: `
+		bg-(--btn-primary-bg)
+		text-(--btn-primary-text)
+		hover:bg-(--btn-primary-bg-hover)
+	`,
 
-	secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
+	secondary: `
+		bg-(--btn-secondary-bg)
+		text-(--btn-secondary-text)
+		hover:bg-(--btn-secondary-bg-hover)
+	`,
 
-	ghost: "text-(--text-muted) cursor-not-allowed",
+	destructive: `
+		bg-(--btn-danger-bg)
+		text-(--btn-danger-text)
+		hover:bg-(--btn-danger-bg-hover)
+	`,
 
-	link: "underline text-indigo-500 hover:opacity-80",
+	ghost: `
+		text-(--text-muted)
+		hover:bg-(--btn-ghost-hover)
+	`,
 
-	destructive: "bg-red-500 text-white hover:bg-red-600",
+	link: `
+		text-(--link-color)
+		underline
+		hover:opacity-80
+	`,
 
-	icon: "text-(--text-muted) hover:text-(--btn-secondary-text)",
+	icon: `
+		text-(--text-muted)
+		hover:text-(--btn-secondary-text)
+	`,
+
+	// NEW: outline variant (what you asked)
+	outline: `
+		border
+		border-(--border-color)
+		text-(--text-primary)
+		bg-transparent
+		hover:bg-(--btn-outline-hover)
+	`,
 } as const;
 
 export type ButtonVariantType =
@@ -18,7 +49,8 @@ export type ButtonVariantType =
 	| "ghost"
 	| "link"
 	| "destructive"
-	| "icon";
+	| "icon"
+	| "outline";
 
 export const buttonSizes: Record<ButtonSizeType, string> = {
 	default: "px-4 py-2",

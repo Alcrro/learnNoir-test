@@ -2,7 +2,7 @@ import { SubjectOverviewCard } from "../subjects/SubjectOverviewCard";
 import { SubjectsCatalogFilters } from "../subjects/SubjectsCatalogFilters";
 import { SubjectsCatalogHero } from "../subjects/SubjectsCatalogHero";
 import { SubjectsCatalogStats } from "../subjects/SubjectsCatalogStats";
-import { useSubjectsCatalog } from "../../../hooks/useSubjectsCatalog";
+import { useSubjectsCatalog } from "../../../features/subjects/hooks/useSubjectsCatalog";
 import {
 	SUBJECT_AVAILABILITY_OPTIONS,
 	SUBJECT_DOMAINS,
@@ -24,8 +24,8 @@ const SubjectsLayout = () => {
 	} = useSubjectsCatalog(SUBJECT_DOMAINS);
 
 	return (
-		<div className="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300">
-			<div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+		<div className="min-h-screen bg-(--bg-page) text-(--text-primary) transition-colors duration-300">
+			<div className="mx-auto max-w-7xl py-8">
 				<div className="flex flex-col gap-6">
 					<SubjectsCatalogHero
 						totalSubjects={overallStats.totalSubjects}
@@ -49,19 +49,19 @@ const SubjectsLayout = () => {
 					/>
 
 					{!hasActiveFilters && featuredSubjects.length > 0 ? (
-						<section className="rounded-3xl border border-[color:var(--border)] bg-[var(--bg-card)] p-5 shadow-sm">
+						<section className="rounded-3xl border border-(--border) bg-(--bg-card) p-5 shadow-sm">
 							<div className="mb-4 flex items-center justify-between gap-3">
 								<div>
-									<h2 className="text-lg font-semibold text-[var(--text-primary)]">
+									<h2 className="text-lg font-semibold text-(--text-primary)">
 										Featured subjects
 									</h2>
-									<p className="text-sm text-[var(--text-secondary)]">
+									<p className="text-sm text-(--text-secondary)">
 										Best entry points if you want to start from the current active
 										curriculum.
 									</p>
 								</div>
 
-								<p className="text-sm text-[var(--text-secondary)]">
+								<p className="text-sm text-(--text-secondary)">
 									{featuredSubjects.length} highlighted
 								</p>
 							</div>
@@ -77,19 +77,19 @@ const SubjectsLayout = () => {
 						</section>
 					) : null}
 
-					<section className="rounded-3xl border border-[color:var(--border)] bg-[var(--bg-card)] p-5 shadow-sm">
+					<section className="rounded-3xl border border-(--border) bg-(--bg-card) p-5 shadow-sm">
 						<div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
 							<div>
-								<h2 className="text-lg font-semibold text-[var(--text-primary)]">
+								<h2 className="text-lg font-semibold text-(--text-primary)">
 									All subjects
 								</h2>
-								<p className="text-sm text-[var(--text-secondary)]">
+								<p className="text-sm text-(--text-secondary)">
 									Browse the full catalog and jump into the subjects that are already
 									available.
 								</p>
 							</div>
 
-							<p className="text-sm text-[var(--text-secondary)]">
+							<p className="text-sm text-(--text-secondary)">
 								{filteredStats.totalSubjects} visible subjects
 							</p>
 						</div>
@@ -104,11 +104,11 @@ const SubjectsLayout = () => {
 								))}
 							</div>
 						) : (
-							<div className="rounded-[20px] border border-dashed border-[color:var(--border-strong)] bg-[var(--bg-secondary)] px-6 py-14 text-center">
-								<p className="text-base font-semibold text-[var(--text-primary)]">
+							<div className="rounded-[20px] border border-dashed border-(--border-strong) bg-(--bg-secondary) px-6 py-14 text-center">
+								<p className="text-base font-semibold text-(--text-primary)">
 									No subjects found for these filters
 								</p>
-								<p className="mt-2 text-sm text-[var(--text-secondary)]">
+								<p className="mt-2 text-sm text-(--text-secondary)">
 									Try another search term or reset the filters to see the full catalog
 									again.
 								</p>

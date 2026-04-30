@@ -9,7 +9,7 @@ export const Breadcrumb = () => {
 	const pathname = location.pathname;
 
 	return (
-		<div className="breadcrumb p-2 text-sm text-(--text-muted) flex items-center">
+		<div className="breadcrumb py-2 text-sm text-(--text-secondary) flex items-center">
 			{crumbs.map((c, i) => {
 				const isCurrentPage = pathname === c.path;
 

@@ -25,12 +25,12 @@ export default function SubjectsStats({ subjects }: SubjectsStatsProps) {
 		{
 			value: subjects.length,
 			label: "Subjects",
-			color: "text-gray-900 dark:text-gray-100",
+			color: "text-(--text-secondary)",
 		},
 		{
 			value: `${completedLessons}/${totalLessons}`,
 			label: "Lessons",
-			color: "text-gray-900 dark:text-gray-100",
+			color: "text-(--text-secondary)",
 		},
 		{
 			value: inProgressSubs,
@@ -50,20 +50,20 @@ export default function SubjectsStats({ subjects }: SubjectsStatsProps) {
 	];
 
 	return (
-		<div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 gap-4 flex flex-col">
+		<div className="bg-(--bg-card) border-(--border-color) rounded-xl p-4 gap-4 flex flex-col">
 			{/* Header + pct */}
 			<div className="flex items-center justify-between">
-				<span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+				<span className="text-xs font-medium text-(--text-secondary) uppercase tracking-wider">
 					Overall progress
 				</span>
-				<span className="text-xs font-medium text-gray-500 dark:text-gray-400 tabular-nums">
+				<span className="text-xs font-medium text-(--text-secondary) tabular-nums">
 					{pct}%
 				</span>
 			</div>
 
 			{/* Progress bar */}
 			<div
-				className="h-1.5 rounded-full bg-gray-100 dark:bg-gray-800 overflow-hidden"
+				className="h-1.5 rounded-full bg-(--bg-tertiary) overflow-hidden"
 				role="progressbar"
 				aria-valuenow={pct}
 				aria-valuemin={0}
@@ -77,16 +77,16 @@ export default function SubjectsStats({ subjects }: SubjectsStatsProps) {
 			</div>
 
 			{/* Stats row */}
-			<div className="grid grid-cols-2 sm:grid-cols-5 gap-y-3 gap-x-4">
+			<div className="grid grid-cols-2 sm:grid-cols-5 gap-y-3 gap-x-4 text-center">
 				{stats.map((s) => (
 					<div
 						key={s.label}
-						className="flex flex-col gap-0.5"
+						className="flex flex-col gap-0.5 "
 					>
 						<span className={`text-lg font-medium tabular-nums ${s.color}`}>
 							{s.value}
 						</span>
-						<span className="text-[11px] text-gray-400 dark:text-gray-500">
+						<span className="text-[11px] text-(--text-secondary) uppercase tracking-wider">
 							{s.label}
 						</span>
 					</div>

@@ -7,7 +7,6 @@ import { Breadcrumb } from "../../../../components/molecules/Breadcrumb";
 const MathLayout = () => {
 	return (
 		<MainLayout>
-			<Sidebar />
 			<div className="main w-full">
 				<Breadcrumb />
 				<Outlet />

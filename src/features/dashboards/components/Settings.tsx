@@ -38,21 +38,21 @@ const Settings = () => {
 						{workspace.settings.map((item) => (
 							<div
 								key={item.title}
-								className="rounded-3xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-5"
+								className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-5"
 							>
 								<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
 									<div>
-										<p className="text-base font-semibold text-[var(--text-primary)]">
+										<p className="text-base font-semibold text-(--text-primary)">
 											{item.title}
 										</p>
-										<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+										<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
 											{item.description}
 										</p>
 									</div>
 									<DashboardBadge
 										label={item.status}
 										tone="blue"
-										className="max-w-[14rem] justify-center text-center"
+										className="max-w-56 justify-center text-center"
 									/>
 								</div>
 							</div>
@@ -68,33 +68,35 @@ const Settings = () => {
 					/>
 
 					<div className="mt-6 space-y-3">
-						<div className="rounded-3xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-5">
+						<div className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-5">
 							<div className="flex items-start gap-3">
-								<div className="rounded-2xl bg-[var(--teal-bg)] p-3 text-[var(--teal-text)]">
+								<div className="rounded-2xl bg-(--teal-bg) p-3 text-(--teal-text)">
 									<ShieldCheck className="h-5 w-5" />
 								</div>
 								<div>
-									<p className="text-sm font-semibold text-[var(--text-primary)]">
+									<p className="text-sm font-semibold text-(--text-primary)">
 										Transparent grade logic
 									</p>
-									<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-										Students and teachers can both see how the grade is produced from progress, attendance and quiz accuracy.
+									<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
+										Students and teachers can both see how the grade is produced from
+										progress, attendance and quiz accuracy.
 									</p>
 								</div>
 							</div>
 						</div>
 
-						<div className="rounded-3xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-5">
+						<div className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-5">
 							<div className="flex items-start gap-3">
-								<div className="rounded-2xl bg-[var(--blue-bg)] p-3 text-[var(--blue-text)]">
+								<div className="rounded-2xl bg-(--blue-bg) p-3 text-(--blue-text)">
 									<SlidersHorizontal className="h-5 w-5" />
 								</div>
 								<div>
-									<p className="text-sm font-semibold text-[var(--text-primary)]">
+									<p className="text-sm font-semibold text-(--text-primary)">
 										Role-aware workspace
 									</p>
-									<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-										The same dashboard shell adapts to teacher and student needs without splitting the product into separate experiences.
+									<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
+										The same dashboard shell adapts to teacher and student needs without
+										splitting the product into separate experiences.
 									</p>
 								</div>
 							</div>

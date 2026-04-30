@@ -12,7 +12,9 @@ type Props = {
 };
 
 const ProgrammingLessonCard = ({ item }: Props) => {
-	const difficultyLabel = item.difficulty ? difficultyLabels[item.difficulty] : null;
+	const difficultyLabel = item.difficulty
+		? difficultyLabels[item.difficulty]
+		: null;
 	const difficultyClass = item.difficulty
 		? difficultyBadgeClasses[item.difficulty]
 		: "";
@@ -36,7 +38,7 @@ const ProgrammingLessonCard = ({ item }: Props) => {
 				)}
 			</div>
 
-			<p className="line-clamp-3 min-h-[4.75rem] text-sm leading-6 text-(--text-secondary)">
+			<p className="line-clamp-3 min-h-19 text-sm leading-6 text-(--text-secondary)">
 				{item.description}
 			</p>
 

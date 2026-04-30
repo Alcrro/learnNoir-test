@@ -66,7 +66,7 @@ export type Subject = {
 	tags: string[];
 	featured: boolean;
 };
-export const SUBJECTS: Subject[] = [
+export const SUBJECTS = [
 	// ── FUNDAMENTALS ──────────────────────────────────────────────────────────
 	{
 		id: "programming-basics",
@@ -418,4 +418,4 @@ export const SUBJECTS: Subject[] = [
 		tags: ["Big O", "P vs NP", "NP-Hard", "Reductions"],
 		featured: false,
 	},
-];
+] as Subject[];

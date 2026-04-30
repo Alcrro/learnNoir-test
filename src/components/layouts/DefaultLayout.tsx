@@ -5,7 +5,7 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div>
 			<Navbar />
-			{children}
+			<div className="main max-w-7xl w-full mx-auto px-2">{children}</div>
 		</div>
 	);
 };

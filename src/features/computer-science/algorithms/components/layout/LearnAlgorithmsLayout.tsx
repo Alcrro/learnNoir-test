@@ -4,7 +4,7 @@ import Sidebar from "../../../../mathematics/navigation/sidebar/Sidebar";
 
 const LearnAlgorithmsLayout = () => {
 	return (
-		<div className="min-h-screen flex transition-colors duration-300 group relative overflow-hidden bg-(--lp-bg-page) px-2">
+		<div className="min-h-screen flex transition-colors duration-300 group relative overflow-hidden bg-(--bg-page)">
 			<main className="flex-1 flex gap-2 px-1 rounded-md group-hover:opacity-80 hover:opacity-100!">
 				<Sidebar />
 				<div className="main w-full">

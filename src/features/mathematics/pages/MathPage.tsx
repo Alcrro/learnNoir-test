@@ -1,5 +1,7 @@
+import { Breadcrumb } from "../../../components/molecules/Breadcrumb";
+
 const MathPage = () => {
-	return <>Math thales COntent</>;
+	return <>Math modules Content</>;
 };
 
 export default MathPage;

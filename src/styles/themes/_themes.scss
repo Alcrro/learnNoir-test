@@ -11,7 +11,6 @@ html.dark {
 	--bg-sidebar: #{dark.$bg-sidebar};
 	--bg-color: #{dark.$bg-page};
 
-
 	--bg-tertiary: #{dark.$bg-tertiary};
 	--border: #{dark.$border};
 	--border-strong: #{dark.$border-strong};
@@ -41,7 +40,7 @@ html.dark {
 	--border-radius-xl: #{layout.$radius-xl};
 	--border-radius-pill: #{layout.$radius-pill};
 
-	--shadow-soft: #{layout.$shadow-soft-dark};
+	--shadow-soft: #{layout.$shadow-soft-light};
 
 	/* ── TALE: butoane ── */
 	--btn-primary-bg: #{c.$btn-primary-bg-dark};
@@ -111,7 +110,7 @@ html.dark {
 	--border-radius-xl: #{layout.$radius-xl};
 	--border-radius-pill: #{layout.$radius-pill};
 
-	--shadow-soft: #{layout.$shadow-soft-light};
+	--shadow-soft: #{layout.$shadow-soft-dark};
 
 	/* button */
 
