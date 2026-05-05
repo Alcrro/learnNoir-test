@@ -7,7 +7,11 @@ import AlgorithmTableOfContents from "../components/lesson/AlgorithmTableOfConte
 
 export const algorithmTabsMapper: Record<FeatureTabUniqueIdType, ReactElement> =
 	{
-		learnTab: <AlgorithmLessonTheory />,
+		theoryTab: (
+			<>
+				<AlgorithmLessonTheory />
+			</>
+		),
 		vizTab: <Visualizer />,
 		codeTab: (
 			<div className="hidden xl:block px-1 max-w-80 2xl:max-w-120 w-full">

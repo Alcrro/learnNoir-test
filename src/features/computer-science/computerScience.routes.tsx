@@ -1,10 +1,9 @@
 import { RouteObject } from "react-router-dom";
 import { slugToText } from "../../libs/utils/slugToText";
 import { validateCategory } from "../../libs/utils/validateCategory";
-import { lessonLoader } from "../../libs/utils/routeLoader/lessonLoader";
-import AlgorithmPage from "./algorithms/pages/AlgorithmPage";
 import ModulesListPage from "../modules/pages/ModulesListPage";
 import LessonListPage from "../lessons/pages/LessonListPage";
+import LessonPage from "../lessons/pages/LessonPage";
 import { moduleLoader } from "../lessons/utils/moduleLoader";
 
 export const computerScienceRoutes: RouteObject = {
@@ -29,11 +28,14 @@ export const computerScienceRoutes: RouteObject = {
 							params.module ? slugToText(params.module) : "Unknown",
 					},
 				},
-
 				{
+					// :lessonId holds the lesson slug — resolved to a full lesson via GET /lessons/slug/:slug
 					path: ":lessonId",
-					element: <AlgorithmPage />,
-					loader: lessonLoader,
+					element: <LessonPage />,
+					handle: {
+						crumb: (_: unknown, params: { lessonId?: string }) =>
+							params.lessonId ? slugToText(params.lessonId) : "Unknown",
+					},
 				},
 			],
 		},

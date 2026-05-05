@@ -54,12 +54,10 @@ const Visualizer = () => {
 					<VisualizationMethodSelector />
 				</div>
 			</div>
-
 			<ArrayVisualizer
 				currentArray={currentArray}
 				boxesRef={boxesRef}
 			/>
-
 			<AlgorithmsControls
 				currentStep={currentStep}
 				stepsLength={steps.length}

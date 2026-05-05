@@ -18,7 +18,6 @@ const AlgorithPageLayout = ({ header, tabs, content }: Props) => {
 				{tabs}
 				{content}
 			</div>
-
 			<SidebarMobile
 				active={isToggled("sideBar")}
 				toggle={() => setToggle("sideBar")}
