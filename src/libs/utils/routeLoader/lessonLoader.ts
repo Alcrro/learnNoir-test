@@ -1,18 +1,18 @@
 import type { LoaderFunctionArgs } from "react-router-dom";
-import { isValidLesson } from "../isValidLesson";
+import { lessonsApi } from "../../../features/lessons/api/lessonsApi";
 
-export const lessonLoader = ({ params }: LoaderFunctionArgs) => {
-	const { category, lessonId } = params;
+export const lessonLoader = async ({ params }: LoaderFunctionArgs) => {
+	const { lessonSlug } = params;
 
-	if (!category || !lessonId) {
+	if (!lessonSlug) {
 		throw new Response("Not Found", { status: 404 });
 	}
 
-	if (!isValidLesson(lessonId)) {
-		throw new Response("Invalid Lesson", { status: 404 });
+	try {
+		await lessonsApi.getBySlug(lessonSlug);
+	} catch {
+		throw new Response("Lesson Not Found", { status: 404 });
 	}
-
-	// dacă vrei poți valida și itemId aici
 
 	return null;
 };

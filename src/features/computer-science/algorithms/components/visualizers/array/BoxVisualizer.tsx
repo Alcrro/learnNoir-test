@@ -6,7 +6,10 @@ export const BoxAlgorithmVisualization = forwardRef<
 	{ value: number }
 >(({ value }, ref) => {
 	return (
-		<div ref={ref}>
+		<div
+			ref={ref}
+			data-role="box"
+		>
 			<div
 				data-role="bar"
 				className="relative size-12 text-(--text-primary) flex items-center justify-center rounded-full shadow-sm bg-(--default_color) font-medium"

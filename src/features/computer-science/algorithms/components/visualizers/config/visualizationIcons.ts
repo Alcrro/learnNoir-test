@@ -1,17 +1,17 @@
 import {
-	SquareIcon,
-	BarChart2Icon,
-	ChartColumn,
-	GitBranchIcon,
-	type LucideIcon,
+	LayoutGrid,
 	BarChart3,
+	AlignCenter,
+	Columns3,
+	Network,
+	type LucideIcon,
 } from "lucide-react";
 import type { VisualizationMethod } from "../../../shared/AlgorithmTypes";
 
 export const visualizationIcons: Record<VisualizationMethod, LucideIcon> = {
-	box: SquareIcon,
+	box: LayoutGrid,
 	bar: BarChart3,
-	vertical: BarChart2Icon,
-	pillar: ChartColumn,
-	tree: GitBranchIcon,
+	vertical: AlignCenter,
+	pillar: Columns3,
+	tree: Network,
 };

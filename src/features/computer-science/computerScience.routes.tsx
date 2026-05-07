@@ -5,6 +5,7 @@ import ModulesListPage from "../modules/pages/ModulesListPage";
 import LessonListPage from "../lessons/pages/LessonListPage";
 import LessonPage from "../lessons/pages/LessonPage";
 import { moduleLoader } from "../lessons/utils/moduleLoader";
+import { lessonLoader } from "../../libs/utils/routeLoader/lessonLoader";
 
 export const computerScienceRoutes: RouteObject = {
 	path: ":category",
@@ -30,11 +31,12 @@ export const computerScienceRoutes: RouteObject = {
 				},
 				{
 					// :lessonId holds the lesson slug — resolved to a full lesson via GET /lessons/slug/:slug
-					path: ":lessonId",
+					path: ":lessonSlug",
 					element: <LessonPage />,
+					loader: lessonLoader,
 					handle: {
-						crumb: (_: unknown, params: { lessonId?: string }) =>
-							params.lessonId ? slugToText(params.lessonId) : "Unknown",
+						crumb: (_: unknown, params: { lessonSlug?: string }) =>
+							params.lessonSlug ? slugToText(params.lessonSlug) : "Unknown",
 					},
 				},
 			],

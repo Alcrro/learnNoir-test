@@ -4,6 +4,12 @@
 @use "../tokens/layout" as layout;
 
 html.dark {
+	/* ── algorithm visualizer ── */
+	--default_color: #4f46e5;
+	--compare-color: #f59e0b;
+	--sorted-color: #22c55e;
+	--text-inverse: #ffffff;
+	--text-color: #ffffff;
 	--bg-page: #{dark.$bg-page};
 	--bg-card: #{dark.$bg-card};
 	--bg-elevated: #{dark.$bg-elevated};
@@ -42,6 +48,11 @@ html.dark {
 
 	--shadow-soft: #{layout.$shadow-soft-light};
 
+	--red-bg: rgba(240, 149, 149, 0.12);
+	--red-text: #f09595;
+	--purple-bg: rgba(174, 169, 236, 0.12);
+	--purple-text: #afa9ec;
+
 	/* ── TALE: butoane ── */
 	--btn-primary-bg: #{c.$btn-primary-bg-dark};
 	--btn-primary-hover: #{c.$btn-primary-hover-dark};
@@ -71,6 +82,12 @@ html.dark {
 }
 
 :root {
+	/* ── algorithm visualizer ── */
+	--default_color: #6366f1;
+	--compare-color: #d97706;
+	--sorted-color: #16a34a;
+	--text-inverse: #ffffff;
+	--text-color: #1e293b;
 	--bg-page: #{light.$bg-page};
 	--bg-card: #{light.$bg-card};
 	--bg-elevated: #{light.$bg-elevated};
@@ -111,6 +128,11 @@ html.dark {
 	--border-radius-pill: #{layout.$radius-pill};
 
 	--shadow-soft: #{layout.$shadow-soft-dark};
+
+	--red-bg: #fcebeb;
+	--red-text: #a32d2d;
+	--purple-bg: #eeedfe;
+	--purple-text: #534ab7;
 
 	/* button */
 

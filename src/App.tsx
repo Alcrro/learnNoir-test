@@ -6,7 +6,13 @@ import "./App.scss";
 import "./styles/main.scss";
 import LoginModal from "./features/auth/components/modal/LoginModal";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 5 * 60 * 1000,
+		},
+	},
+});
 
 const persister = createSyncStoragePersister({ storage: window.localStorage });
 

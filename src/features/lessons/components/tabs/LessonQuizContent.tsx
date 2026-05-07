@@ -49,17 +49,29 @@ function McqBlock({
 							className={cn(
 								"w-full text-left rounded-lg border px-4 py-3 text-sm transition-all",
 								!answered && "hover:border-(--border-strong) hover:bg-(--hover)",
-								isSelected && isCorrect && "border-emerald-500 bg-emerald-500/10 text-emerald-400",
+								isSelected &&
+									isCorrect &&
+									"border-emerald-500 bg-emerald-500/10 text-emerald-400",
 								isSelected && !isCorrect && "border-red-400 bg-red-400/10 text-red-400",
-								answered && correct && !isSelected && "border-emerald-500/50 text-emerald-400",
+								answered &&
+									correct &&
+									!isSelected &&
+									"border-emerald-500/50 text-emerald-400",
 								!isSelected && !answered && "border-(--border) text-(--text-secondary)",
-								answered && !correct && !isSelected && "border-(--border) text-(--text-muted) opacity-60",
+								answered &&
+									!correct &&
+									!isSelected &&
+									"border-(--border) text-(--text-muted) opacity-60",
 							)}
 						>
 							<div className="flex items-center justify-between">
 								<span>{option}</span>
-								{answered && correct && <CheckCircle className="h-4 w-4 text-emerald-500" />}
-								{isSelected && !isCorrect && <XCircle className="h-4 w-4 text-red-400" />}
+								{answered && correct && (
+									<CheckCircle className="h-4 w-4 text-emerald-500" />
+								)}
+								{isSelected && !isCorrect && (
+									<XCircle className="h-4 w-4 text-red-400" />
+								)}
 							</div>
 						</button>
 					);
@@ -73,7 +85,9 @@ function McqBlock({
 						isCorrect ? "text-emerald-400" : "text-red-400",
 					)}
 				>
-					{isCorrect ? "Correct!" : `Wrong — the answer is: ${data.options[data.correctIndex]}`}
+					{isCorrect
+						? "Correct!"
+						: `Wrong — the answer is: ${data.options[data.correctIndex]}`}
 				</p>
 			)}
 		</div>
@@ -93,7 +107,8 @@ function InputBlock({ block }: { block: AssessmentBlock }) {
 
 	const isCorrect =
 		submitted &&
-		value.trim().toLowerCase() === String(data.correctAnswer).trim().toLowerCase();
+		value.trim().toLowerCase() ===
+			String(data.correctAnswer).trim().toLowerCase();
 
 	return (
 		<div className="rounded-xl border border-(--border) bg-(--surface) p-5">
@@ -138,11 +153,11 @@ function InputBlock({ block }: { block: AssessmentBlock }) {
 
 type Props = {
 	blocks: AssessmentBlock[];
-	lessonId: string;
+	lessonSlug: string;
 };
 
-export function LessonQuizContent({ blocks, lessonId }: Props) {
-	const { mutate: upsertProgress } = useUpsertProgressMutation(lessonId);
+export function LessonQuizContent({ blocks, lessonSlug }: Props) {
+	const { mutate: upsertProgress } = useUpsertProgressMutation(lessonSlug);
 
 	// When a quiz question is answered correctly, push a partial score update.
 	const handleCorrect = () => {
@@ -151,7 +166,9 @@ export function LessonQuizContent({ blocks, lessonId }: Props) {
 
 	if (blocks.length === 0) {
 		return (
-			<p className="text-sm text-(--text-muted) py-4">No quiz for this lesson yet.</p>
+			<p className="text-sm text-(--text-muted) py-4">
+				No quiz for this lesson yet.
+			</p>
 		);
 	}
 
@@ -159,11 +176,25 @@ export function LessonQuizContent({ blocks, lessonId }: Props) {
 		<div className="space-y-6 py-2">
 			{blocks.map((block) => {
 				if (block.engine === "quiz:mcq")
-					return <McqBlock key={block.id} block={block} onCorrect={handleCorrect} />;
+					return (
+						<McqBlock
+							key={block.id}
+							block={block}
+							onCorrect={handleCorrect}
+						/>
+					);
 				if (block.engine === "quiz:input")
-					return <InputBlock key={block.id} block={block} />;
+					return (
+						<InputBlock
+							key={block.id}
+							block={block}
+						/>
+					);
 				return (
-					<div key={block.id} className="rounded-xl border border-(--border) p-5 text-sm text-(--text-secondary)">
+					<div
+						key={block.id}
+						className="rounded-xl border border-(--border) p-5 text-sm text-(--text-secondary)"
+					>
 						Quiz type "{block.engine}" not yet supported.
 					</div>
 				);

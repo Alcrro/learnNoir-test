@@ -12,7 +12,6 @@ const AlgorithmPage = () => {
 	const { lessonId } = useParams<{
 		lessonId: string;
 	}>();
-	console.log("mere?");
 
 	const matches = useMatches();
 
@@ -27,7 +26,6 @@ const AlgorithmPage = () => {
 	if (!subject || !lessonId) return <>not found</>;
 
 	const validTabs = getTabsForSubject(subject);
-	console.log({ validTabs });
 
 	return (
 		<>

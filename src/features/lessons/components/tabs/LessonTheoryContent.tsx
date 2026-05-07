@@ -1,7 +1,7 @@
 import type { ContentBlock } from "../../api/lessonBlocksApi";
 import { ContentNodeRenderer } from "./ContentNodeRenderer";
 
-type AnyNode = { type: string; [key: string]: unknown };
+type AnyNode = { type?: string; nodeType?: string; [key: string]: unknown };
 
 type Props = { blocks: ContentBlock[] };
 
