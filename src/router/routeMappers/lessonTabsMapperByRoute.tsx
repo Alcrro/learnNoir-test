@@ -24,14 +24,14 @@ function MathVisualizer() {
 
 export const subjectTabsConfig: Record<Subject, TabConfig[]> = {
 	"computer-science": [
-		{ id: "learnTab", component: <AlgorithmLessonTheory /> },
+		{ id: "theoryTab", component: <AlgorithmLessonTheory /> },
 		{ id: "vizTab", component: <Visualizer /> },
 		{ id: "codeTab", component: <CodeEditor /> },
 		{ id: "quizTab", component: <Quiz /> },
 	],
 
 	mathematics: [
-		{ id: "learnTab", component: <MathTheory /> },
+		{ id: "theoryTab", component: <MathTheory /> },
 		{ id: "vizTab", component: <MathVisualizer /> },
 		// ❌ NO codeTab
 		{ id: "quizTab", component: <Quiz /> },

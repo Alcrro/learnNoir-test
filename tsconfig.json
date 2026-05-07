@@ -3,7 +3,7 @@
 		"ignoreDeprecations": "6.0",
 		"baseUrl": ".",
 		"paths": {
-			"@shared/*": ["../shared/src/*"]
+			"@shared/*": ["./src/shared/*"]
 		},
 		"target": "ESNext",
 		"useDefineForClassFields": true,

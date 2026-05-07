@@ -8,7 +8,7 @@ export default defineConfig({
 	plugins: [react(), tailwindcss()],
 	resolve: {
 		alias: {
-			"@shared": fileURLToPath(new URL("../shared/src", import.meta.url)),
+			"@shared": fileURLToPath(new URL("./src/shared", import.meta.url)),
 		},
 	},
 });
