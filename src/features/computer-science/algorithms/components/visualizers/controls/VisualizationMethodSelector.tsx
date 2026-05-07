@@ -1,15 +1,15 @@
-import { useLocation } from "react-router-dom";
 import { visualizationIcons } from "../config/visualizationIcons";
 import { visualizationMethods } from "../config/visualizationMethods";
-import type { AlgorithmTypes } from "../../../shared/AlgorithmTypes";
 import { cn } from "../../../../../../libs/utils/cn";
 import DefaultButton from "../../../../../../components/atoms/DefaultButton";
 import { useVisualAlgorithmUIStore } from "../../../../../../store/useVisualAlgorithmUIStore";
+import { useCurrentAlgorithm } from "../../../visualizer-v2/hooks/useCurrentAlgorithm";
 
 const VisualizationMethodSelector = () => {
-	const location = useLocation();
-	const currentAlgorithm = location.pathname.split("/").pop() as AlgorithmTypes;
-	const currentVisualizer = visualizationMethods[currentAlgorithm] ?? [];
+	const currentAlgorithm = useCurrentAlgorithm();
+	const currentVisualizer = currentAlgorithm
+		? (visualizationMethods[currentAlgorithm] ?? [])
+		: [];
 
 	const setVisualizerMethod = useVisualAlgorithmUIStore(
 		(store) => store.setVisualAlgorithmUI,

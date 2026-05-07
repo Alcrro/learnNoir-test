@@ -15,100 +15,92 @@ import { MemoryTipCard } from "./theory/sidebar/MemoryTipCard";
 import { NextLessonCard } from "./theory/sidebar/NextLessonCard";
 
 const AlgorithmLessonTheory = () => {
-  const { category, lessonId } = useParams<{
-    category: string;
-    lessonId: string;
-  }>();
+	const { category, lessonId } = useParams<{
+		category: string;
+		lessonId: string;
+	}>();
+	const model = useMemo(() => {
+		if (!lessonId) return null;
+		if (category !== "algorithms" && category !== "data-structures") return null;
 
-  const model = useMemo(() => {
-    if (!lessonId) return null;
-    if (category !== "algorithms" && category !== "data-structures")
-      return null;
+		const catalog = getFallbackProgrammingCatalog(category);
+		const lesson = catalog.lessons.find((l) => l.id === lessonId);
+		if (!lesson) return null;
 
-    const catalog = getFallbackProgrammingCatalog(category);
-    const lesson = catalog.lessons.find((l) => l.id === lessonId);
-    if (!lesson) return null;
+		const algorithmDetail =
+			category === "algorithms"
+				? algorithms.find((a) => a.id === lessonId)
+				: undefined;
 
-    const algorithmDetail =
-      category === "algorithms"
-        ? algorithms.find((a) => a.id === lessonId)
-        : undefined;
+		const groupLessons = catalog.lessons
+			.filter((l) => l.group === lesson.group)
+			.sort((a, b) => a.sortOrder - b.sortOrder);
 
-    const groupLessons = catalog.lessons
-      .filter((l) => l.group === lesson.group)
-      .sort((a, b) => a.sortOrder - b.sortOrder);
+		const relatedLessons = groupLessons.filter((l) => l.id !== lesson.id);
 
-    const relatedLessons = groupLessons.filter((l) => l.id !== lesson.id);
+		return buildAlgorithmLessonTheoryModel({
+			lesson,
+			algorithmDetail: algorithmDetail
+				? {
+						id: algorithmDetail.id,
+						group: algorithmDetail.group,
+						prerequisites: algorithmDetail.prerequisites,
+						estimatedTime: algorithmDetail.estimatedTime,
+					}
+				: { id: lesson.id },
+			relatedLessons,
+			allLessonsInGroup: groupLessons,
+		});
+	}, [category, lessonId]);
 
-    return buildAlgorithmLessonTheoryModel({
-      lesson,
-      algorithmDetail: algorithmDetail
-        ? {
-            id: algorithmDetail.id,
-            group: algorithmDetail.group,
-            prerequisites: algorithmDetail.prerequisites,
-            estimatedTime: algorithmDetail.estimatedTime,
-          }
-        : { id: lesson.id },
-      relatedLessons,
-      allLessonsInGroup: groupLessons,
-    });
-  }, [category, lessonId]);
+	if (!model) return null;
 
-  if (!model) return null;
+	return (
+		<div className="theory-senior">
+			<div className="layout">
+				{/* ══════════ MAIN CONTENT ══════════ */}
+				<div className="main w-full">
+					<KeyIdeaCard
+						keyIdea={model.keyIdea}
+						analogy={model.mainCards.find((c) => c.title.startsWith("Analogy"))?.body}
+					/>
 
-  return (
-    <div className="theory-senior">
-      <div className="layout">
-        {/* ══════════ MAIN CONTENT ══════════ */}
-        <div className="main w-full">
-          <KeyIdeaCard
-            keyIdea={model.keyIdea}
-            analogy={
-              model.mainCards.find((c) => c.title.startsWith("Analogy"))?.body
-            }
-          />
+					<StepsCard steps={model.steps} />
+					<ComplexityCard
+						complexityCases={model.complexityCases}
+						complexityExplainer={model.complexityExplainer}
+					/>
+					<WhenToUseCard
+						whenGood={model.whenGood}
+						whenAvoid={model.whenAvoid}
+					/>
+					<MisconceptionsCard misconceptions={model.misconceptions} />
+				</div>
+				{/* ══════════ SIDEBAR ══════════ */}
+				<div className="sidebar">
+					{/* Prerequisite map */}
+					<PrerequisitesCard
+						prerequisites={model.prerequisites}
+						prereqNote={model.prereqNote}
+					/>
 
-          <StepsCard steps={model.steps} />
+					{/* Related lessons */}
+					<RelatedLessonsCard relatedLessons={model.relatedLessons} />
 
-          <ComplexityCard
-            complexityCases={model.complexityCases}
-            complexityExplainer={model.complexityExplainer}
-          />
+					{/* Memory tip */}
+					<MemoryTipCard
+						title={model.title}
+						sidebarCards={model.sidebarCards}
+					/>
 
-          <WhenToUseCard
-            whenGood={model.whenGood}
-            whenAvoid={model.whenAvoid}
-          />
-
-          <MisconceptionsCard misconceptions={model.misconceptions} />
-        </div>
-
-        {/* ══════════ SIDEBAR ══════════ */}
-        <div className="sidebar">
-          {/* Prerequisite map */}
-          <PrerequisitesCard
-            prerequisites={model.prerequisites}
-            prereqNote={model.prereqNote}
-          />
-
-          {/* Related lessons */}
-          <RelatedLessonsCard relatedLessons={model.relatedLessons} />
-
-          {/* Memory tip */}
-          <MemoryTipCard
-            title={model.title}
-            sidebarCards={model.sidebarCards}
-          />
-
-          {/* Next lesson */}
-          {model.nextLesson ? (
-            <NextLessonCard nextLesson={model.nextLesson} />
-          ) : null}
-        </div>
-      </div>
-    </div>
-  );
+					{/* Next lesson */}
+					{model.nextLesson ? (
+						<NextLessonCard nextLesson={model.nextLesson} />
+					) : null}
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default AlgorithmLessonTheory;

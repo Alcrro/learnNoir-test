@@ -21,30 +21,30 @@ const AlgorithmPage = () => {
 
 	// găsești cel mai apropiat route cu subject
 	const subject = handle?.subject;
-	console.log(subject);
 
 	const { tab, setTab } = useAlgorithmPageQuery();
 	if (!subject || !lessonId) return <>not found</>;
 
 	const validTabs = getTabsForSubject(subject);
-	console.log({ validTabs });
 
 	return (
-		<AlgorithPageLayout
-			header={
-				<div className="header w-full flex flex-col gap-2">
-					<AlgorithmTitle lessonName={lessonId} />
-					<AlgorithmLessonMeta />
-				</div>
-			}
-			tabs={
-				<AlgorithmFeatureTabs
-					tabs={validTabs}
-					tabHandler={setTab}
-				/>
-			}
-			content={algorithmTabsMapper[tab]}
-		/>
+		<>
+			<AlgorithPageLayout
+				header={
+					<div className="header w-full flex flex-col gap-2">
+						<AlgorithmTitle lessonName={lessonId} />
+						<AlgorithmLessonMeta />
+					</div>
+				}
+				tabs={
+					<AlgorithmFeatureTabs
+						tabs={validTabs}
+						tabHandler={setTab}
+					/>
+				}
+				content={algorithmTabsMapper[tab]}
+			/>
+		</>
 	);
 };
 

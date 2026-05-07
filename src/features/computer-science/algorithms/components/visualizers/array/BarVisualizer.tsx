@@ -21,13 +21,14 @@ const BarVisualizer = forwardRef<HTMLDivElement, { value: number }>(
 		return (
 			<div
 				ref={ref}
-				className=" mt-auto"
+				data-role="box"
+				className="mt-auto"
 			>
 				<div
 					data-role="bar"
-					style={{ height: `${height * 4}px`, marginTop: "auto" }}
+					style={{ height: `${height * 4}px` }}
 					className={cn(
-						"relative w-8 bg-blue-500 rounded-md flex items-end justify-center",
+						"relative w-8 bg-(--default_color) rounded-md flex items-end justify-center",
 					)}
 				>
 					<ArrowDown

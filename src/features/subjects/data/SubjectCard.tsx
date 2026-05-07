@@ -18,12 +18,14 @@ type CategoryMeta = {
 type SubjectCardProps = {
 	subject: Subject;
 	categoryMeta: CategoryMeta;
+	navigateTo?: string;
 };
 
 // ── SubjectCard ───────────────────────────────────────────────────────────────
 export default function SubjectCard({
 	subject,
 	categoryMeta,
+	navigateTo,
 }: SubjectCardProps) {
 	const navigate = useNavigate();
 
@@ -44,9 +46,7 @@ export default function SubjectCard({
 		SUBJECT_ICONS_MAPPER[categoryMeta.icon] ?? SUBJECT_ICONS_MAPPER.layers;
 
 	function handleClick() {
-		// console.log(`${categoryMeta.label.toLocaleLowerCase()}/${subject.id}`);
-
-		navigate(`${categoryMeta.label.toLocaleLowerCase()}`);
+		navigate(navigateTo ?? `${categoryMeta.label.toLocaleLowerCase()}`);
 	}
 
 	function handleKeyDown(e: KeyboardEvent<HTMLElement>) {

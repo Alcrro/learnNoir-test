@@ -5,7 +5,7 @@ export type FeatureTabsProps = {
 };
 
 export const ALL_FEATURE_TABS = [
-	{ id: 0, uniqueId: "learnTab", label: "learn" },
+	{ id: 0, uniqueId: "theoryTab", label: "Theory1" },
 	{ id: 1, uniqueId: "vizTab", label: "Visualizer" },
 	{ id: 2, uniqueId: "codeTab", label: "code" },
 	{ id: 3, uniqueId: "quizTab", label: "quiz" },

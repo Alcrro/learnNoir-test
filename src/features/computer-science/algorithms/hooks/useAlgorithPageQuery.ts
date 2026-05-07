@@ -6,7 +6,7 @@ import { FeatureTabUniqueIdType } from "../../../../content/FeaturesTabData";
 export const useAlgorithmPageQuery = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	const tab = (searchParams.get("tab") as FeatureTabUniqueIdType) ?? "learnTab";
+	const tab = (searchParams.get("tab") as FeatureTabUniqueIdType) ?? "theoryTab";
 
 	useEffect(() => {
 		const step = searchParams.get("step");
