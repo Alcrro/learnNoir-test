@@ -15,10 +15,15 @@ export default defineConfig({
 		sourcemap: false,
 		rollupOptions: {
 			output: {
-				manualChunks: {
-					vendor: ["react", "react-dom", "react-router-dom"],
-					query: ["@tanstack/react-query", "@tanstack/react-query-persist-client"],
-					gsap: ["gsap", "@gsap/react"],
+				manualChunks(id) {
+					if (id.includes("/node_modules/")) {
+						if (["react/", "react-dom/", "react-router-dom/"].some((p) => id.includes(p)))
+							return "vendor";
+						if (["@tanstack/react-query/", "@tanstack/react-query-persist-client/"].some((p) => id.includes(p)))
+							return "query";
+						if (["gsap/", "@gsap/react/"].some((p) => id.includes(p)))
+							return "gsap";
+					}
 				},
 			},
 		},
