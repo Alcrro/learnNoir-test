@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
 import { useLoaderData } from "react-router-dom";
 import { CATEGORY_META, SUBJECTS } from "../../subjects/data/subjects.data";
-import SubjectsFilter from "../../../components/organisms/subjects/SubjectsFilter";
-import SubjectsStats from "../../../components/organisms/subjects/SubjectsStats";
+import SubjectsFilter from "../../subjects/components/organisms/SubjectsFilter";
+import SubjectsStats from "../../subjects/components/organisms/SubjectsStats";
 import { Breadcrumb } from "../../../components/molecules/Breadcrumb";
 import { buildCategories } from "../utils/buildCategories";
 import { applyFilters } from "../utils/categoriesApplyFilters";

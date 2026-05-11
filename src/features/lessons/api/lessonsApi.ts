@@ -1,10 +1,20 @@
-const API_URL =
-	(import.meta.env["VITE_API_URI"] as string | undefined) ?? "http://localhost:3000/api";
+import { API_URL } from "../../../libs/config";
 
 async function get<T>(path: string): Promise<T> {
 	const res = await fetch(`${API_URL}${path}`, {
 		credentials: "include",
 		headers: { "Content-Type": "application/json" },
+	});
+	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+	return res.json() as Promise<T>;
+}
+
+async function put<T>(path: string, body: unknown): Promise<T> {
+	const res = await fetch(`${API_URL}${path}`, {
+		method: "PUT",
+		credentials: "include",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
 	});
 	if (!res.ok) throw new Error(`HTTP ${res.status}`);
 	return res.json() as Promise<T>;
@@ -26,6 +36,12 @@ export type LessonDTO = {
 	updatedAt: string;
 };
 
+export type UpdateLessonPayload = {
+	title?: string;
+	description?: string | null;
+	durationSeconds?: number;
+};
+
 export const lessonsApi = {
 	// GET /lessons/module/slug/:moduleSlug — returns all lessons for a module.
 	getByModuleSlug: (moduleSlug: string) =>
@@ -38,4 +54,8 @@ export const lessonsApi = {
 	// GET /lessons/:id — returns a single lesson by its UUID.
 	getById: (id: string) =>
 		get<{ data: LessonDTO }>(`/lessons/${id}`).then((r) => r.data),
+
+	// PUT /lessons/:id — update lesson metadata (teacher/admin only).
+	update: (id: string, payload: UpdateLessonPayload) =>
+		put<{ data: LessonDTO }>(`/lessons/${id}`, payload).then((r) => r.data),
 };

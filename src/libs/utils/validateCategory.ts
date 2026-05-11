@@ -1,6 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router-dom";
-
-const API_URL = import.meta.env.VITE_API_URI ?? "http://localhost:3000/api";
+import { API_URL } from "../config";
 
 export const validateCategory = async ({ params }: LoaderFunctionArgs) => {
 	const { subject, category } = params;

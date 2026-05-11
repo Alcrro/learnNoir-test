@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import DashboardNavbar from "../components/molecules/dashboard/DashboardNavbar";
-import Sidebar from "../components/molecules/dashboard/SidebarItems";
+import DashboardNavbar from "../features/dashboards/components/molecules/DashboardNavbar";
+import Sidebar from "../features/dashboards/components/molecules/SidebarItems";
 import UseGetProfile from "../features/profiles/hooks/UseGetProfile";
 import { cn } from "../libs/utils/cn";
 import {

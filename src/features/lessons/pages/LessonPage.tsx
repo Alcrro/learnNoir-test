@@ -1,75 +1,113 @@
 import { useParams } from "react-router-dom";
+import { formatRelative } from "../../../libs/utils/formatRelative";
 import LessonPageLayout from "./LessonPageLayout";
 import { LessonFeatureTabs } from "../components/LessonFeatureTabs";
-import { useLessonBySlugQuery } from "../hooks/useLessonBySlugQuery";
-import { useLessonBlocksQuery } from "../hooks/useLessonBlocksQuery";
-import { useLessonProgressQuery } from "../hooks/useLessonProgressQuery";
-import { useLessonPageQuery } from "../hooks/useLessonPageQuery";
+import { useLessonPageController } from "../hooks/useLessonPageController";
+import { LessonEditContext } from "../context/LessonEditContext";
 import LessonHeader from "../components/LessonHeader";
 import LessonTabContent from "../components/LessonTabContent";
-import { resolveAvailableTabs } from "../utils/resolveAvailableTabs";
+import { LessonEditBar } from "../components/edit/LessonEditBar";
+import { AIReviewPanel } from "../components/edit/AIReviewPanel";
+import PageStatus from "../../../components/atoms/PageStatus";
 
 const LessonPage = () => {
 	const { lessonSlug } = useParams<{ lessonSlug: string }>();
 
 	const {
-		data: lesson,
-		isLoading: loadingLesson,
+		lesson,
+		loadingLesson,
 		isError,
-	} = useLessonBySlugQuery(lessonSlug!);
-	const { data: blocks = [], isLoading: loadingBlocks } = useLessonBlocksQuery(
-		lesson?.id ?? "",
-	);
-	const { data: progress } = useLessonProgressQuery(lesson?.id ?? "");
-	const { tab, setTab } = useLessonPageQuery();
+		blocks,
+		loadingBlocks,
+		progress,
+		setTab,
+		canEdit,
+		edit,
+		ai,
+		availableTabs,
+		activeTab,
+		handleImproveTitle,
+		handleImproveDescription,
+		handleReview,
+	} = useLessonPageController(lessonSlug!);
 
-	if (loadingLesson) {
-		return (
-			<div className="py-4 text-sm text-(--text-muted)">Loading lesson…</div>
-		);
-	}
-
-	if (isError || !lesson) {
-		return (
-			<div className="py-4 text-sm text-(--text-muted)">Lesson not found.</div>
-		);
-	}
-
-	const availableTabs = resolveAvailableTabs(blocks);
-	const activeTab = availableTabs.some((t) => t.uniqueId === tab)
-		? tab
-		: (availableTabs[0]?.uniqueId ?? "theoryTab");
+	if (loadingLesson) return <PageStatus message="Loading lesson…" />;
+	if (isError || !lesson) return <PageStatus message="Lesson not found." />;
 
 	return (
-		<LessonPageLayout
-			header={
-				<LessonHeader
-					title={lesson.title}
-					description={lesson.description}
-					durationSeconds={lesson.durationSeconds}
-					score={progress?.weightedScore}
+		<LessonEditContext.Provider value={{ canEdit }}>
+			<div className="relative">
+				<div className="absolute right-0 top-0 z-10 flex items-center gap-3">
+					{lesson.updatedAt && !edit.isEditing && (
+						<span className="text-xs text-(--text-muted)">
+							Updated {formatRelative(lesson.updatedAt)}
+						</span>
+					)}
+					{canEdit && (
+						<LessonEditBar
+							isEditing={edit.isEditing}
+							isDirty={edit.isDirty}
+							isSaving={edit.isSaving}
+							onEdit={() => edit.setIsEditing(true)}
+							onSave={edit.save}
+							onCancel={edit.cancel}
+							onReview={handleReview}
+							isReviewing={ai.reviewState.loading}
+						/>
+					)}
+				</div>
+
+				<LessonPageLayout
+					header={
+						<LessonHeader
+							title={lesson.title}
+							description={lesson.description}
+							durationSeconds={lesson.durationSeconds}
+							score={progress?.weightedScore}
+							isEditing={edit.isEditing}
+							editTitle={edit.title}
+							editDescription={edit.description}
+							onTitleChange={edit.setTitle}
+							onDescriptionChange={edit.setDescription}
+							aiImprovingTitle={ai.improveState["title"]?.loading}
+							aiImprovingDescription={ai.improveState["description"]?.loading}
+							onImproveTitle={handleImproveTitle}
+							onImproveDescription={handleImproveDescription}
+						/>
+					}
+					tabs={
+						loadingBlocks ? null : (
+							<LessonFeatureTabs
+								tabs={availableTabs}
+								tabHandler={setTab}
+							/>
+						)
+					}
+					content={
+						loadingBlocks ? (
+							<PageStatus
+								message="Loading content…"
+								padded={false}
+							/>
+						) : (
+							<LessonTabContent
+								tab={activeTab}
+								blocks={blocks}
+								lessonSlug={lesson.id}
+								lessonUpdatedAt={lesson.updatedAt}
+							/>
+						)
+					}
 				/>
-			}
-			tabs={
-				loadingBlocks ? null : (
-					<LessonFeatureTabs
-						tabs={availableTabs}
-						tabHandler={setTab}
+
+				{ai.reviewState.data && (
+					<AIReviewPanel
+						result={ai.reviewState.data}
+						onClose={ai.clearReview}
 					/>
-				)
-			}
-			content={
-				loadingBlocks ? (
-					<div className="text-sm text-(--text-muted)">Loading content…</div>
-				) : (
-					<LessonTabContent
-						tab={activeTab}
-						blocks={blocks}
-						lessonSlug={lesson.id}
-					/>
-				)
-			}
-		/>
+				)}
+			</div>
+		</LessonEditContext.Provider>
 	);
 };
 

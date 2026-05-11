@@ -1,4 +1,4 @@
-import { Clock, Edit2, Eye, Globe, Trash2, Users } from "lucide-react";
+import { Clock, Edit2, Eye, Globe, History, Trash2, Users } from "lucide-react";
 import type { TeacherLessonDTO } from "../../types/teacher.types";
 import { LessonStatusBadge } from "../atoms/LessonStatusBadge";
 import { DashboardPanel } from "../DashboardUI";
@@ -9,9 +9,10 @@ type Props = {
 	onDelete: (id: string) => void;
 	onReview: (id: string) => void;
 	onPublish: (id: string) => void;
+	onHistory: (lesson: TeacherLessonDTO) => void;
 };
 
-export function LessonCard({ lesson, onEdit, onDelete, onReview, onPublish }: Props) {
+export function LessonCard({ lesson, onEdit, onDelete, onReview, onPublish, onHistory }: Props) {
 	const durationMins = Math.round(lesson.durationSeconds / 60);
 
 	return (
@@ -87,6 +88,14 @@ export function LessonCard({ lesson, onEdit, onDelete, onReview, onPublish }: Pr
 					)}
 				</div>
 				<div className="flex items-center gap-2">
+					<button
+						type="button"
+						onClick={() => onHistory(lesson)}
+						aria-label="View edit history"
+						className="rounded-xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-2 text-[var(--text-secondary)] transition hover:border-[color:var(--border-strong)] hover:text-[var(--text-primary)]"
+					>
+						<History className="h-4 w-4" />
+					</button>
 					<button
 						type="button"
 						onClick={() => onEdit(lesson)}

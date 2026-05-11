@@ -56,3 +56,14 @@ export type CreateLessonPayload = {
 };
 
 export type UpdateLessonPayload = Partial<CreateLessonPayload>;
+
+export type LessonEditChange = { field: string; from: string; to: string };
+
+export type LessonEditEntry = {
+	id: string;
+	lessonId: string;
+	editorId: string;
+	editorName: string;
+	changedAt: string;
+	changes: LessonEditChange[];
+};

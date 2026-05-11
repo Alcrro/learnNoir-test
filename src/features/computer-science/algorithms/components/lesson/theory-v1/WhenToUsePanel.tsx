@@ -1,12 +1,17 @@
+import { type ReactNode } from "react";
 import { CheckCircle } from "lucide-react";
 import type { LessonTheoryModel } from "../../../lib/buildAlgorithmLessonTheory";
+import { NodeFooter } from "./NodeFooter";
 
 type Props = {
 	whenGood: LessonTheoryModel["whenGood"];
 	whenAvoid: LessonTheoryModel["whenAvoid"];
+	editButton?: ReactNode;
+	lastUpdated?: string;
+	canFeedback?: boolean;
 };
 
-export function WhenToUsePanel({ whenGood, whenAvoid }: Props) {
+export function WhenToUsePanel({ whenGood, whenAvoid, editButton, lastUpdated, canFeedback }: Props) {
 	return (
 		<div className="lt-card">
 			<div className="lt-card__header">
@@ -14,6 +19,7 @@ export function WhenToUsePanel({ whenGood, whenAvoid }: Props) {
 					<CheckCircle size={12} aria-hidden />
 				</div>
 				<span className="lt-card__title">When to use</span>
+				{editButton}
 			</div>
 			<div className="lt-card__body">
 				<div className="lt-use-grid">
@@ -35,6 +41,7 @@ export function WhenToUsePanel({ whenGood, whenAvoid }: Props) {
 					</div>
 				</div>
 			</div>
+			<NodeFooter lastUpdated={lastUpdated} canFeedback={canFeedback} />
 		</div>
 	);
 }

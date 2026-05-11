@@ -7,7 +7,7 @@ import { dashboardRoutes } from "./features/dashboards/router/dashboardRoutes";
 import { computerScienceRoutes } from "./features/computer-science/computerScience.routes";
 import { mathematicsRoutes } from "./features/mathematics/router/math.routes";
 import Subjects from "./features/auth/Subjects";
-import SubjectsLayout from "./components/organisms/layout/SubjectsLayout";
+import SubjectsLayout from "./features/subjects/components/layouts/SubjectsLayout";
 import SubjectsPage from "./features/subjects/pages/SubjectsPage";
 import CategoriesListPage from "./features/categories/pages/CategoriesListPage";
 import { subjectLoader } from "./features/subjects/utils/subjectLoader";

@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { DragInteraction } from "../../../../../components/molecules/interactions/DragInteraction";
+import { DragInteraction } from "./DragInteraction";
 
 export type InteractionsStep = {
 	items: number[];

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import DefaultButton from "../../../../../components/atoms/DefaultButton";
-import AnswerOption from "../../../../../components/molecules/interactions/AnswerOption";
+import AnswerOption from "./AnswerOption";
 import StepInteraction from "./StepInteraction";
 import { AnswerOptionType } from "../../shared/engineInteractionType";
 import { interactionMapper } from "../../data/interactionsData/stepInteractionLayoutMapper";

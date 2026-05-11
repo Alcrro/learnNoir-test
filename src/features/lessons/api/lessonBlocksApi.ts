@@ -1,5 +1,4 @@
-const API_URL =
-	(import.meta.env["VITE_API_URI"] as string | undefined) ?? "http://localhost:3000/api";
+import { API_URL } from "../../../libs/config";
 
 async function get<T>(path: string): Promise<T> {
 	const res = await fetch(`${API_URL}${path}`, {
@@ -41,10 +40,43 @@ export type AssessmentBlock = {
 
 export type LessonBlock = ContentBlock | InteractiveBlock | AssessmentBlock;
 
+async function patch(path: string, body: unknown): Promise<void> {
+	const res = await fetch(`${API_URL}${path}`, {
+		method: "PATCH",
+		credentials: "include",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
+	});
+	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
+
+async function post<T>(path: string, body: unknown): Promise<T> {
+	const res = await fetch(`${API_URL}${path}`, {
+		method: "POST",
+		credentials: "include",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
+	});
+	if (!res.ok) throw new Error(`HTTP ${res.status}`);
+	return res.json() as Promise<T>;
+}
+
 export const lessonBlocksApi = {
 	// GET /lessons-block/lesson/:lessonId — all blocks for a lesson, sorted by position.
 	getByLessonId: (lessonId: string) =>
 		get<{ success: boolean; data: LessonBlock[] }>(
 			`/lessons-block/lesson/${lessonId}`,
 		).then((r) => r.data),
+
+	// PATCH /lessons-block/:id/content — replaces the content array of a content block.
+	updateContent: (blockId: string, content: Record<string, unknown>[]) =>
+		patch(`/lessons-block/${blockId}/content`, { content }),
+
+	// POST /lessons-block — creates a new content block for a lesson.
+	createContentBlock: (lessonId: string, content: Record<string, unknown>[]) =>
+		post<{ success: boolean; createdLessonBlock: LessonBlock }>("/lessons-block", {
+			lessonId,
+			type: "content",
+			data: { content },
+		}).then((r) => r.createdLessonBlock),
 };

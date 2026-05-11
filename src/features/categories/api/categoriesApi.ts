@@ -1,5 +1,4 @@
-const API_URL =
-	(import.meta.env["VITE_API_URI"] as string | undefined) ?? "http://localhost:3000/api";
+import { API_URL } from "../../../libs/config";
 
 async function get<T>(path: string): Promise<T> {
 	const res = await fetch(`${API_URL}${path}`, {

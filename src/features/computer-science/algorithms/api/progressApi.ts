@@ -1,5 +1,4 @@
-const BASE =
-	(import.meta.env["VITE_API_URI"] as string | undefined) ?? "http://localhost:3000/api";
+import { API_URL as BASE } from "../../../../libs/config";
 
 type ProgressPayload = {
 	status?: "not_started" | "in_progress" | "completed";

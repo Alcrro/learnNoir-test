@@ -1,11 +1,6 @@
-const DEFAULT_API_URI = "http://localhost:3000/api";
+import { API_URL } from "../../../libs/config";
 
-const rawApiUri = import.meta.env.VITE_API_URI || DEFAULT_API_URI;
-const sanitizedApiUri = rawApiUri.replace(/\/$/, "");
-
-export const API_URI = sanitizedApiUri.endsWith("/api")
-	? sanitizedApiUri
-	: `${sanitizedApiUri}/api`;
+export { API_URL as API_URI };
 
 export function extractAuthMessage(
 	payload: unknown,

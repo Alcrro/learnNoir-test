@@ -3,6 +3,7 @@ import type { LessonTabId } from "../hooks/useLessonPageQuery";
 import type { ContentBlock, AssessmentBlock, LessonBlock } from "../api/lessonBlocksApi";
 import { LessonTheoryContent } from "./tabs/LessonTheoryContent";
 import { LessonQuizContent } from "./tabs/LessonQuizContent";
+import { LessonWatchContent } from "./tabs/LessonWatchContent";
 import VisualizerV2 from "../../computer-science/algorithms/visualizer-v2/VisualizerV2";
 import AlgorithmLessonTheoryV1 from "../../computer-science/algorithms/components/lesson/AlgorithmLessonTheoryV1";
 
@@ -10,9 +11,10 @@ type Props = {
 	tab: LessonTabId;
 	blocks: LessonBlock[];
 	lessonSlug: string;
+	lessonUpdatedAt?: string;
 };
 
-const LessonTabContent = ({ tab, blocks, lessonSlug }: Props) => {
+const LessonTabContent = ({ tab, blocks, lessonSlug, lessonUpdatedAt }: Props) => {
 	const { category } = useParams<{ category: string }>();
 
 	const contentBlocks = blocks.filter(
@@ -26,9 +28,9 @@ const LessonTabContent = ({ tab, blocks, lessonSlug }: Props) => {
 	switch (tab) {
 		case "theoryTab":
 			if (category === "algorithms" || category === "data-structures") {
-				return <AlgorithmLessonTheoryV1 />;
+				return <AlgorithmLessonTheoryV1 lessonId={lessonSlug} updatedAt={lessonUpdatedAt} />;
 			}
-			return <LessonTheoryContent blocks={contentBlocks} />;
+			return <LessonTheoryContent blocks={contentBlocks} lessonId={lessonSlug} />;
 		case "vizTab":
 			return <VisualizerV2 />;
 		case "codeTab":
@@ -44,6 +46,8 @@ const LessonTabContent = ({ tab, blocks, lessonSlug }: Props) => {
 					lessonSlug={lessonSlug}
 				/>
 			);
+		case "watchTab":
+			return <LessonWatchContent lessonId={lessonSlug} />;
 		default:
 			return null;
 	}

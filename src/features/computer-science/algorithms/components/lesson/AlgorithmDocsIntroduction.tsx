@@ -1,5 +1,5 @@
 import MathPageLayout from "../../../../mathematics/components/MathPageLayoutContent";
-import "../../../../../components/styles/docsIntro.css";
+import "./docsIntro.css";
 
 export type LessonComplexityCard = {
 	label: string;

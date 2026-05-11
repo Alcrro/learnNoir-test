@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import "../../../../../../components/styles/gsapComparedIndex.scss";
+import "./gsapComparedIndex.scss";
 import { ArrowDown } from "lucide-react";
 export const BoxAlgorithmVisualization = forwardRef<
 	HTMLDivElement,

@@ -7,7 +7,11 @@ interface ModulesGridProps {
 	subjectSlug: string;
 }
 
-export function ModulesGrid({ modules, categorySlug, subjectSlug }: ModulesGridProps) {
+export function ModulesGrid({
+	modules,
+	categorySlug,
+	subjectSlug,
+}: ModulesGridProps) {
 	return (
 		<div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{modules.map((module) => (

@@ -2,7 +2,7 @@
 import type { KeyboardEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Subject } from "./subjects.data";
-import { COLOR_MAP, DIFFICULTY } from "../../../components/styles/subjectsCard";
+import { COLOR_MAP, DIFFICULTY } from "./subjectsCard";
 import { SUBJECT_ICONS_MAPPER } from "./subjectCardIconsMapper";
 import { getSubjectStatus } from "../utils/getSubjectsStatus";
 import SubjectIcon from "../components/SubjectIcon";

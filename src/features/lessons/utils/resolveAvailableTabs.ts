@@ -20,6 +20,7 @@ export function resolveAvailableTabs(blocks: LessonBlock[]) {
 	if (hasViz) allowed.add("vizTab");
 	if (hasCode) allowed.add("codeTab");
 	if (hasQuiz) allowed.add("quizTab");
+	if (hasContent) allowed.add("watchTab");
 
 	if (allowed.size === 0) allowed.add("theoryTab");
 

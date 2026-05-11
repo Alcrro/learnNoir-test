@@ -2,13 +2,14 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 
 // Tab IDs for the lesson page — a superset of the algorithm page tabs.
-export type LessonTabId = "theoryTab" | "vizTab" | "codeTab" | "quizTab";
+export type LessonTabId = "theoryTab" | "vizTab" | "codeTab" | "quizTab" | "watchTab";
 
 export const ALL_LESSON_TABS: { id: number; uniqueId: LessonTabId; label: string }[] = [
 	{ id: 0, uniqueId: "theoryTab", label: "Theory" },
 	{ id: 1, uniqueId: "vizTab", label: "Visualizer" },
 	{ id: 2, uniqueId: "codeTab", label: "Code" },
 	{ id: 3, uniqueId: "quizTab", label: "Quiz" },
+	{ id: 4, uniqueId: "watchTab", label: "Watch" },
 ];
 
 // Syncs the active tab with the URL ?tab= param.

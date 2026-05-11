@@ -11,7 +11,7 @@ const ModulesListPage = () => {
 	const { data, isLoading, isError } = useQuery({
 		queryKey: ["category-modules", subject, category],
 		queryFn: () => categoriesApi.getBySubject(subject),
-		staleTime: 5 * 60 * 1000,
+		// staleTime: 5 * 60 * 1000,
 	});
 
 	const categoryData = data?.find((c) => c.slug === category);
@@ -43,7 +43,6 @@ const ModulesListPage = () => {
 				moduleCount={modules.length}
 				totalLessons={categoryData!.totalLessons}
 			/>
-
 			<ModulesGrid
 				modules={modules}
 				categorySlug={category}

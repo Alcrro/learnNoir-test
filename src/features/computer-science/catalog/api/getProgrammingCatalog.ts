@@ -10,7 +10,7 @@ import type {
 	ProgrammingCategory,
 } from "../types/catalog.types";
 
-const API_URI = import.meta.env.VITE_API_URI || "http://localhost:3000/api";
+import { API_URL as API_URI } from "../../../../libs/config";
 
 export type RawLesson = Record<string, unknown>;
 

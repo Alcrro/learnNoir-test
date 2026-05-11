@@ -1,6 +1,8 @@
+import { type ReactNode } from "react";
 import { Activity } from "lucide-react";
 import type { LessonTheoryModel } from "../../../lib/buildAlgorithmLessonTheory";
 import { ConfidenceRating, type ConfidenceLevel } from "./ConfidenceRating";
+import { NodeFooter } from "./NodeFooter";
 
 type Props = {
 	complexityCases: LessonTheoryModel["complexityCases"];
@@ -8,6 +10,9 @@ type Props = {
 	stepsRevealed: boolean;
 	confidence: ConfidenceLevel | null;
 	onConfidence: (v: ConfidenceLevel) => void;
+	editButton?: ReactNode;
+	lastUpdated?: string;
+	canFeedback?: boolean;
 };
 
 export function ComplexityPanel({
@@ -16,6 +21,9 @@ export function ComplexityPanel({
 	stepsRevealed,
 	confidence,
 	onConfidence,
+	editButton,
+	lastUpdated,
+	canFeedback,
 }: Props) {
 	return (
 		<div className="lt-card">
@@ -25,6 +33,7 @@ export function ComplexityPanel({
 				</div>
 				<span className="lt-card__title">Complexity</span>
 				<span className="lt-card__sub">time + space</span>
+				{editButton}
 			</div>
 			<div className="lt-card__body">
 				<div className="lt-cx-grid">
@@ -43,6 +52,7 @@ export function ComplexityPanel({
 				</div>
 				{stepsRevealed && <ConfidenceRating value={confidence} onChange={onConfidence} />}
 			</div>
+			<NodeFooter lastUpdated={lastUpdated} canFeedback={canFeedback} />
 		</div>
 	);
 }

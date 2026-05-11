@@ -1,7 +1,6 @@
 import type { UserProfile } from "../types/UserProfile.type";
 
-const VITE_API_URI =
-	import.meta.env.VITE_API_URI || "http://localhost:3000/api";
+import { API_URL as VITE_API_URI } from "../../../libs/config";
 
 export async function getProfile(userId?: string): Promise<UserProfile> {
 	if (!userId) {

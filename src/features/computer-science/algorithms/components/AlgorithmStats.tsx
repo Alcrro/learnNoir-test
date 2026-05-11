@@ -1,4 +1,4 @@
-import AlgorithmInfoCard from "../../../../components/molecules/AlgorithmInfoCard";
+import AlgorithmInfoCard from "./AlgorithmInfoCard";
 import ComparisonCard from "./ComparisonCard";
 import ComplexityCard from "./ComplexityCard";
 import SwapCard from "./SwapCard";

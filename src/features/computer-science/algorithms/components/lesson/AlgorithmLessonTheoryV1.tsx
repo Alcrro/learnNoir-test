@@ -1,9 +1,14 @@
-import { useMemo, useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { algorithms } from "../../data/algorithmsData";
-import { getFallbackProgrammingCatalog } from "../../../catalog/data/programmingCatalogFallback";
-import { buildAlgorithmLessonTheoryModel } from "../../lib/buildAlgorithmLessonTheory";
-import { patchLessonProgress } from "../../api/progressApi";
+import { useState } from "react";
+import { Sparkles, Loader2, Save, Pencil, X, Star, Clock } from "lucide-react";
+import { formatRelative } from "../../../../../libs/utils/formatRelative";
+import { useLessonTheoryModel } from "../../hooks/useLessonTheoryModel";
+import { useLessonReadProgress } from "../../hooks/useLessonReadProgress";
+import { useAlgorithmLessonOverrides } from "../../hooks/useAlgorithmLessonOverrides";
+import { useLessonEditContext } from "../../../../../features/lessons/context/LessonEditContext";
+import { useLessonProgressQuery } from "../../../../../features/lessons/hooks/useLessonProgressQuery";
+import useAuth from "../../../../../hooks/useAuth";
+import { getThinkPrompts } from "../../lib/getThinkPrompts";
+import { lessonAIApi } from "../../../../../features/lessons/api/lessonAIApi";
 import "./lessonTheory.css";
 
 import { ConceptReveal } from "./theory-v1/ConceptReveal";
@@ -12,161 +17,430 @@ import { StepsReveal } from "./theory-v1/StepsReveal";
 import { ComplexityPanel } from "./theory-v1/ComplexityPanel";
 import { WhenToUsePanel } from "./theory-v1/WhenToUsePanel";
 import { MisconceptionReveal } from "./theory-v1/MisconceptionReveal";
-import type { ConfidenceLevel } from "./theory-v1/ConfidenceRating";
 
-// Sidebar cards are shared — imported without modification
 import { PrerequisitesCard } from "./theory/sidebar/PrerequisitesCard";
 import { RelatedLessonsCard } from "./theory/sidebar/RelatedLessonsCard";
 import { MemoryTipCard } from "./theory/sidebar/MemoryTipCard";
 import { NextLessonCard } from "./theory/sidebar/NextLessonCard";
 
-function getThinkPrompts(lessonId: string): { steps: string; misconceptions: string } {
-	if (lessonId.includes("bubble-sort")) {
-		return {
-			steps: "Before reading — if you had to sort [5, 1, 4, 2, 8] by only swapping adjacent out-of-order elements, what would you do first?",
-			misconceptions:
-				"What mistake do you think most people make when coding Bubble Sort for the first time?",
-		};
-	}
-	if (lessonId.includes("binary-search")) {
-		return {
-			steps: "A sorted list has 100 numbers and you're looking for 42. Without checking each one — what's the fastest strategy to narrow it down?",
-			misconceptions:
-				"What assumption is usually wrong when people first implement Binary Search?",
-		};
-	}
-	if (lessonId.includes("merge")) {
-		return {
-			steps: "You have two already-sorted lists. How would you combine them into one sorted list as efficiently as possible?",
-			misconceptions: "What do most people forget when implementing Merge Sort?",
-		};
-	}
-	if (lessonId.includes("quick")) {
-		return {
-			steps: "Pick any element from a list as a 'pivot'. How would you rearrange the other elements around it?",
-			misconceptions: "What makes Quick Sort's worst case happen, and when should you watch out?",
-		};
-	}
-	if (lessonId.includes("breadth-first")) {
-		return {
-			steps: "Starting from one node in a graph, how would you visit all its direct neighbors before going deeper?",
-			misconceptions: "What happens if you forget to track visited nodes in BFS?",
-		};
-	}
-	return {
-		steps: "Before reading — what repeatable action do you think gets this algorithm closer to a solution on each step?",
-		misconceptions:
-			"What edge case or wrong assumption do you think catches people off guard with this algorithm?",
+// ── per-field AI improve ─────────────────────────────────────────────────────
+
+function useFieldImprove() {
+	const [loading, setLoading] = useState(false);
+	const run = async (text: string, context?: string): Promise<string | null> => {
+		setLoading(true);
+		try {
+			return await lessonAIApi.improve(text, context);
+		} catch {
+			return null;
+		} finally {
+			setLoading(false);
+		}
 	};
+	return { run, loading };
 }
 
-const AlgorithmLessonTheoryV1 = () => {
-	// Supports two URL shapes:
-	// 1. AlgorithmPage route: /:category/:lessonId  (lessonId = "bubble-sort")
-	// 2. LessonPage route:    /:category/:module/:lessonSlug  (lessonSlug = "bubble-sort-de-la-...")
-	const { category, lessonId, lessonSlug } = useParams<{
-		category: string;
-		lessonId: string;
-		lessonSlug: string;
-	}>();
+// ── edit panel: Central idea ─────────────────────────────────────────────────
 
-	const [stepsRevealed, setStepsRevealed] = useState(false);
-	const [miscRevealed, setMiscRevealed] = useState(false);
-	const [confidence, setConfidence] = useState<ConfidenceLevel | null>(null);
-	const lastSentScore = useRef(-1);
+function ConceptEditPanel({
+	initialKeyIdea,
+	initialAnalogy,
+	onSave,
+	onCancel,
+}: {
+	initialKeyIdea: string;
+	initialAnalogy: string;
+	onSave: (keyIdea: string, analogy: string) => void;
+	onCancel: () => void;
+}) {
+	const [keyIdea, setKeyIdea] = useState(initialKeyIdea);
+	const [analogy, setAnalogy] = useState(initialAnalogy);
+	const ki = useFieldImprove();
+	const an = useFieldImprove();
 
-	const model = useMemo(() => {
-		const cat =
-			category === "algorithms" || category === "data-structures" ? category : "algorithms";
-		const catalog = getFallbackProgrammingCatalog(cat);
+	return (
+		<div className="flex flex-col gap-4">
+			<Field
+				label="Key idea"
+				value={keyIdea}
+				onChange={setKeyIdea}
+				onImprove={async () => { const r = await ki.run(keyIdea); if (r) setKeyIdea(r); }}
+				improving={ki.loading}
+			/>
+			<Field
+				label="Analogy"
+				value={analogy}
+				onChange={setAnalogy}
+				multiline
+				onImprove={async () => { const r = await an.run(analogy, `Key idea: ${keyIdea}`); if (r) setAnalogy(r); }}
+				improving={an.loading}
+			/>
+			<PanelActions onSave={() => onSave(keyIdea, analogy)} onCancel={onCancel} />
+		</div>
+	);
+}
 
-		// Direct ID match (AlgorithmPage route) or prefix-match from full lesson slug (LessonPage route)
-		const effectiveLessonId =
-			lessonId ??
-			catalog.lessons.find((l) => (lessonSlug ?? "").startsWith(l.id))?.id;
+// ── edit panel: Complexity explainer ─────────────────────────────────────────
 
-		if (!effectiveLessonId) return null;
+function ComplexityEditPanel({
+	initialExplainer,
+	onSave,
+	onCancel,
+}: {
+	initialExplainer: string;
+	onSave: (explainer: string) => void;
+	onCancel: () => void;
+}) {
+	const [explainer, setExplainer] = useState(initialExplainer);
+	const ai = useFieldImprove();
 
-		const lesson = catalog.lessons.find((l) => l.id === effectiveLessonId);
-		if (!lesson) return null;
+	return (
+		<div className="flex flex-col gap-4">
+			<Field
+				label="Why this complexity?"
+				value={explainer}
+				onChange={setExplainer}
+				multiline
+				onImprove={async () => { const r = await ai.run(explainer); if (r) setExplainer(r); }}
+				improving={ai.loading}
+			/>
+			<PanelActions onSave={() => onSave(explainer)} onCancel={onCancel} />
+		</div>
+	);
+}
 
-		const algorithmDetail =
-			category === "algorithms"
-				? algorithms.find((a) => a.id === effectiveLessonId)
-				: undefined;
+// ── edit panel: When to use ───────────────────────────────────────────────────
 
-		const groupLessons = catalog.lessons
-			.filter((l) => l.group === lesson.group)
-			.sort((a, b) => a.sortOrder - b.sortOrder);
+function WhenToUseEditPanel({
+	initialWhenGood,
+	initialWhenAvoid,
+	onSave,
+	onCancel,
+}: {
+	initialWhenGood: string[];
+	initialWhenAvoid: string[];
+	onSave: (good: string[], avoid: string[]) => void;
+	onCancel: () => void;
+}) {
+	const [whenGood, setWhenGood] = useState(initialWhenGood.join("\n"));
+	const [whenAvoid, setWhenAvoid] = useState(initialWhenAvoid.join("\n"));
+	const g = useFieldImprove();
+	const a = useFieldImprove();
 
-		return buildAlgorithmLessonTheoryModel({
-			lesson,
-			algorithmDetail: algorithmDetail
-				? {
-						id: algorithmDetail.id,
-						group: algorithmDetail.group,
-						prerequisites: algorithmDetail.prerequisites,
-						estimatedTime: algorithmDetail.estimatedTime,
-					}
-				: { id: lesson.id },
-			relatedLessons: groupLessons.filter((l) => l.id !== lesson.id),
-			allLessonsInGroup: groupLessons,
-		});
-	}, [category, lessonId, lessonSlug]);
+	const split = (s: string) => s.split("\n").map((l) => l.trim()).filter(Boolean);
 
-	// Resolve the effective lesson ID for tracking and prompts (same logic as in useMemo above).
-	const trackingId = lessonId ?? model?.title.toLowerCase().replace(/\s+/g, "-");
+	return (
+		<div className="flex flex-col gap-4">
+			<Field
+				label="Good fit (one per line)"
+				value={whenGood}
+				onChange={setWhenGood}
+				multiline
+				onImprove={async () => { const r = await g.run(whenGood, "good fit cases"); if (r) setWhenGood(r); }}
+				improving={g.loading}
+			/>
+			<Field
+				label="Avoid when (one per line)"
+				value={whenAvoid}
+				onChange={setWhenAvoid}
+				multiline
+				onImprove={async () => { const r = await a.run(whenAvoid, "avoid cases"); if (r) setWhenAvoid(r); }}
+				improving={a.loading}
+			/>
+			<PanelActions onSave={() => onSave(split(whenGood), split(whenAvoid))} onCancel={onCancel} />
+		</div>
+	);
+}
 
-	// readScore: steps=40 · confidence=30 · all-misc-revealed=30
-	useEffect(() => {
-		if (!trackingId || !model) return;
-		const score =
-			(stepsRevealed ? 40 : 0) + (confidence !== null ? 30 : 0) + (miscRevealed ? 30 : 0);
-		if (score === lastSentScore.current) return;
-		lastSentScore.current = score;
-		patchLessonProgress(trackingId, {
-			readScore: score,
-			status: score === 100 ? "completed" : "in_progress",
-		});
-	}, [stepsRevealed, confidence, miscRevealed, trackingId, model]);
+// ── edit panel: Think prompt ──────────────────────────────────────────────────
+
+function ThinkPromptEditPanel({
+	initialQuestion,
+	onSave,
+	onCancel,
+}: {
+	initialQuestion: string;
+	onSave: (question: string) => void;
+	onCancel: () => void;
+}) {
+	const [question, setQuestion] = useState(initialQuestion);
+	const ai = useFieldImprove();
+
+	return (
+		<div className="flex flex-col gap-4">
+			<Field
+				label="Prompt question"
+				value={question}
+				onChange={setQuestion}
+				multiline
+				onImprove={async () => { const r = await ai.run(question, "think prompt for a lesson"); if (r) setQuestion(r); }}
+				improving={ai.loading}
+			/>
+			<PanelActions onSave={() => onSave(question)} onCancel={onCancel} />
+		</div>
+	);
+}
+
+// ── shared primitives ─────────────────────────────────────────────────────────
+
+function Field({
+	label,
+	value,
+	onChange,
+	multiline = false,
+	onImprove,
+	improving,
+}: {
+	label: string;
+	value: string;
+	onChange: (v: string) => void;
+	multiline?: boolean;
+	onImprove: () => void;
+	improving: boolean;
+}) {
+	return (
+		<div className="flex flex-col gap-1.5">
+			<span className="text-xs font-medium text-(--text-muted) uppercase tracking-wide">{label}</span>
+			{multiline ? (
+				<textarea
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+					rows={3}
+					className="w-full resize-none rounded-lg border border-(--border) bg-(--bg-base) px-3 py-2 text-sm text-(--text-primary) outline-none focus:border-(--accent) transition-colors"
+				/>
+			) : (
+				<input
+					type="text"
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+					className="w-full rounded-lg border border-(--border) bg-(--bg-base) px-3 py-2 text-sm text-(--text-primary) outline-none focus:border-(--accent) transition-colors"
+				/>
+			)}
+			<button
+				type="button"
+				onClick={onImprove}
+				disabled={improving || !value.trim()}
+				className="self-start flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-(--text-muted) hover:text-(--accent) hover:bg-(--accent-subtle) transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+			>
+				{improving ? <Loader2 className="h-3 w-3 animate-spin" /> : <Sparkles className="h-3 w-3" />}
+				{improving ? "Improving…" : "Improve with AI"}
+			</button>
+		</div>
+	);
+}
+
+function PanelActions({ onSave, onCancel }: { onSave: () => void; onCancel: () => void }) {
+	return (
+		<div className="flex items-center gap-2 border-t border-(--border) pt-3">
+			<button
+				type="button"
+				onClick={onSave}
+				className="flex items-center gap-1.5 rounded-lg bg-(--accent) px-3 py-1.5 text-xs font-medium text-white hover:opacity-90 transition-opacity"
+			>
+				<Save className="h-3.5 w-3.5" />
+				Save
+			</button>
+			<button
+				type="button"
+				onClick={onCancel}
+				className="rounded-lg border border-(--border) px-3 py-1.5 text-xs font-medium text-(--text-muted) hover:text-(--text-primary) transition-colors"
+			>
+				Cancel
+			</button>
+		</div>
+	);
+}
+
+// ── inline edit button ────────────────────────────────────────────────────────
+
+function EditBtn({ open, onOpen, onClose }: { open: boolean; onOpen: () => void; onClose: () => void }) {
+	if (open) {
+		return (
+			<button
+				type="button"
+				onClick={onClose}
+				className="ml-auto flex items-center gap-1 rounded-md px-2 py-0.5 text-xs text-(--text-muted) hover:text-(--text-primary) transition-colors"
+			>
+				<X className="h-3 w-3" />
+				Close
+			</button>
+		);
+	}
+	return (
+		<button
+			type="button"
+			onClick={onOpen}
+			className="ml-auto flex items-center gap-1 rounded-md px-2 py-0.5 text-xs text-(--text-muted) hover:text-(--accent) hover:bg-(--accent-subtle) transition-all"
+		>
+			<Pencil className="h-3 w-3" />
+			Edit
+		</button>
+	);
+}
+
+// ── edit panel container ──────────────────────────────────────────────────────
+
+function EditPanel({ children }: { children: React.ReactNode }) {
+	return (
+		<div className="mt-3 rounded-xl border border-(--accent) border-dashed bg-(--bg-surface) p-4">
+			{children}
+		</div>
+	);
+}
+
+// ── main component ────────────────────────────────────────────────────────────
+
+// ── footer ────────────────────────────────────────────────────────────────────
+
+function TheoryFooter({ updatedAt }: { updatedAt?: string }) {
+	return (
+		<div className="mt-10 border-t border-(--border) pt-6 flex flex-col gap-6">
+			{updatedAt && (
+				<div className="flex items-center gap-1.5 text-xs text-(--text-muted)">
+					<Clock className="h-3.5 w-3.5" />
+					Last updated {formatRelative(updatedAt)}
+				</div>
+			)}
+
+			<div>
+				<div className="flex items-center gap-2 mb-3">
+					<Star className="h-4 w-4 text-(--text-muted)" />
+					<span className="text-sm font-medium text-(--text-primary)">Student reviews</span>
+				</div>
+				<div className="rounded-xl border border-(--border) bg-(--bg-surface) p-4 text-sm text-(--text-muted) text-center">
+					Reviews coming soon — students will be able to rate and leave feedback here.
+				</div>
+			</div>
+		</div>
+	);
+}
+
+// ── main ──────────────────────────────────────────────────────────────────────
+
+type Section = "concept" | "stepsPrompt" | "complexity" | "whenToUse" | "miscPrompt";
+
+const AlgorithmLessonTheoryV1 = ({ lessonId: dbLessonId = "", updatedAt }: { lessonId?: string; updatedAt?: string }) => {
+	const { model, lessonId, lessonSlug } = useLessonTheoryModel();
+	const { stepsRevealed, setStepsRevealed, setMiscRevealed, confidence, setConfidence } =
+		useLessonReadProgress(dbLessonId, model);
+	const { overrides, save } = useAlgorithmLessonOverrides(dbLessonId);
+	const { canEdit } = useLessonEditContext();
+	const { user } = useAuth();
+	const { data: progress } = useLessonProgressQuery(dbLessonId);
+	const canFeedback = !!user && (progress?.weightedScore ?? 0) > 0;
+	const [editing, setEditing] = useState<Section | null>(null);
 
 	if (!model) return null;
 
-	const effectiveId = lessonId ?? lessonSlug ?? "";
+	const effectiveId = dbLessonId || lessonId || lessonSlug || "";
 	const prompts = getThinkPrompts(effectiveId);
-	const analogy = model.mainCards.find((c) => c.title.startsWith("Analogy"))?.body;
+	const modelAnalogy = model.mainCards.find((c) => c.title.startsWith("Analogy"))?.body ?? "";
+
+	const keyIdea = overrides?.keyIdea ?? model.keyIdea;
+	const analogy = overrides?.analogy ?? modelAnalogy;
+	const complexityExplainer = overrides?.complexityExplainer ?? model.complexityExplainer;
+	const whenGood = overrides?.whenGood ?? model.whenGood;
+	const whenAvoid = overrides?.whenAvoid ?? model.whenAvoid;
+	const stepsPrompt = overrides?.stepsPrompt ?? prompts.steps;
+	const miscPrompt = overrides?.miscPrompt ?? prompts.misconceptions;
+
+	const editBtn = (section: Section) =>
+		canEdit ? (
+			<EditBtn
+				open={editing === section}
+				onOpen={() => setEditing(section)}
+				onClose={() => setEditing(null)}
+			/>
+		) : null;
 
 	return (
 		<div className="lesson-theory">
 			<div className="lesson-theory__layout">
 				<main className="lesson-theory__main">
-					<ConceptReveal keyIdea={model.keyIdea} analogy={analogy} />
+					<ConceptReveal keyIdea={keyIdea} analogy={analogy} editButton={editBtn("concept")} lastUpdated={overrides?.conceptUpdatedAt} canFeedback={canFeedback} />
+					{editing === "concept" && (
+						<EditPanel>
+							<ConceptEditPanel
+								initialKeyIdea={keyIdea}
+								initialAnalogy={analogy}
+								onSave={(ki, an) => { save({ keyIdea: ki, analogy: an, conceptUpdatedAt: new Date().toISOString() }); setEditing(null); }}
+								onCancel={() => setEditing(null)}
+							/>
+						</EditPanel>
+					)}
 
 					<ThinkPrompt
-						question={prompts.steps}
+						question={stepsPrompt}
 						revealLabel="I've thought about it — show me the steps →"
 						onReveal={() => setStepsRevealed(true)}
+						editButton={editBtn("stepsPrompt")}
+						lastUpdated={overrides?.stepsPromptUpdatedAt}
+						canFeedback={canFeedback}
 					>
 						<StepsReveal steps={model.steps} />
 					</ThinkPrompt>
+					{editing === "stepsPrompt" && (
+						<EditPanel>
+							<ThinkPromptEditPanel
+								initialQuestion={stepsPrompt}
+								onSave={(q) => { save({ stepsPrompt: q, stepsPromptUpdatedAt: new Date().toISOString() }); setEditing(null); }}
+								onCancel={() => setEditing(null)}
+							/>
+						</EditPanel>
+					)}
 
 					<ComplexityPanel
 						complexityCases={model.complexityCases}
-						complexityExplainer={model.complexityExplainer}
+						complexityExplainer={complexityExplainer}
 						stepsRevealed={stepsRevealed}
 						confidence={confidence}
 						onConfidence={setConfidence}
+						editButton={editBtn("complexity")}
+						lastUpdated={overrides?.complexityUpdatedAt}
+						canFeedback={canFeedback}
 					/>
+					{editing === "complexity" && (
+						<EditPanel>
+							<ComplexityEditPanel
+								initialExplainer={complexityExplainer}
+								onSave={(ex) => { save({ complexityExplainer: ex, complexityUpdatedAt: new Date().toISOString() }); setEditing(null); }}
+								onCancel={() => setEditing(null)}
+							/>
+						</EditPanel>
+					)}
 
-					<WhenToUsePanel whenGood={model.whenGood} whenAvoid={model.whenAvoid} />
+					<WhenToUsePanel whenGood={whenGood} whenAvoid={whenAvoid} editButton={editBtn("whenToUse")} lastUpdated={overrides?.whenToUseUpdatedAt} canFeedback={canFeedback} />
+					{editing === "whenToUse" && (
+						<EditPanel>
+							<WhenToUseEditPanel
+								initialWhenGood={whenGood}
+								initialWhenAvoid={whenAvoid}
+								onSave={(g, a) => { save({ whenGood: g, whenAvoid: a, whenToUseUpdatedAt: new Date().toISOString() }); setEditing(null); }}
+								onCancel={() => setEditing(null)}
+							/>
+						</EditPanel>
+					)}
 
 					<ThinkPrompt
-						question={prompts.misconceptions}
+						question={miscPrompt}
 						revealLabel="Reveal common mistakes →"
 						onReveal={() => setMiscRevealed(true)}
+						editButton={editBtn("miscPrompt")}
+						lastUpdated={overrides?.miscPromptUpdatedAt}
+						canFeedback={canFeedback}
 					>
 						<MisconceptionReveal misconceptions={model.misconceptions} />
 					</ThinkPrompt>
+					{editing === "miscPrompt" && (
+						<EditPanel>
+							<ThinkPromptEditPanel
+								initialQuestion={miscPrompt}
+								onSave={(q) => { save({ miscPrompt: q, miscPromptUpdatedAt: new Date().toISOString() }); setEditing(null); }}
+								onCancel={() => setEditing(null)}
+							/>
+						</EditPanel>
+					)}
+					<TheoryFooter updatedAt={updatedAt} />
 				</main>
 
 				<aside className="lesson-theory__sidebar">

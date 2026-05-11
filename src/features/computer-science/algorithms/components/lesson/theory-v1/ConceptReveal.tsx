@@ -1,12 +1,17 @@
+import { type ReactNode } from "react";
 import { Info, Lightbulb } from "lucide-react";
 import type { LessonTheoryModel } from "../../../lib/buildAlgorithmLessonTheory";
+import { NodeFooter } from "./NodeFooter";
 
 type Props = {
 	keyIdea: LessonTheoryModel["keyIdea"];
 	analogy?: string;
+	editButton?: ReactNode;
+	lastUpdated?: string;
+	canFeedback?: boolean;
 };
 
-export function ConceptReveal({ keyIdea, analogy }: Props) {
+export function ConceptReveal({ keyIdea, analogy, editButton, lastUpdated, canFeedback }: Props) {
 	return (
 		<div className="lt-card">
 			<div className="lt-card__header">
@@ -14,6 +19,7 @@ export function ConceptReveal({ keyIdea, analogy }: Props) {
 					<Info size={12} aria-hidden />
 				</div>
 				<span className="lt-card__title">Central idea</span>
+				{editButton}
 			</div>
 			<div className="lt-card__body">
 				<div className="lt-key-idea">
@@ -30,6 +36,7 @@ export function ConceptReveal({ keyIdea, analogy }: Props) {
 					</div>
 				)}
 			</div>
+			<NodeFooter lastUpdated={lastUpdated} canFeedback={canFeedback} />
 		</div>
 	);
 }

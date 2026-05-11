@@ -4,11 +4,11 @@ import { startPlayback } from "../../../visualizer/engine/startPlayback";
 import pausePlayback from "../../../visualizer/engine/pausePlayback";
 import { useReset } from "../../../visualizer/hooks/useReset";
 import useAutoPlaySteps from "../../../visualizer/engine/useAutoPlaySteps";
-import StartButton from "../../../../../components/molecules/algorithmControllerButtons/StartButton";
-import ResetButton from "../../../../../components/molecules/algorithmControllerButtons/ResetButton";
-import PauseButton from "../../../../../components/molecules/algorithmControllerButtons/PauseButton";
-import PrevButton from "../../../../../components/molecules/algorithmControllerButtons/PrevButton";
-import NextButton from "../../../../../components/molecules/algorithmControllerButtons/NextButton";
+import StartButton from "./controls/StartButton";
+import ResetButton from "./controls/ResetButton";
+import PauseButton from "./controls/PauseButton";
+import PrevButton from "./controls/PrevButton";
+import NextButton from "./controls/NextButton";
 
 type Props = {
 	currentStep: number;

@@ -14,14 +14,12 @@ const LessonListPage = () => {
 		category = "",
 		module: moduleSlug = "",
 	} = useParams();
-	console.log("mere?");
 
 	const {
 		data: lessons = [],
 		isLoading,
 		isError,
 	} = useLessonsByModuleQuery(moduleSlug);
-	console.log("mere1?");
 
 	// Fetch progress for every lesson in parallel once the lesson list is ready.
 	// Each query is keyed by lessonId so results are cached individually.

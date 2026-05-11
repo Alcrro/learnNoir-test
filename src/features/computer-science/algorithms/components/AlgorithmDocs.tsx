@@ -3,8 +3,8 @@ import { bubbleSortDocs } from "../bubble-sort/docs/bubbleSortDocs";
 import MathPageLayout from "../../../mathematics/components/MathPageLayoutContent";
 import { useAlgorithmStore } from "../../../../store/useAlgorithmStore";
 import { useExtractStepsValues } from "../hooks/useExtractStepsValues";
-import NextStepInteractionBtn from "../../../../components/molecules/buttons/NextStepInteractionBtn";
-import PrevStepInteractionBtn from "../../../../components/molecules/buttons/PrevStepInteractionBtn";
+import NextStepInteractionBtn from "./interactions/NextStepInteractionBtn";
+import PrevStepInteractionBtn from "./interactions/PrevStepInteractionBtn";
 import InteractionLayout from "./interactions/InteractionLayout";
 import AlgorithmStepDocs from "./lesson/AlgorithmStepDocs";
 

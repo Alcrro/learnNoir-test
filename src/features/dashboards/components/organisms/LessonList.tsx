@@ -7,9 +7,10 @@ type Props = {
 	onDelete: (id: string) => void;
 	onReview: (id: string) => void;
 	onPublish: (id: string) => void;
+	onHistory: (lesson: TeacherLessonDTO) => void;
 };
 
-export function LessonList({ lessons, onEdit, onDelete, onReview, onPublish }: Props) {
+export function LessonList({ lessons, onEdit, onDelete, onReview, onPublish, onHistory }: Props) {
 	if (lessons.length === 0) {
 		return (
 			<div className="rounded-[28px] border border-dashed border-[color:var(--border)] bg-[var(--bg-card)] p-12 text-center">
@@ -30,6 +31,7 @@ export function LessonList({ lessons, onEdit, onDelete, onReview, onPublish }: P
 					onDelete={onDelete}
 					onReview={onReview}
 					onPublish={onPublish}
+					onHistory={onHistory}
 				/>
 			))}
 		</div>

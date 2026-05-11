@@ -4,7 +4,7 @@ type AlgStepsInfoProps = {
 	setCurrentStep: (value: number) => void;
 };
 import type { ChangeEvent, FC } from "react";
-import "../../../../../../components/styles/stepsInfo.css";
+import "./stepsInfo.css";
 import Input from "../../../../../../components/molecules/Input";
 
 const AlgorithmStepsInfo: FC<AlgStepsInfoProps> = ({

@@ -1,6 +1,6 @@
 import { type FC } from "react";
 import type { StepDocumentation } from "../../bubble-sort/docs/bubbleSortDocs";
-import "../../../../../components/styles/algDocs.scss";
+import "./algDocs.scss";
 import { useLectureStore } from "../../../../../store/useLectureStore";
 
 type AlgDocsProp = StepDocumentation & {
