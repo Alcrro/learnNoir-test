@@ -10,7 +10,7 @@ export function useNavbar() {
 	const location = useLocation();
 	const logoutMutation = useLogout();
 
-	const authLinkState = { backgroundLocation: location };
+	const authLinkState = { backgroundLocation: location, modal: "login" };
 	const userDisplayName = data?.username ?? "Learner";
 	const visibleNavigation = navigationItems.filter((item) => !item.protected || isAuthenticated);
 

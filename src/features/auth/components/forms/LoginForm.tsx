@@ -1,13 +1,10 @@
-import {
-	ArrowRight,
-	LoaderCircle,
-	LockKeyhole,
-	Mail,
-	ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, LoaderCircle, ShieldCheck } from "lucide-react";
+import DefaultButton from "../../../../components/atoms/DefaultButton";
+import { FormField } from "../../../../components/molecules/FormField";
+import { LOGIN_FORM } from "../../lib/authContent";
 import AuthFeedback from "../AuthFeedback";
 
-type LoginProps = {
+type Props = {
 	handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 	isPending: boolean;
 	errorMessage?: string | null;
@@ -25,30 +22,29 @@ const LoginForm = ({
 	successCountdown,
 	defaultEmail,
 	variant = "page",
-}: LoginProps) => {
+}: Props) => {
 	const isModal = variant === "modal";
 
 	return (
 		<div className="space-y-6">
 			<div className="space-y-2">
-				<div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--border)] bg-[var(--bg-secondary)] px-3 py-1 text-xs font-medium text-[var(--text-secondary)]">
-					<ShieldCheck className="h-3.5 w-3.5 text-[var(--blue-text)]" />
-					Secure login
+				<div className="inline-flex items-center gap-2 rounded-full border border-(--border) bg-(--bg-secondary) px-3 py-1 text-xs font-medium text-(--text-secondary)">
+					<ShieldCheck className="h-3.5 w-3.5 text-(--blue-text)" />
+					{LOGIN_FORM.badge}
 				</div>
 
 				<h1
 					className={
 						isModal
-							? "text-2xl font-semibold tracking-tight text-[var(--text-primary)]"
-							: "text-3xl font-semibold tracking-tight text-[var(--text-primary)] sm:text-4xl"
+							? "text-2xl font-semibold tracking-tight text-(--text-primary)"
+							: "text-3xl font-semibold tracking-tight text-(--text-primary) sm:text-4xl"
 					}
 				>
-					Welcome back
+					{LOGIN_FORM.heading}
 				</h1>
 
-				<p className="max-w-xl text-sm leading-6 text-[var(--text-secondary)] sm:text-base">
-					Sign in to continue your progress, keep your dashboard in sync and
-					pick up exactly where you left off on any device.
+				<p className="max-w-xl text-sm leading-6 text-(--text-secondary) sm:text-base">
+					{LOGIN_FORM.description}
 				</p>
 			</div>
 
@@ -56,7 +52,7 @@ const LoginForm = ({
 				{infoMessage ? (
 					<AuthFeedback
 						variant="info"
-						title="Account ready"
+						title={LOGIN_FORM.infoTitle}
 						description={infoMessage}
 					/>
 				) : null}
@@ -64,7 +60,7 @@ const LoginForm = ({
 				{errorMessage ? (
 					<AuthFeedback
 						variant="error"
-						title="Login failed"
+						title={LOGIN_FORM.errorTitle}
 						description={errorMessage}
 					/>
 				) : null}
@@ -72,8 +68,8 @@ const LoginForm = ({
 				{typeof successCountdown === "number" ? (
 					<AuthFeedback
 						variant="success"
-						title="Authenticated successfully"
-						description={`Redirecting you in ${successCountdown} ${successCountdown === 1 ? "second" : "seconds"}.`}
+						title={LOGIN_FORM.successTitle}
+						description={LOGIN_FORM.successDescription(successCountdown)}
 					/>
 				) : null}
 			</div>
@@ -82,78 +78,53 @@ const LoginForm = ({
 				onSubmit={handleSubmit}
 				className="space-y-5"
 			>
-				<div className="space-y-2">
-					<label
-						htmlFor="email"
-						className="text-sm font-medium text-[var(--text-primary)]"
-					>
-						Email
-					</label>
+				<FormField
+					id="email"
+					label={LOGIN_FORM.emailLabel}
+					type="email"
+					name="email"
+					autoComplete="email"
+					defaultValue={defaultEmail}
+					placeholder={LOGIN_FORM.emailPlaceholder}
+					required
+				/>
 
-					<div className="relative">
-						<Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
-						<input
-							id="email"
-							type="email"
-							name="email"
-							autoComplete="email"
-							defaultValue={defaultEmail}
-							placeholder="you@example.com"
-							className="h-[3.25rem] w-full rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] pl-11 pr-4 text-sm text-[var(--text-primary)] outline-none transition focus:border-[color:var(--blue-border)] focus:bg-[var(--bg-card)] focus:ring-4 focus:ring-[var(--blue-bg)]"
-							required
-						/>
-					</div>
-				</div>
+				<FormField
+					id="password"
+					label={LOGIN_FORM.passwordLabel}
+					type="password"
+					name="password"
+					autoComplete="current-password"
+					placeholder={LOGIN_FORM.passwordPlaceholder}
+					required
+				/>
 
-				<div className="space-y-2">
-					<label
-						htmlFor="password"
-						className="text-sm font-medium text-[var(--text-primary)]"
-					>
-						Password
-					</label>
-
-					<div className="relative">
-						<LockKeyhole className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
-						<input
-							id="password"
-							type="password"
-							name="password"
-							autoComplete="current-password"
-							placeholder="Enter your password"
-							className="h-[3.25rem] w-full rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] pl-11 pr-4 text-sm text-[var(--text-primary)] outline-none transition focus:border-[color:var(--blue-border)] focus:bg-[var(--bg-card)] focus:ring-4 focus:ring-[var(--blue-bg)]"
-							required
-						/>
-					</div>
-				</div>
-
-				<button
+				<DefaultButton
 					type="submit"
 					disabled={isPending}
-					className="inline-flex min-h-[3.25rem] w-full items-center justify-center gap-2 rounded-2xl bg-[var(--blue-bg)] px-4 py-3 text-sm font-semibold text-[var(--blue-text)] shadow-sm transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
+					size="lg"
+					className="inline-flex w-full items-center justify-center gap-2"
 				>
 					{isPending ? (
 						<>
 							<LoaderCircle className="h-4 w-4 animate-spin" />
-							Signing you in...
+							{LOGIN_FORM.submitPending}
 						</>
 					) : (
 						<>
-							Continue to dashboard
+							{LOGIN_FORM.submitIdle}
 							<ArrowRight className="h-4 w-4" />
 						</>
 					)}
-				</button>
+				</DefaultButton>
 			</form>
 
-			<div className="rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-4">
-				<p className="text-sm font-medium text-[var(--text-primary)]">
-					What happens next
+			<div className="rounded-2xl border border-(--border) bg-(--bg-secondary) p-4">
+				<p className="text-sm font-medium text-(--text-primary)">
+					{LOGIN_FORM.infoPanelTitle}
 				</p>
-				<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
-					Your session is restored securely, profile data refreshes in the
-					background and the redirect keeps the experience smooth on mobile and
-					desktop.
+				<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
+					{LOGIN_FORM.infoPanelDescription}
 				</p>
 			</div>
 		</div>
