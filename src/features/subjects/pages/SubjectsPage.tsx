@@ -1,19 +1,14 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import ComputerSciencePages from "../../computer-science/pages/ComputerScience";
-import MathPage from "../../mathematics/pages/MathPage";
+import { useParams } from "react-router-dom";
+import PageStatus from "../../../components/atoms/PageStatus";
+import { SUBJECT_REGISTRY } from "../data/subjectRegistry";
 
 const SubjectsPage = () => {
-	const location = useLocation();
+	const { subject } = useParams<{ subject: string }>();
+	const SubjectComponent = subject ? SUBJECT_REGISTRY[subject] : undefined;
 
-	const subjectName = location.pathname.split("/")[2];
+	if (!SubjectComponent) return <PageStatus message="Subject not found" />;
 
-	const subjectsMapper = {
-		"computer-science": <ComputerSciencePages />,
-		mathematics: <MathPage />,
-	} as Record<string, React.ReactNode>;
-
-	return <div>{subjectsMapper[subjectName] || "Subject not found"}</div>;
+	return <SubjectComponent />;
 };
 
 export default SubjectsPage;

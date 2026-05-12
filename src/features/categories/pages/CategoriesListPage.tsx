@@ -1,5 +1,4 @@
 import { useState, useMemo } from "react";
-import { useLoaderData } from "react-router-dom";
 import { CATEGORY_META, SUBJECTS } from "../../subjects/data/subjects.data";
 import SubjectsFilter from "../../subjects/components/organisms/SubjectsFilter";
 import SubjectsStats from "../../subjects/components/organisms/SubjectsStats";
@@ -17,9 +16,6 @@ export default function CategoriesListPage() {
 	const [activeCategory, setActiveCategory] = useState("all");
 	const [activeDiff, setActiveDiff] = useState("all");
 	const [search, setSearch] = useState("");
-
-	const mere = useLoaderData();
-	console.log(mere);
 
 	const { data: backendSubjects } = useCatalogSubjectsQuery("computer-science");
 	const subjects = backendSubjects ?? SUBJECTS;

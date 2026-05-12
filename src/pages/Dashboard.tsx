@@ -12,7 +12,9 @@ import {
 
 const Dashboard = () => {
 	const profileQuery = UseGetProfile();
-	const [rolePreference, setRolePreference] = useState<WorkspaceRole | null>(null);
+	const [rolePreference, setRolePreference] = useState<WorkspaceRole | null>(
+		null,
+	);
 	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 	const profile = profileQuery.data;
 	const profileRole =
@@ -29,7 +31,7 @@ const Dashboard = () => {
 	}
 
 	return (
-		<div className="min-h-screen bg-[var(--bg-page)] px-3 py-3 text-[var(--text-primary)] sm:px-4 sm:py-4 lg:px-6">
+		<div className="min-h-screen bg-(--bg-page) px-3 py-3 text-(--text-primary) sm:px-4 sm:py-4 lg:px-6">
 			<div className="mx-auto flex max-w-7xl flex-col gap-4">
 				<DashboardNavbar
 					previewRole={previewRole}

@@ -19,17 +19,12 @@ export const router = createBrowserRouter([
 		errorElement: <RouteErrorPage />,
 		children: [
 			{ path: "/", element: <Home /> },
-
 			authRoutes,
-			// { path: "/auth/login", element: <Login /> },
-			// { path: "/auth/register", element: <Register /> },
-			// authRoutes,
 			dashboardRoutes,
 			{
 				path: "subjects",
 				element: <Subjects />,
 				handle: { crumb: "subjects", subject: "subjects" },
-
 				children: [
 					{ index: true, loader: subjectLoader, element: <SubjectsLayout /> },
 					{

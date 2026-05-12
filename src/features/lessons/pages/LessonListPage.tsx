@@ -1,12 +1,9 @@
 import { useParams } from "react-router-dom";
-import { useQueries } from "@tanstack/react-query";
 import { Breadcrumb } from "../../../components/molecules/Breadcrumb";
-import { useLessonsByModuleQuery } from "../hooks/useLessonsByModuleQuery";
-import { progressApi } from "../api/progressApi";
-import type { LessonProgress } from "../api/progressApi";
+import PageStatus from "../../../components/atoms/PageStatus";
 import { LessonsGrid } from "../components/organisms/LessonsGrid";
 import { LessonsListHeader } from "../components/molecules/LessonsListHeader";
-import type { LessonDTO } from "../api/lessonsApi";
+import { useLessonListPage } from "../hooks/useLessonListPage";
 
 const LessonListPage = () => {
 	const {
@@ -15,44 +12,14 @@ const LessonListPage = () => {
 		module: moduleSlug = "",
 	} = useParams();
 
-	const {
-		data: lessons = [],
-		isLoading,
-		isError,
-	} = useLessonsByModuleQuery(moduleSlug);
-
-	// Fetch progress for every lesson in parallel once the lesson list is ready.
-	// Each query is keyed by lessonId so results are cached individually.
-	const progressQueries = useQueries({
-		queries: lessons.map((lesson) => ({
-			queryKey: ["lesson-progress", lesson.id],
-			queryFn: () => progressApi.getByLesson(lesson.id),
-			staleTime: 60 * 1000,
-		})),
-	});
-
-	// Build a map from lessonId → progress for O(1) lookup in the grid.
-	const progressMap: Record<string, LessonProgress | null> = {};
-	lessons.forEach((lesson, i) => {
-		const result = progressQueries[i];
-		// undefined means still loading; we pass undefined so the card shows no bar yet.
-		if (result && !result.isLoading) {
-			progressMap[lesson.id] = result.data ?? null;
-		}
-	});
-
-	const completedCount = Object.values(progressMap).filter(
-		(p) => p?.status === "completed",
-	).length;
-
-	const buildHref = (lesson: LessonDTO) =>
-		`/subjects/${subject}/${category}/${moduleSlug}/${lesson.slug}`;
+	const { lessons, progressMap, completedCount, buildHref, isLoading, isError } =
+		useLessonListPage({ subject, category, moduleSlug });
 
 	if (isLoading) {
 		return (
 			<div className="py-2">
 				<Breadcrumb />
-				<div className="mt-6 text-(--text-secondary)">Loading lessons…</div>
+				<PageStatus message="Loading lessons…" />
 			</div>
 		);
 	}
@@ -61,7 +28,7 @@ const LessonListPage = () => {
 		return (
 			<div className="py-2">
 				<Breadcrumb />
-				<div className="mt-6 text-(--text-secondary)">Could not load lessons.</div>
+				<PageStatus message="Could not load lessons." />
 			</div>
 		);
 	}
@@ -74,11 +41,7 @@ const LessonListPage = () => {
 				lessonCount={lessons.length}
 				completedCount={completedCount}
 			/>
-			<LessonsGrid
-				lessons={lessons}
-				progressMap={progressMap}
-				buildHref={buildHref}
-			/>
+			<LessonsGrid lessons={lessons} progressMap={progressMap} buildHref={buildHref} />
 		</div>
 	);
 };

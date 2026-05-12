@@ -1,24 +1,30 @@
-import { BookOpen, GraduationCap, Radio, TrendingUp } from "lucide-react";
+import { BookOpen, GraduationCap, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
-import { DashboardPanel, DashboardSectionHeading, DashboardStatCard } from "../components/DashboardUI";
+import PageStatus from "../../../components/atoms/PageStatus";
+import {
+	DashboardPanel,
+	DashboardSectionHeading,
+	DashboardStatCard,
+} from "../components/DashboardUI";
+import { LiveLessonBanner } from "../components/atoms/LiveLessonBanner";
 import { StatCounter } from "../components/atoms/StatCounter";
 import { useTeacherStats } from "../hooks/useTeacherStats";
 
 export default function OverviewPage() {
 	const { data: stats, isLoading } = useTeacherStats();
 
-	if (isLoading) {
+	if (isLoading)
 		return (
-			<div className="flex h-64 items-center justify-center">
-				<p className="text-sm text-[var(--text-muted)]">Loading overview…</p>
-			</div>
+			<PageStatus
+				message="Loading overview…"
+				centered
+			/>
 		);
-	}
 
 	return (
 		<div className="space-y-4">
 			<DashboardPanel className="relative overflow-hidden">
-				<div className="absolute -right-14 top-0 h-44 w-44 rounded-full bg-[var(--blue-bg)] blur-3xl" />
+				<div className="absolute -right-14 top-0 h-44 w-44 rounded-full bg-(--blue-bg) blur-3xl" />
 				<div className="relative">
 					<DashboardSectionHeading
 						eyebrow="Overview"
@@ -28,13 +34,13 @@ export default function OverviewPage() {
 					<div className="mt-6 flex flex-wrap gap-3">
 						<Link
 							to="/dashboard/lessons"
-							className="rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] px-4 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-elevated)]"
+							className="rounded-2xl border border-(--border) bg-(--bg-secondary) px-4 py-2.5 text-sm font-semibold text-(--text-primary) transition hover:bg-(--bg-elevated)"
 						>
 							Manage lessons
 						</Link>
 						<Link
 							to="/dashboard/students"
-							className="rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] px-4 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-elevated)]"
+							className="rounded-2xl border border-(--border) bg-(--bg-secondary) px-4 py-2.5 text-sm font-semibold text-(--text-primary) transition hover:bg-(--bg-elevated)"
 						>
 							View students
 						</Link>
@@ -43,34 +49,10 @@ export default function OverviewPage() {
 			</DashboardPanel>
 
 			{stats?.liveLesson && (
-				<div className="rounded-[28px] border border-[color:var(--teal-border)] bg-[var(--teal-bg)] p-5">
-					<div className="flex items-start gap-4">
-						<div className="rounded-2xl bg-[var(--teal-bg)] border border-[color:var(--teal-border)] p-3 text-[var(--teal-text)] shrink-0">
-							<Radio className="h-5 w-5" />
-						</div>
-						<div className="flex-1 min-w-0">
-							<p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--teal-text)]">
-								Live now
-							</p>
-							<p className="mt-1 text-lg font-semibold text-[var(--text-primary)] truncate">
-								{stats.liveLesson.title}
-							</p>
-							<p className="mt-1 text-xs text-[var(--text-secondary)]">
-								Last activity{" "}
-								{new Date(stats.liveLesson.lastActivityAt).toLocaleTimeString("en-GB", {
-									hour: "2-digit",
-									minute: "2-digit",
-								})}
-							</p>
-						</div>
-						<Link
-							to="/dashboard/lessons"
-							className="shrink-0 rounded-2xl border border-[color:var(--teal-border)] bg-[var(--bg-card)] px-3 py-2 text-xs font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-elevated)]"
-						>
-							View
-						</Link>
-					</div>
-				</div>
+				<LiveLessonBanner
+					title={stats.liveLesson.title}
+					lastActivityAt={stats.liveLesson.lastActivityAt}
+				/>
 			)}
 
 			<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">

@@ -1,14 +1,16 @@
-import { ArrowRight, Clock3, Sparkles, Zap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Sparkles, Zap } from "lucide-react";
 import {
-	DashboardBadge,
 	DashboardPanel,
-	DashboardProgressBar,
 	DashboardSectionHeading,
 	DashboardStatCard,
 } from "./DashboardUI";
-import { dashboardHighlights, getStatusTone } from "../data/dashboardData";
+import { dashboardHighlights } from "../data/dashboardData";
 import { useDashboardContext } from "../lib/dashboardContext";
+import { GovernanceCard } from "./atoms/GovernanceCard";
+import { QuickActionCard } from "./atoms/QuickActionCard";
+import { SessionCard } from "./atoms/SessionCard";
+import { AlertCard } from "./atoms/AlertCard";
+import { RosterPulseTable } from "./organisms/RosterPulseTable";
 
 const Overview = () => {
 	const { previewRole, workspace } = useDashboardContext();
@@ -26,59 +28,27 @@ const Overview = () => {
 							title={workspace.headline.title}
 							description={workspace.headline.description}
 						/>
-
 						<div className="mt-5 inline-flex items-center gap-2 rounded-full border border-(--teal-border) bg-(--teal-bg) px-4 py-2 text-sm font-medium text-(--teal-text)">
 							<Sparkles className="h-4 w-4" />
 							{workspace.headline.highlight}
 						</div>
-
 						<div className="mt-6 grid gap-3 sm:grid-cols-3">
 							{workspace.quickActions.map((action) => (
-								<Link
-									key={action.title}
-									to={action.href}
-									className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-4 transition hover:border-(--border-strong) hover:bg-(--bg-elevated)"
-								>
-									<p className="text-sm font-semibold text-(--text-primary)">
-										{action.title}
-									</p>
-									<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
-										{action.description}
-									</p>
-									<span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-(--text-primary)">
-										{action.cta}
-										<ArrowRight className="h-4 w-4" />
-									</span>
-								</Link>
+								<QuickActionCard key={action.title} action={action} />
 							))}
 						</div>
 					</div>
 
 					<div className="grid gap-3">
-						{highlights.map((item) => {
-							const Icon = item.icon;
-
-							return (
-								<div
-									key={item.title}
-									className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-4"
-								>
-									<div className="flex items-start gap-3">
-										<div className="rounded-2xl bg-(--blue-bg) p-3 text-(--blue-text)">
-											<Icon className="h-5 w-5" />
-										</div>
-										<div>
-											<p className="text-sm font-semibold text-(--text-primary)">
-												{item.title}
-											</p>
-											<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
-												{item.description}
-											</p>
-										</div>
-									</div>
-								</div>
-							);
-						})}
+						{highlights.map((item) => (
+							<GovernanceCard
+								key={item.title}
+								icon={item.icon}
+								title={item.title}
+								description={item.description}
+								tone="blue"
+							/>
+						))}
 					</div>
 				</div>
 			</DashboardPanel>
@@ -112,39 +82,9 @@ const Overview = () => {
 								: "You can see upcoming classes, submission windows and exactly what you need to prepare."
 						}
 					/>
-
 					<div className="mt-6 grid gap-3">
 						{workspace.sessions.map((session) => (
-							<div
-								key={session.id}
-								className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-4"
-							>
-								<div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-									<div>
-										<p className="text-base font-semibold text-(--text-primary)">
-											{session.title}
-										</p>
-										<p className="mt-1 text-sm text-(--text-secondary)">
-											{session.group} · {session.mode}
-										</p>
-									</div>
-									<DashboardBadge
-										label={session.status}
-										tone={
-											session.status === "Booked" || session.status === "Next class"
-												? "blue"
-												: "amber"
-										}
-									/>
-								</div>
-								<div className="mt-4 flex items-center gap-2 text-sm text-(--text-secondary)">
-									<Clock3 className="h-4 w-4" />
-									{session.time}
-								</div>
-								<p className="mt-3 text-sm leading-6 text-(--text-secondary)">
-									{session.meta}
-								</p>
-							</div>
+							<SessionCard key={session.id} session={session} />
 						))}
 					</div>
 				</DashboardPanel>
@@ -159,105 +99,16 @@ const Overview = () => {
 						}
 						description="Short operational cues make the dashboard feel like a real command center."
 					/>
-
 					<div className="mt-6 space-y-3">
 						{workspace.alerts.map((alert) => (
-							<div
-								key={alert.id}
-								className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-4"
-							>
-								<div className="flex items-start justify-between gap-3">
-									<p className="text-sm font-semibold text-(--text-primary)">
-										{alert.title}
-									</p>
-									<DashboardBadge
-										label={alert.meta}
-										tone={alert.tone}
-										className="max-w-44 justify-center text-center"
-									/>
-								</div>
-								<p className="mt-3 text-sm leading-6 text-(--text-secondary)">
-									{alert.description}
-								</p>
-							</div>
+							<AlertCard key={alert.id} alert={alert} />
 						))}
 					</div>
 				</DashboardPanel>
 			</div>
 
 			<div className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">
-				<DashboardPanel>
-					<DashboardSectionHeading
-						eyebrow={
-							previewRole === "teacher" ? "Roster Pulse" : "Performance Snapshot"
-						}
-						title={
-							previewRole === "teacher"
-								? "See lesson, progress and grade per student"
-								: "Your current standing in one clear row"
-						}
-						description={
-							previewRole === "teacher"
-								? "This is the part that replaces scattered spreadsheets and paper notes."
-								: "A student dashboard should always make the next step obvious."
-						}
-					/>
-
-					<div className="mt-6 overflow-x-auto">
-						<table className="min-w-full border-separate border-spacing-y-3">
-							<thead>
-								<tr className="text-left text-xs font-semibold uppercase tracking-[0.16em] text-(--text-muted)">
-									<th className="px-3">Name</th>
-									<th className="px-3">Current lesson</th>
-									<th className="px-3">Progress</th>
-									<th className="px-3">Grade</th>
-									<th className="px-3">Next date</th>
-								</tr>
-							</thead>
-							<tbody>
-								{workspace.students.map((student) => (
-									<tr
-										key={student.id}
-										className="rounded-3xl bg-(--bg-secondary) text-sm text-(--text-primary)"
-									>
-										<td className="rounded-l-3xl px-3 py-4">
-											<div>
-												<p className="font-semibold">{student.name}</p>
-												<p className="mt-1 text-xs text-(--text-secondary)">
-													{student.cohort} · {student.course}
-												</p>
-											</div>
-										</td>
-										<td className="px-3 py-4 text-(--text-secondary)">
-											{student.currentLesson}
-										</td>
-										<td className="px-3 py-4">
-											<div className="min-w-40">
-												<div className="mb-2 flex items-center justify-between text-xs text-(--text-secondary)">
-													<span>{student.progress}%</span>
-													<span>{student.attendance}% attendance</span>
-												</div>
-												<DashboardProgressBar
-													value={student.progress}
-													tone={getStatusTone(student.status)}
-												/>
-											</div>
-										</td>
-										<td className="px-3 py-4">
-											<DashboardBadge
-												label={`${student.grade}/10 · ${student.status}`}
-												tone={getStatusTone(student.status)}
-											/>
-										</td>
-										<td className="rounded-r-3xl px-3 py-4 text-(--text-secondary)">
-											{student.nextSession}
-										</td>
-									</tr>
-								))}
-							</tbody>
-						</table>
-					</div>
-				</DashboardPanel>
+				<RosterPulseTable students={workspace.students} role={previewRole} />
 
 				<DashboardPanel>
 					<DashboardSectionHeading
@@ -269,33 +120,20 @@ const Overview = () => {
 						}
 						description="Small details like this make the dashboard operational instead of decorative."
 					/>
-
 					<div className="mt-6 space-y-4">
-						<div className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-4">
-							<div className="flex items-center gap-3">
-								<div className="rounded-2xl bg-(--teal-bg) p-3 text-(--teal-text)">
-									<Zap className="h-5 w-5" />
-								</div>
-								<div>
-									<p className="text-sm font-semibold text-(--text-primary)">
-										{previewRole === "teacher"
-											? "Most consistent learner"
-											: "Current streak"}
-									</p>
-									<p className="mt-1 text-sm text-(--text-secondary)">
-										{previewRole === "teacher"
-											? `${workspace.students[0]?.name} is on pace with a ${workspace.students[0]?.grade}/10 grade.`
-											: `${mainStudent?.streak ?? 0} focused study sessions in a row.`}
-									</p>
-								</div>
-							</div>
-						</div>
-
+						<GovernanceCard
+							icon={Zap}
+							tone="teal"
+							title={previewRole === "teacher" ? "Most consistent learner" : "Current streak"}
+							description={
+								previewRole === "teacher"
+									? `${workspace.students[0]?.name} is on pace with a ${workspace.students[0]?.grade}/10 grade.`
+									: `${mainStudent?.streak ?? 0} focused study sessions in a row.`
+							}
+						/>
 						<div className="rounded-3xl border border-(--border) bg-(--bg-secondary) p-4">
 							<p className="text-sm font-semibold text-(--text-primary)">
-								{previewRole === "teacher"
-									? "Next operational move"
-									: "Next personal move"}
+								{previewRole === "teacher" ? "Next operational move" : "Next personal move"}
 							</p>
 							<p className="mt-2 text-sm leading-6 text-(--text-secondary)">
 								{previewRole === "teacher"

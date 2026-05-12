@@ -1,3 +1,14 @@
+export type AuthLocationState = {
+	backgroundLocation?: {
+		pathname: string;
+		search?: string;
+		hash?: string;
+	};
+	justRegistered?: boolean;
+	registeredEmail?: string;
+	redirectTo?: string;
+};
+
 export type LoginCredentials = {
 	email: string;
 	password: string;
