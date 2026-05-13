@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Pencil, X } from "lucide-react";
-import { useLessonEditContext } from "../../context/LessonEditContext";
+import { useLessonDataStore } from "../../store/useLessonDataStore";
 
 type Props = {
 	children: ReactNode;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const EditableSection = ({ children, editPanel }: Props) => {
-	const { canEdit } = useLessonEditContext();
+	const canEdit = useLessonDataStore((s) => s.canEdit);
 	const [isLocalEditing, setIsLocalEditing] = useState(false);
 
 	if (!canEdit) return <>{children}</>;

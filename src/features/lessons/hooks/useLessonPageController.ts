@@ -1,67 +1,44 @@
+import { useEffect } from "react";
 import { useLessonBySlugQuery } from "./useLessonBySlugQuery";
 import { useLessonBlocksQuery } from "./useLessonBlocksQuery";
 import { useLessonProgressQuery } from "./useLessonProgressQuery";
-import { useLessonPageQuery } from "./useLessonPageQuery";
 import { useLessonPermissions } from "./useLessonPermissions";
 import { useLessonEdit } from "./useLessonEdit";
-import { useLessonAI } from "./useLessonAI";
-import { resolveAvailableTabs } from "../utils/resolveAvailableTabs";
-
-const EMPTY_LESSON = {
-	id: "", moduleId: "", title: "", slug: "", description: null,
-	durationSeconds: 0, position: null, isActive: true,
-	status: "draft" as const, authors: [], createdAt: "", updatedAt: "",
-};
+import { useLessonDataStore } from "../store/useLessonDataStore";
+import { useLessonEditStore } from "../store/useLessonEditStore";
+import { useLessonAIStore } from "../store/useLessonAIStore";
 
 export function useLessonPageController(lessonSlug: string) {
 	const { data: lesson, isLoading: loadingLesson, isError } = useLessonBySlugQuery(lessonSlug);
 	const { data: blocks = [], isLoading: loadingBlocks } = useLessonBlocksQuery(lesson?.id ?? "");
 	const { data: progress } = useLessonProgressQuery(lesson?.id ?? "");
-	const { tab, setTab } = useLessonPageQuery();
 	const { canEdit } = useLessonPermissions(lesson);
 
-	const edit = useLessonEdit(lesson ?? EMPTY_LESSON);
-	const ai = useLessonAI();
+	useLessonEdit();
 
-	const availableTabs = resolveAvailableTabs(blocks);
-	const activeTab = availableTabs.some((t) => t.uniqueId === tab)
-		? tab
-		: (availableTabs[0]?.uniqueId ?? "theoryTab");
+	// Seed edit fields only when navigating to a new lesson.
+	useEffect(() => {
+		if (lesson) {
+			useLessonEditStore.getState()._patch({
+				editTitle: lesson.title,
+				editDescription: lesson.description ?? "",
+			});
+		}
+	}, [lesson?.id]);
 
-	const handleImproveTitle = async () => {
-		const result = await ai.improveField("title", edit.title, `Lesson: ${lesson?.title}`);
-		if (result) edit.setTitle(result);
-	};
+	// Keep server data in sync with the store.
+	useEffect(() => {
+		useLessonDataStore.getState()._patch({ lesson: lesson ?? null, blocks, progress: progress ?? null, canEdit });
+	}, [lesson, blocks, progress, canEdit]);
 
-	const handleImproveDescription = async () => {
-		const result = await ai.improveField("description", edit.description, `Lesson: ${lesson?.title}`);
-		if (result) edit.setDescription(result);
-	};
+	// Clean up all stores when leaving the lesson page.
+	useEffect(() => {
+		return () => {
+			useLessonDataStore.getState().reset();
+			useLessonEditStore.getState().reset();
+			useLessonAIStore.getState().reset();
+		};
+	}, []);
 
-	const handleReview = () => {
-		void ai.reviewLesson({
-			title: edit.title,
-			description: edit.description,
-			content: lesson?.description ?? "",
-		});
-	};
-
-	return {
-		lesson,
-		loadingLesson,
-		isError,
-		blocks,
-		loadingBlocks,
-		progress,
-		tab,
-		setTab,
-		canEdit,
-		edit,
-		ai,
-		availableTabs,
-		activeTab,
-		handleImproveTitle,
-		handleImproveDescription,
-		handleReview,
-	};
+	return { loadingLesson, loadingBlocks, isError };
 }

@@ -36,6 +36,37 @@ export type LessonTheorySidebarCard = {
 	accent?: "info" | "warn";
 };
 
+// ── V2 learning layout types ──────────────────────────────────────────────────
+
+export type LessonConcreteStep = {
+	array: number[];
+	highlight: [number, number] | null;
+	swapped: boolean;
+	description: string;
+	label: string;
+};
+
+export type LessonRecallQuestion = {
+	id: string;
+	question: string;
+	options: string[];
+	correctIndex: number;
+	explanation: string;
+};
+
+export type LessonTransferScenario = {
+	id: string;
+	scenario: string;
+	answer: "yes" | "no";
+	explanation: string;
+};
+
+export type LessonComplexityDerivationStep = {
+	label: string;
+	content: string;
+	formula: string;
+};
+
 export type LessonTheoryModel = {
 	title: string;
 	subtitle?: string;
@@ -61,6 +92,19 @@ export type LessonTheoryModel = {
 	nextLesson?: { name: string; path?: string };
 	mainCards: LessonTheoryCard[];
 	sidebarCards: LessonTheorySidebarCard[];
+	// V2 fields — populated by AI + confirmed by teacher
+	predictPrompt?: string;
+	inlineExample?: { title?: string; steps: LessonConcreteStep[] };
+	elaboration?: { question: string; answer: string };
+	complexityDerivation?: {
+		estimateQuestion: string;
+		estimateOptions: string[];
+		derivationSteps: LessonComplexityDerivationStep[];
+	};
+	transferScenarios?: LessonTransferScenario[];
+	recallAfterSteps?: LessonRecallQuestion[];
+	recallAfterComplexity?: LessonRecallQuestion[];
+	recallFinal?: LessonRecallQuestion[];
 };
 
 function titleCase(value: string) {
@@ -326,6 +370,146 @@ function buildMisconceptions(args: { id: string }): Array<{ title: string; body:
 				"Implementing the algorithm without an invariant usually leads to off-by-one errors and incorrect termination. Write down what must stay true after each step.",
 		},
 	];
+}
+
+function buildV2Fields(id: string): Partial<LessonTheoryModel> {
+	if (id === "bubble-sort") {
+		return {
+			predictPrompt: "Dacă ar trebui să sortezi [5, 3, 8, 1] pas cu pas, ce acțiune ai repeta?",
+			inlineExample: {
+				title: "Uite ce se întâmplă cu [5, 3, 8, 1]",
+				steps: [
+					{
+						array: [5, 3, 8, 1],
+						highlight: null,
+						swapped: false,
+						label: "Array inițial",
+						description: "Pornim cu array-ul [5, 3, 8, 1]. Vom compara vecinii de la stânga la dreapta.",
+					},
+					{
+						array: [5, 3, 8, 1],
+						highlight: [0, 1],
+						swapped: false,
+						label: "Pas 1 — compară 5 și 3",
+						description: "Comparăm primii doi vecini: 5 și 3. Deoarece 5 > 3, facem swap.",
+					},
+					{
+						array: [3, 5, 8, 1],
+						highlight: [0, 1],
+						swapped: true,
+						label: "Swap! → [3, 5, 8, 1]",
+						description: "Swap efectuat. 3 a ajuns la poziția corectă față de 5.",
+					},
+					{
+						array: [3, 5, 8, 1],
+						highlight: [1, 2],
+						swapped: false,
+						label: "Pas 2 — compară 5 și 8",
+						description: "Comparăm 5 și 8. Deoarece 5 < 8, nu facem swap. Continuăm.",
+					},
+					{
+						array: [3, 5, 8, 1],
+						highlight: [2, 3],
+						swapped: false,
+						label: "Pas 3 — compară 8 și 1",
+						description: "Comparăm 8 și 1. Deoarece 8 > 1, facem swap.",
+					},
+					{
+						array: [3, 5, 1, 8],
+						highlight: [2, 3],
+						swapped: true,
+						label: "Swap! → [3, 5, 1, 8]",
+						description: "8 a ajuns la capătul drept — cel mai mare element e acum la locul lui. Prima trecere completă.",
+					},
+					{
+						array: [3, 5, 1, 8],
+						highlight: null,
+						swapped: false,
+						label: "Trecerea 1 completă",
+						description: "Primul pas complet: 8 e la locul lui. Urmează trecerea 2 pe restul array-ului [3, 5, 1].",
+					},
+				],
+			},
+			elaboration: {
+				question: "De ce funcționează asta? De ce comparând vecinii ajungem la un array sortat?",
+				answer: "Fiecare trecere completă garantează că cel mai mare element nesortant ajunge la locul lui (la capătul drept). După n−1 treceri, toate elementele sunt la locul lor. E o invariantă de buclă: după pasul k, ultimele k elemente sunt sortate definitiv.",
+			},
+			complexityDerivation: {
+				estimateQuestion: "Înainte să îți spun — estimează: pentru un array de n = 100 elemente în worst case, câte comparații face algoritmul?",
+				estimateOptions: ["~100 (n)", "~1.000 (n²)", "~10.000 (n²)", "~1.000.000 (n³)"],
+				derivationSteps: [
+					{
+						label: "Pasul 1 — Outer loop",
+						content: "Outer loop-ul rulează de n ori — câte o trecere completă prin array pentru fiecare element.",
+						formula: "n treceri",
+					},
+					{
+						label: "Pasul 2 — Inner loop",
+						content: "La trecerea i, inner loop-ul compară n − i − 1 perechi de vecini. Elementele deja sortate (din dreapta) sunt sărite.",
+						formula: "n − i − 1 comparații / trecere",
+					},
+					{
+						label: "Pasul 3 — Total comparații",
+						content: "Suma tuturor comparațiilor: (n−1) + (n−2) + … + 1 = n(n−1)/2. Aceasta crește pătratic cu n.",
+						formula: "n(n−1)/2 ≈ n²/2",
+					},
+					{
+						label: "Concluzie",
+						content: "Ignorăm constantele și termenii mai mici — complexitatea timp în worst case este O(n²).",
+						formula: "→ O(n²)",
+					},
+				],
+			},
+			transferScenarios: [
+				{
+					id: "s1",
+					scenario: "Ai un array de 12 elemente aproape sortate (2-3 elemente deplasate). Alegi bubble sort?",
+					answer: "yes",
+					explanation: "Da — pentru arrays mici și aproape sortate, bubble sort cu early-stop e O(n) în best case. E o alegere bună.",
+				},
+				{
+					id: "s2",
+					scenario: "Sortezi 50.000 de tranzacții bancare zilnice. Alegi bubble sort?",
+					answer: "no",
+					explanation: "Nu — pentru date mari, O(n²) e prea lent. Merge sort sau quick sort (O(n log n)) sunt mult mai potrivite.",
+				},
+				{
+					id: "s3",
+					scenario: "Ești la un interviu și trebuie să implementezi un algoritm de sortare simplu pe tablă. Alegi bubble sort?",
+					answer: "yes",
+					explanation: "Da — bubble sort e ușor de implementat și de explicat. Pentru demonstrații și învățare e perfect, chiar dacă nu e cel mai eficient.",
+				},
+			],
+			recallAfterSteps: [
+				{
+					id: "r1",
+					question: "Câte treceri complete (pase) face bubble sort pentru un array de n=5 elemente în worst case?",
+					options: ["2 pase", "4 pase", "5 pase", "10 pase"],
+					correctIndex: 1,
+					explanation: "Exact n−1 = 4 pase. La fiecare pas, cel mai mare element nesortant ajunge la locul lui.",
+				},
+			],
+			recallAfterComplexity: [
+				{
+					id: "r2",
+					question: "Care este complexitatea spațiu a bubble sort?",
+					options: ["O(n)", "O(n²)", "O(log n)", "O(1)"],
+					correctIndex: 3,
+					explanation: "O(1) — in-place. Nu alocă memorie suplimentară proporțională cu n. Swap-ul se face pe loc.",
+				},
+			],
+			recallFinal: [
+				{
+					id: "r3",
+					question: "Care este output-ul după primul pas complet al lui bubble sort pe [3, 1, 2]?",
+					options: ["[1, 2, 3]", "[1, 3, 2]", "[3, 1, 2]", "[3, 2, 1]"],
+					correctIndex: 0,
+					explanation: "Primul pas: compară 3>1 → swap [1,3,2], compară 3>2 → swap [1,2,3]. Output: [1, 2, 3].",
+				},
+			],
+		};
+	}
+	return {};
 }
 
 export function buildAlgorithmLessonTheoryModel(args: {
@@ -617,6 +801,7 @@ export function buildAlgorithmLessonTheoryModel(args: {
 		nextLesson,
 		mainCards,
 		sidebarCards,
+		...buildV2Fields(id),
 	};
 }
 

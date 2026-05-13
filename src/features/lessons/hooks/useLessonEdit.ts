@@ -1,54 +1,37 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { lessonsApi } from "../api/lessonsApi";
-import type { LessonDTO } from "../api/lessonsApi";
+import { useLessonDataStore } from "../store/useLessonDataStore";
+import { useLessonEditStore } from "../store/useLessonEditStore";
 
-export function useLessonEdit(lesson: LessonDTO) {
+export function useLessonEdit() {
 	const queryClient = useQueryClient();
 
-	const [isEditing, setIsEditing] = useState(false);
-	const [title, setTitle] = useState(lesson.title);
-	const [description, setDescription] = useState(lesson.description ?? "");
-	const [durationSeconds, setDurationSeconds] = useState(lesson.durationSeconds);
-
-	const isDirty =
-		title !== lesson.title ||
-		description !== (lesson.description ?? "") ||
-		durationSeconds !== lesson.durationSeconds;
-
 	const saveMutation = useMutation({
-		mutationFn: () =>
-			lessonsApi.update(lesson.id, {
-				title: title.trim(),
-				description: description.trim() || null,
-				durationSeconds,
-			}),
+		mutationFn: () => {
+			const { lesson } = useLessonDataStore.getState();
+			const { editTitle, editDescription } = useLessonEditStore.getState();
+			if (!lesson) throw new Error("No lesson loaded");
+			return lessonsApi.update(lesson.id, {
+				title: editTitle.trim(),
+				description: editDescription.trim() || null,
+				durationSeconds: lesson.durationSeconds,
+			});
+		},
 		onSuccess: () => {
-			void queryClient.invalidateQueries({ queryKey: ["lesson-by-slug", lesson.slug] });
-			setIsEditing(false);
+			const { lesson } = useLessonDataStore.getState();
+			if (lesson) {
+				void queryClient.invalidateQueries({ queryKey: ["lesson-by-slug", lesson.slug] });
+			}
+			useLessonEditStore.getState().setIsEditing(false);
 		},
 	});
 
-	const cancel = () => {
-		setTitle(lesson.title);
-		setDescription(lesson.description ?? "");
-		setDurationSeconds(lesson.durationSeconds);
-		setIsEditing(false);
-	};
+	useEffect(() => {
+		useLessonEditStore.getState()._patch({ isSaving: saveMutation.isPending });
+	}, [saveMutation.isPending]);
 
-	return {
-		isEditing,
-		setIsEditing,
-		title,
-		setTitle,
-		description,
-		setDescription,
-		durationSeconds,
-		setDurationSeconds,
-		isDirty,
-		save: () => saveMutation.mutate(),
-		isSaving: saveMutation.isPending,
-		saveError: saveMutation.isError,
-		cancel,
-	};
+	useEffect(() => {
+		useLessonEditStore.setState({ save: () => saveMutation.mutate() });
+	}, [saveMutation.mutate]);
 }

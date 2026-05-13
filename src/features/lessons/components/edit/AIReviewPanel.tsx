@@ -1,10 +1,5 @@
 import { X, Star, CheckCircle2, AlertCircle, Lightbulb } from "lucide-react";
-import type { LessonReviewResult } from "../../api/lessonAIApi";
-
-type Props = {
-	result: LessonReviewResult;
-	onClose: () => void;
-};
+import { useLessonAIStore } from "../../store/useLessonAIStore";
 
 const ClarityBar = ({ score }: { score: number }) => (
 	<div className="flex items-center gap-2">
@@ -20,14 +15,19 @@ const ClarityBar = ({ score }: { score: number }) => (
 	</div>
 );
 
-export const AIReviewPanel = ({ result, onClose }: Props) => {
+export const AIReviewPanel = () => {
+	const result = useLessonAIStore((s) => s.reviewState.data);
+	const clearReview = useLessonAIStore((s) => s.clearReview);
+
+	if (!result) return null;
+
 	return (
 		<div className="fixed right-0 top-0 h-full w-80 z-50 border-l border-(--border) bg-(--bg-surface) shadow-xl flex flex-col">
 			<div className="flex items-center justify-between border-b border-(--border) px-4 py-3">
 				<span className="text-sm font-semibold text-(--text-primary)">AI Review</span>
 				<button
 					type="button"
-					onClick={onClose}
+					onClick={clearReview}
 					className="rounded-md p-1 text-(--text-muted) hover:text-(--text-primary) transition-colors"
 				>
 					<X className="h-4 w-4" />
