@@ -25,6 +25,11 @@ const Dashboard = () => {
 	const workspace = getDashboardWorkspace(previewRole);
 	const profileName = profile?.username ?? "Classroom workspace";
 	const profileRoleLabel = getRoleLabel(profileRole);
+	const liveLesson =
+		workspace.lessons.find((l) => l.status === "Live") ??
+		workspace.lessons.find((l) => l.status === "Scheduled") ??
+		workspace.lessons[0] ??
+		null;
 
 	function handleRoleChange(role: WorkspaceRole) {
 		setRolePreference(role);
@@ -35,16 +40,18 @@ const Dashboard = () => {
 			<div className="mx-auto flex max-w-7xl flex-col gap-4">
 				<DashboardNavbar
 					previewRole={previewRole}
-					alertCount={workspace.alerts.length}
 					profileName={profileName}
-					profileRoleLabel={profileRoleLabel}
+					liveLesson={liveLesson}
 					onOpenSidebar={() => setIsSidebarOpen(true)}
-					onRoleChange={handleRoleChange}
 				/>
 
 				<div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
 					<div className="hidden lg:block">
-						<Sidebar previewRole={previewRole} />
+						<Sidebar
+							previewRole={previewRole}
+							profileName={profileName}
+							onRoleChange={handleRoleChange}
+						/>
 					</div>
 
 					<div className="min-w-0">
@@ -77,6 +84,8 @@ const Dashboard = () => {
 				>
 					<Sidebar
 						previewRole={previewRole}
+						profileName={profileName}
+						onRoleChange={handleRoleChange}
 						className="h-full"
 						onNavigate={() => setIsSidebarOpen(false)}
 					/>

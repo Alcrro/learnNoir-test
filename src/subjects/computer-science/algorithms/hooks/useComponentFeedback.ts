@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFeedbackStore } from "../../../../store/useFeedbackStore";
-import { lessonComponentFeedbackApi } from "../../../lessons/api/lessonComponentFeedbackApi";
-import type { FeedbackVote, FeedbackCounts } from "../../../lessons/api/lessonComponentFeedbackApi";
+import { lessonComponentFeedbackApi } from "../../../../features/lessons/api/lessonComponentFeedbackApi";
+import type { FeedbackVote, FeedbackCounts } from "../../../../features/lessons/api/lessonComponentFeedbackApi";
 
 function storeKey(lessonId: string, componentId: string) {
 	return `${lessonId}:${componentId}`;

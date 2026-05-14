@@ -4,7 +4,7 @@ import type { LessonTabId } from "../hooks/useLessonPageQuery";
 import { useLessonPageQuery } from "../hooks/useLessonPageQuery";
 import DefaultButton from "../../../components/atoms/DefaultButton";
 import { useLessonDataStore } from "../store/useLessonDataStore";
-import { resolveAvailableTabs } from "../utils/resolveAvailableTabs";
+import { resolveAvailableTabs } from "../lib/resolveAvailableTabs";
 
 export function LessonFeatureTabs() {
 	const [searchParams] = useSearchParams();

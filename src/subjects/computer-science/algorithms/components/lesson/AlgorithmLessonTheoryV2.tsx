@@ -1,11 +1,8 @@
-import { useLessonTheoryModel } from "../../hooks/useLessonTheoryModel";
-import { useAlgorithmLessonOverrides } from "../../hooks/useAlgorithmLessonOverrides";
-import { useTheoryInteractionsEditor } from "../../hooks/useTheoryInteractions";
-import { useLessonEditStore } from "../../../../lessons/store/useLessonEditStore";
-import { useLessonDataStore } from "../../../../lessons/store/useLessonDataStore";
-import { Clock } from "lucide-react";
-import { formatRelative } from "../../../../../libs/utils/formatRelative";
-import "../../../../../features/computer-science/algorithms/components/lesson/lessonTheory.css";
+// View pur — nu conține logică de date sau derivări.
+// Toată orchestrarea e în useAlgorithmTheoryController.
+
+import { useAlgorithmTheoryController } from "../../hooks/useAlgorithmTheoryController";
+import "./lessonTheory.css";
 import "./theory-v2/theoryV2.css";
 
 // V1 components reused as-is
@@ -26,22 +23,7 @@ import { ComplexityDerivation } from "./theory-v2/ComplexityDerivation";
 import { TransferScenario } from "./theory-v2/TransferScenario";
 import { EmbeddedRecall } from "./theory-v2/EmbeddedRecall";
 import { TheoryInteractionBlock } from "./theory-v2/TheoryInteractionBlock";
-
-import type { LessonContextForAI } from "../../../../lessons/api/lessonTheoryInteractionsApi";
-import { useParams } from "react-router-dom";
-
-function TheoryFooter({ updatedAt }: { updatedAt?: string }) {
-	return (
-		<div className="mt-10 border-t border-(--border) pt-6">
-			{updatedAt && (
-				<div className="flex items-center gap-1.5 text-xs text-(--text-muted)">
-					<Clock className="h-3.5 w-3.5" />
-					Last updated {formatRelative(updatedAt)}
-				</div>
-			)}
-		</div>
-	);
-}
+import { TheoryFooter } from "./theory-v2/TheoryFooter";
 
 const AlgorithmLessonTheoryV2 = ({
 	lessonId: dbLessonIdProp = "",
@@ -50,48 +32,10 @@ const AlgorithmLessonTheoryV2 = ({
 	lessonId?: string;
 	updatedAt?: string;
 }) => {
-	const { model } = useLessonTheoryModel();
-	const { category } = useParams<{ category: string }>();
-
-	// Use lesson from store if prop not provided
-	const lessonFromStore = useLessonDataStore((s) => s.lesson);
-	const dbLessonId = dbLessonIdProp || lessonFromStore?.id || "";
-
-	const { overrides } = useAlgorithmLessonOverrides(dbLessonId);
-	const isEditing = useLessonEditStore((s) => s.isEditing);
-
-	const editor = useTheoryInteractionsEditor(isEditing ? dbLessonId : "");
+	const { model, dbLessonId, keyIdea, analogy, complexityExplainer, G } =
+		useAlgorithmTheoryController(dbLessonIdProp);
 
 	if (!model) return null;
-
-	const modelAnalogy = model.mainCards.find((c) => c.title.startsWith("Analogy"))?.body ?? "";
-	const keyIdea = overrides?.keyIdea ?? model.keyIdea;
-	const analogy = overrides?.analogy ?? modelAnalogy;
-	const complexityExplainer = overrides?.complexityExplainer ?? model.complexityExplainer;
-
-	// Build lesson context for AI generation
-	const lessonContext: LessonContextForAI = {
-		subject: category ?? "computer-science",
-		lessonType: "algorithm",
-		title: model.title,
-		mainContent: [
-			keyIdea,
-			model.steps.map((s) => `${s.title}: ${s.description}`).join(". "),
-			complexityExplainer,
-		].join("\n\n"),
-		keyPoints: model.steps.map((s) => s.title),
-	};
-
-	const G = (component: Parameters<typeof editor.generate>[0]) => ({
-		component,
-		label: COMPONENT_LABELS[component],
-		isEditing,
-		interaction: editor.latestByComponent(component),
-		isGenerating: editor.generatingComponent === component,
-		isApproving: editor.approvingId === editor.latestByComponent(component)?.id,
-		onGenerate: () => void editor.generate(component, lessonContext),
-		onApprove: (id: string) => void editor.approve(id),
-	});
 
 	return (
 		<div className="lesson-theory">
@@ -196,17 +140,6 @@ const AlgorithmLessonTheoryV2 = ({
 			</div>
 		</div>
 	);
-};
-
-const COMPONENT_LABELS: Record<string, string> = {
-	predict_prompt: "Predicție inițială",
-	concrete_example: "Exemplu concret",
-	elaboration: "Elaborare — De ce funcționează",
-	interactive_exercise: "Exercițiu interactiv (complexitate)",
-	recall_1: "Recall 1 — după pași",
-	recall_2: "Recall 2 — după complexitate",
-	transfer: "Transfer — scenarii reale",
-	recall_final: "Recall final",
 };
 
 export default AlgorithmLessonTheoryV2;

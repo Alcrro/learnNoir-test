@@ -4,13 +4,13 @@ import Home from "./public/home/Home";
 import RouteErrorPage from "./RouteErrorPage";
 import { authRoutes } from "./features/auth/router/auth.routes";
 import { dashboardRoutes } from "./features/dashboards/router/dashboardRoutes";
-import { computerScienceRoutes } from "./features/computer-science/computerScience.routes";
-import { mathematicsRoutes } from "./features/mathematics/router/math.routes";
+import { computerScienceRoutes } from "./subjects/computer-science/computerScience.routes";
+import { mathematicsRoutes } from "./subjects/mathematics/router/math.routes";
 import Subjects from "./features/auth/Subjects";
 import SubjectsLayout from "./features/subjects/components/layouts/SubjectsLayout";
 import SubjectsPage from "./features/subjects/pages/SubjectsPage";
 import CategoriesListPage from "./features/categories/pages/CategoriesListPage";
-import { subjectLoader } from "./features/subjects/utils/subjectLoader";
+import { subjectLoader } from "./features/subjects/lib/subjectLoader";
 import { slugToText } from "./libs/utils/slugToText";
 
 export const router = createBrowserRouter([

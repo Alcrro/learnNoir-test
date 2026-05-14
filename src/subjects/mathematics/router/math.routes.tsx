@@ -1,9 +1,9 @@
 import { RouteObject } from "react-router-dom";
 import MathLayout from "../components/layouts/MathLayout";
-import ModulesLayout from "../../modules/components/layouts/ModulesLayout";
+import ModulesLayout from "../../../features/modules/components/layouts/ModulesLayout";
 import { slugToText } from "../../../libs/utils/slugToText";
 import { validateModule } from "../../../libs/utils/validateModules";
-import ModulesPage from "../../modules/pages/ModulesPage";
+import ModulesPage from "../../../features/modules/pages/ModulesPage";
 
 export const mathematicsRoutes: RouteObject = {
 	path: "mathematics",

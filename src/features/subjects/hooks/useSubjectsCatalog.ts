@@ -3,8 +3,8 @@ import type {
 	SubjectDomain,
 	SubjectsCatalogFilters,
 } from "../../../types/types";
-import { buildSubjectsCatalogStats } from "../utils/buildSubjectsCatalogStats";
-import { filterSubjectsCatalog } from "../utils/filterSubjectsCatalog";
+import { buildSubjectsCatalogStats } from "../lib/buildSubjectsCatalogStats";
+import { filterSubjectsCatalog } from "../lib/filterSubjectsCatalog";
 
 const INITIAL_FILTERS: SubjectsCatalogFilters = {
 	search: "",

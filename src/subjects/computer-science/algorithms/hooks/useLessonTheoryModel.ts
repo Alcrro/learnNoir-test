@@ -6,7 +6,7 @@ import { buildAlgorithmLessonTheoryModel } from "../lib/buildAlgorithmLessonTheo
 import { useApprovedTheoryInteractions } from "./useTheoryInteractions";
 import { useLessonDataStore } from "../../../../features/lessons/store/useLessonDataStore";
 import type { LessonTheoryModel, LessonConcreteStep, LessonRecallQuestion, LessonTransferScenario } from "../lib/buildAlgorithmLessonTheory";
-import type { TheoryInteractionDTO } from "../../../lessons/api/lessonTheoryInteractionsApi";
+import type { TheoryInteractionDTO } from "../../../../features/lessons/api/lessonTheoryInteractionsApi";
 
 function mergeInteractions(model: LessonTheoryModel, interactions: TheoryInteractionDTO[]): LessonTheoryModel {
 	if (!interactions.length) return model;

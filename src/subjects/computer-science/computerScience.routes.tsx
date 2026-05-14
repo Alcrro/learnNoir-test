@@ -1,10 +1,10 @@
 import { RouteObject } from "react-router-dom";
 import { slugToText } from "../../libs/utils/slugToText";
 import { validateCategory } from "../../libs/utils/validateCategory";
-import ModulesListPage from "../modules/pages/ModulesListPage";
-import LessonListPage from "../lessons/pages/LessonListPage";
-import LessonPage from "../lessons/pages/LessonPage";
-import { moduleLoader } from "../lessons/utils/moduleLoader";
+import ModulesListPage from "../../features/modules/pages/ModulesListPage";
+import LessonListPage from "../../features/lessons/pages/LessonListPage";
+import LessonPage from "../../features/lessons/pages/LessonPage";
+import { moduleLoader } from "../../features/lessons/lib/moduleLoader";
 import { lessonLoader } from "../../libs/utils/routeLoader/lessonLoader";
 
 export const computerScienceRoutes: RouteObject = {

@@ -1,5 +1,5 @@
 import { useGetMe } from "../../auth/hooks/useAuth";
-import { getProfile } from "../services/getProfile";
+import { getProfile } from "../api/getProfile";
 import { useQuery } from "@tanstack/react-query";
 import { authQueryKeys } from "../../auth/lib/authQueryKeys";
 

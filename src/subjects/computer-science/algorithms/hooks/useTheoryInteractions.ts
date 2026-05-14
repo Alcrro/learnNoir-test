@@ -5,7 +5,7 @@ import {
 	type TheoryInteractionComponentType,
 	type TheoryInteractionDTO,
 	type LessonContextForAI,
-} from "../../../lessons/api/lessonTheoryInteractionsApi";
+} from "../../../../features/lessons/api/lessonTheoryInteractionsApi";
 
 // ── Student hook: fetch only approved interactions ────────────────────────────
 

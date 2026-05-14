@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { categoriesApi } from "../api/categoriesApi";
-import { mapCatalogToSubjects } from "../utils/mapCatalogToSubjects";
+import { mapCatalogToSubjects } from "../lib/mapCatalogToSubjects";
 
 export function useCatalogSubjectsQuery(subjectSlug: string) {
 	return useQuery({

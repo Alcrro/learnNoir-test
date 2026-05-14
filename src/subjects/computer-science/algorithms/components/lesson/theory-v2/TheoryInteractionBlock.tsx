@@ -1,5 +1,5 @@
 import { Bot, Check, Loader2, RefreshCw } from "lucide-react";
-import type { TheoryInteractionComponentType, TheoryInteractionDTO } from "../../../../../lessons/api/lessonTheoryInteractionsApi";
+import type { TheoryInteractionComponentType, TheoryInteractionDTO } from "../../../../../../features/lessons/api/lessonTheoryInteractionsApi";
 
 type Props = {
 	component: TheoryInteractionComponentType;

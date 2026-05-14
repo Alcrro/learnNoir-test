@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { AlgorithmTypeProp } from "../features/computer-science/algorithms/data/algorithmArray";
+import type { AlgorithmTypeProp } from "../subjects/computer-science/algorithms/data/algorithmArray";
 import { generateArray } from "../libs/utils/generateArray";
-import type { Step } from "../features/computer-science/algorithms/shared/AlgorithmTypes";
+import type { Step } from "../subjects/computer-science/algorithms/shared/AlgorithmTypes";
 
 type AlgorithmStore = {
 	currentStep: number | -1;

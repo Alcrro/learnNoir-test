@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { useToggleStore } from "../../../store/useToggleStore";
-import SidebarMobile from "../../mathematics/navigation/sidebar/SidebarMobile";
+import SidebarMobile from "../../../subjects/mathematics/navigation/sidebar/SidebarMobile";
 
 type Props = {
 	header: ReactNode;

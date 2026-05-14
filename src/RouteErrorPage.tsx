@@ -1,5 +1,5 @@
 import { isRouteErrorResponse, useRouteError } from "react-router-dom";
-import useTimer from "./features/computer-science/visualizer/hooks/useTimer";
+import useTimer from "./subjects/computer-science/visualizer/hooks/useTimer";
 
 const RouteErrorPage = () => {
 	const error = useRouteError();

@@ -1,4 +1,4 @@
-import { SubjectCatalogStats } from "../../utils/buildSubjectsCatalogStats";
+import { SubjectCatalogStats } from "../../lib/buildSubjectsCatalogStats";
 import ProgressBar from "../molecules/SubjectProgressBar";
 import SubjectCatalogStatItem from "../molecules/SubjectCatalogStatItem";
 

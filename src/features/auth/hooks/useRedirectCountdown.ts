@@ -32,7 +32,6 @@ export function useRedirectCountdown({
 			setRemainingSeconds((currentValue) => {
 				if (currentValue <= 1) {
 					window.clearInterval(intervalId);
-					handleComplete();
 					return 0;
 				}
 
@@ -44,6 +43,12 @@ export function useRedirectCountdown({
 			window.clearInterval(intervalId);
 		};
 	}, [enabled, seconds]);
+
+	useEffect(() => {
+		if (enabled && remainingSeconds === 0 && seconds > 0) {
+			handleComplete();
+		}
+	}, [enabled, remainingSeconds, seconds]);
 
 	return enabled ? remainingSeconds : null;
 }

@@ -1,6 +1,6 @@
 import { Binary, BookOpen, Clock, Layers } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { SubjectCatalogStats } from "../../subjects/utils/buildSubjectsCatalogStats";
+import type { SubjectCatalogStats } from "../../subjects/lib/buildSubjectsCatalogStats";
 
 export type StatItem = {
 	label: string;

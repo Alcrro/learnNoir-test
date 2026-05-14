@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { formatRelative } from "../../../libs/utils/formatRelative";
 import LessonPageLayout from "./LessonPageLayout";
 import { LessonFeatureTabs } from "../components/LessonFeatureTabs";
@@ -10,14 +11,23 @@ import { AIReviewPanel } from "../components/edit/AIReviewPanel";
 import PageStatus from "../../../components/atoms/PageStatus";
 import { useLessonDataStore } from "../store/useLessonDataStore";
 import { useLessonEditStore } from "../store/useLessonEditStore";
+import { useLastLessonStore } from "../../../store/useLastLessonStore";
 
 const LessonPage = () => {
 	const { lessonSlug } = useParams<{ lessonSlug: string }>();
+	const location = useLocation();
 	const { loadingLesson, loadingBlocks, isError } = useLessonPageController(lessonSlug!);
 
 	const lesson = useLessonDataStore((s) => s.lesson);
 	const canEdit = useLessonDataStore((s) => s.canEdit);
 	const isEditing = useLessonEditStore((s) => s.isEditing);
+	const saveLesson = useLastLessonStore((s) => s.save);
+
+	useEffect(() => {
+		if (lesson?.title) {
+			saveLesson({ href: location.pathname, title: lesson.title });
+		}
+	}, [lesson?.title, location.pathname, saveLesson]);
 
 	if (loadingLesson) return <PageStatus message="Loading lesson…" />;
 	if (isError || !lesson) return <PageStatus message="Lesson not found." />;

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { lessonBlocksApi, type ContentBlock, type LessonBlock } from "../../../lessons/api/lessonBlocksApi";
+import { lessonBlocksApi, type ContentBlock, type LessonBlock } from "../../../../features/lessons/api/lessonBlocksApi";
 
 export type AlgorithmLessonOverrides = {
 	keyIdea?: string;

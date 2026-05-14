@@ -7,7 +7,7 @@ import { HomePlatformStats } from "../../features/home/components/organisms/Home
 import { HomeRoadmap } from "../../features/home/components/organisms/HomeRoadmap";
 import { buildHomeStats } from "../../features/home/data/homeStatsMapper";
 import { SUBJECT_DOMAINS } from "../../features/subjects/data/subjectsCatalog.data";
-import { buildSubjectsCatalogStats } from "../../features/subjects/utils/buildSubjectsCatalogStats";
+import { buildSubjectsCatalogStats } from "../../features/subjects/lib/buildSubjectsCatalogStats";
 import UseGetProfile from "../../features/profiles/hooks/UseGetProfile";
 
 // Derived from static catalog — swap these with API hooks when backend data is ready

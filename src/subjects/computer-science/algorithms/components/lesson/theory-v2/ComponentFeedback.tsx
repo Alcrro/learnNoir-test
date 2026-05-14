@@ -2,8 +2,8 @@ import { useState } from "react";
 import { ThumbsUp, ThumbsDown, Send, CheckCircle2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useComponentFeedback } from "../../../hooks/useComponentFeedback";
-import { lessonComponentFeedbackApi } from "../../../../../lessons/api/lessonComponentFeedbackApi";
-import type { FeedbackOption } from "../../../../../lessons/api/lessonComponentFeedbackApi";
+import { lessonComponentFeedbackApi } from "../../../../../../features/lessons/api/lessonComponentFeedbackApi";
+import type { FeedbackOption } from "../../../../../../features/lessons/api/lessonComponentFeedbackApi";
 
 type Props = {
 	lessonId: string;

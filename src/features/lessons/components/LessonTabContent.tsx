@@ -1,13 +1,12 @@
+// Dispatcher pentru tab-urile lecției.
+// Nu conține logică de randare — rutează tab-ul activ spre înregistrarea din TAB_REGISTRY.
+// Adaugi un tab nou sau modifici disponibilitatea lui: editezi doar tab-registry.tsx.
+
 import { useParams } from "react-router-dom";
 import { useLessonPageQuery } from "../hooks/useLessonPageQuery";
 import { useLessonDataStore } from "../store/useLessonDataStore";
 import type { ContentBlock, AssessmentBlock } from "../api/lessonBlocksApi";
-import { LessonTheoryContent } from "./tabs/LessonTheoryContent";
-import { LessonQuizContent } from "./tabs/LessonQuizContent";
-import { LessonWatchContent } from "./tabs/LessonWatchContent";
-import VisualizerV2 from "../../computer-science/algorithms/visualizer-v2/VisualizerV2";
-import AlgorithmLessonTheoryV1 from "../../computer-science/algorithms/components/lesson/AlgorithmLessonTheoryV1";
-import AlgorithmLessonTheoryV2 from "../../computer-science/algorithms/components/lesson/AlgorithmLessonTheoryV2";
+import { TAB_REGISTRY } from "./tabs/tab-registry";
 
 const LessonTabContent = () => {
 	const { category } = useParams<{ category: string }>();
@@ -18,50 +17,21 @@ const LessonTabContent = () => {
 	const lessonId = lesson?.id ?? "";
 	const lessonUpdatedAt = lesson?.updatedAt;
 
-	const contentBlocks = blocks.filter(
-		(b): b is ContentBlock => b.type === "content",
-	);
+	const contentBlocks = blocks.filter((b): b is ContentBlock => b.type === "content");
 	const assessmentBlocks = blocks.filter(
-		(b): b is AssessmentBlock =>
-			b.type === "assessment" && b.engine !== "quiz:code",
+		(b): b is AssessmentBlock => b.type === "assessment" && b.engine !== "quiz:code",
 	);
 
-	switch (tab) {
-		case "theoryTab":
-			if (category === "algorithms" || category === "data-structures") {
-				return (
-					<AlgorithmLessonTheoryV2
-						lessonId={lessonId}
-						updatedAt={lessonUpdatedAt}
-					/>
-				);
-			}
-			return (
-				<LessonTheoryContent
-					blocks={contentBlocks}
-					lessonId={lessonId}
-				/>
-			);
-		case "vizTab":
-			return <VisualizerV2 />;
-		case "codeTab":
-			return (
-				<div className="rounded-xl border border-(--border) p-5 text-sm text-(--text-secondary)">
-					Code playground coming soon.
-				</div>
-			);
-		case "quizTab":
-			return (
-				<LessonQuizContent
-					blocks={assessmentBlocks}
-					lessonSlug={lessonId}
-				/>
-			);
-		case "watchTab":
-			return <LessonWatchContent lessonId={lessonId} />;
-		default:
-			return null;
-	}
+	const registration = tab ? TAB_REGISTRY[tab] : undefined;
+
+	// Tab necunoscut sau indisponibil pentru categoria curentă
+	if (!registration || registration.isAvailable?.(category) === false) return null;
+
+	return (
+		<>
+			{registration.render({ category, lessonId, lessonUpdatedAt, contentBlocks, assessmentBlocks })}
+		</>
+	);
 };
 
 export default LessonTabContent;
