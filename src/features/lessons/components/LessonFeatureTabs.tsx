@@ -3,13 +3,15 @@ import { cn } from "../../../libs/utils/cn";
 import type { LessonTabId } from "../hooks/useLessonPageQuery";
 import { useLessonPageQuery } from "../hooks/useLessonPageQuery";
 import DefaultButton from "../../../components/atoms/DefaultButton";
-import { useLessonDataStore } from "../store/useLessonDataStore";
+import { useLessonContext } from "../context/LessonContext";
+import { useLessonBlocksQuery } from "../hooks/useLessonBlocksQuery";
 import { resolveAvailableTabs } from "../lib/resolveAvailableTabs";
 
 export function LessonFeatureTabs() {
 	const [searchParams] = useSearchParams();
 	const { setTab } = useLessonPageQuery();
-	const blocks = useLessonDataStore((s) => s.blocks);
+	const { lessonId } = useLessonContext();
+	const { data: blocks = [] } = useLessonBlocksQuery(lessonId);
 	const tabs = resolveAvailableTabs(blocks);
 	const tab = searchParams.get("tab") as LessonTabId;
 

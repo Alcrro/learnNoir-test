@@ -62,10 +62,16 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 }
 
 export const lessonBlocksApi = {
-	// GET /lessons-block/lesson/:lessonId — all blocks for a lesson, sorted by position.
+	// GET /lessons-block/lesson/:lessonId — all blocks (pro only).
 	getByLessonId: (lessonId: string) =>
 		get<{ success: boolean; data: LessonBlock[] }>(
 			`/lessons-block/lesson/${lessonId}`,
+		).then((r) => r.data),
+
+	// GET /lessons-block/lesson/:lessonId/preview — free tier: all content+interactive + first 4 quizzes.
+	getPreviewByLessonId: (lessonId: string) =>
+		get<{ success: boolean; data: LessonBlock[] }>(
+			`/lessons-block/lesson/${lessonId}/preview`,
 		).then((r) => r.data),
 
 	// PATCH /lessons-block/:id/content — replaces the content array of a content block.

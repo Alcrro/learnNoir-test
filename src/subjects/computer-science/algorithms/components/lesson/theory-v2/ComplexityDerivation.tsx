@@ -13,6 +13,7 @@ type Props = {
 	complexityCases: LessonTheoryComplexityCase[];
 	complexityExplainer?: string;
 	lessonId?: string;
+	onAttemptRecord?: () => void;
 };
 
 export function ComplexityDerivation({
@@ -22,6 +23,7 @@ export function ComplexityDerivation({
 	complexityCases,
 	complexityExplainer,
 	lessonId = "",
+	onAttemptRecord,
 }: Props) {
 	const [estimateChosen, setEstimateChosen] = useState<string | null>(null);
 	const [derivationStep, setDerivationStep] = useState(0);
@@ -35,6 +37,7 @@ export function ComplexityDerivation({
 			setDerivationStep((s) => s + 1);
 		} else {
 			setDerivationDone(true);
+			onAttemptRecord?.();
 		}
 	};
 

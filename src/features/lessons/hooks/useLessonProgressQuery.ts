@@ -1,13 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { progressApi, type UpsertProgressInput } from "../api/progressApi";
+import { useGetMe } from "../../auth/hooks/useAuth";
 
-// Fetches the current user's progress for a lesson. Returns null when not started.
+// Fetches the current user's progress for a lesson. Only runs when authenticated.
 export function useLessonProgressQuery(lessonId: string) {
+	const { data: me } = useGetMe();
+
 	return useQuery({
 		queryKey: ["lesson-progress", lessonId],
 		queryFn: () => progressApi.getByLesson(lessonId),
 		staleTime: 60 * 1000,
-		enabled: !!lessonId,
+		enabled: !!lessonId && !!me?.userId,
 	});
 }
 
@@ -20,6 +23,19 @@ export function useUpsertProgressMutation(lessonId: string) {
 		mutationFn: (input: UpsertProgressInput) => progressApi.upsert(lessonId, input),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["lesson-progress", lessonId] });
+		},
+	});
+}
+
+// Mutation to save a per-block quiz score. Invalidates the block scores query on success.
+export function useUpsertQuizBlockScoreMutation(lessonId: string) {
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: ({ blockId, score }: { blockId: string; score: number }) =>
+			progressApi.upsertQuizBlockScore(lessonId, blockId, score),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["quiz-block-scores", lessonId] });
 		},
 	});
 }

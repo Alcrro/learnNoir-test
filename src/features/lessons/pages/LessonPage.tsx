@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import { formatRelative } from "../../../libs/utils/formatRelative";
 import LessonPageLayout from "./LessonPageLayout";
 import { LessonFeatureTabs } from "../components/LessonFeatureTabs";
 import { useLessonPageController } from "../hooks/useLessonPageController";
@@ -9,18 +8,16 @@ import LessonTabContent from "../components/LessonTabContent";
 import { LessonEditBar } from "../components/edit/LessonEditBar";
 import { AIReviewPanel } from "../components/edit/AIReviewPanel";
 import PageStatus from "../../../components/atoms/PageStatus";
-import { useLessonDataStore } from "../store/useLessonDataStore";
-import { useLessonEditStore } from "../store/useLessonEditStore";
+import { useLessonPermissions } from "../hooks/useLessonPermissions";
 import { useLastLessonStore } from "../../../store/useLastLessonStore";
+import LessonContext from "../context/LessonContext";
 
 const LessonPage = () => {
 	const { lessonSlug } = useParams<{ lessonSlug: string }>();
 	const location = useLocation();
-	const { loadingLesson, loadingBlocks, isError } = useLessonPageController(lessonSlug!);
+	const { lesson, loadingLesson, loadingBlocks, isError } = useLessonPageController(lessonSlug!);
 
-	const lesson = useLessonDataStore((s) => s.lesson);
-	const canEdit = useLessonDataStore((s) => s.canEdit);
-	const isEditing = useLessonEditStore((s) => s.isEditing);
+	const { canEdit } = useLessonPermissions(lesson);
 	const saveLesson = useLastLessonStore((s) => s.save);
 
 	useEffect(() => {
@@ -33,30 +30,27 @@ const LessonPage = () => {
 	if (isError || !lesson) return <PageStatus message="Lesson not found." />;
 
 	return (
-		<div className="relative">
-			<div className="absolute right-0 top-0 z-10 flex items-center gap-3">
-				{lesson.updatedAt && !isEditing && (
-					<span className="text-xs text-(--text-muted)">
-						Updated {formatRelative(lesson.updatedAt)}
-					</span>
-				)}
-				{canEdit && <LessonEditBar />}
+		<LessonContext.Provider value={{ lessonSlug: lessonSlug!, lessonId: lesson.id, canEdit }}>
+			<div className="relative">
+				<div className="absolute right-0 top-0 z-10 flex items-center gap-3">
+					{canEdit && <LessonEditBar />}
+				</div>
+
+				<LessonPageLayout
+					header={<LessonHeader />}
+					tabs={loadingBlocks ? null : <LessonFeatureTabs />}
+					content={
+						loadingBlocks ? (
+							<PageStatus message="Loading content…" padded={false} />
+						) : (
+							<LessonTabContent />
+						)
+					}
+				/>
+
+				<AIReviewPanel />
 			</div>
-
-			<LessonPageLayout
-				header={<LessonHeader />}
-				tabs={loadingBlocks ? null : <LessonFeatureTabs />}
-				content={
-					loadingBlocks ? (
-						<PageStatus message="Loading content…" padded={false} />
-					) : (
-						<LessonTabContent />
-					)
-				}
-			/>
-
-			<AIReviewPanel />
-		</div>
+		</LessonContext.Provider>
 	);
 };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { RefreshCw, CheckCircle2, XCircle } from "lucide-react";
 import type { LessonRecallQuestion } from "../../../lib/buildAlgorithmLessonTheory";
 import { ComponentFeedback } from "./ComponentFeedback";
@@ -8,12 +8,25 @@ type Props = {
 	placedAfter?: string;
 	lessonId?: string;
 	componentId?: string;
+	onAttemptRecord?: () => void;
 };
 
-function QuestionCard({ q }: { q: LessonRecallQuestion }) {
+function QuestionCard({
+	q,
+	onAnswered,
+}: {
+	q: LessonRecallQuestion;
+	onAnswered?: () => void;
+}) {
 	const [chosen, setChosen] = useState<number | null>(null);
 	const answered = chosen !== null;
 	const isCorrect = chosen === q.correctIndex;
+
+	const handleChoose = (idx: number) => {
+		if (answered) return;
+		setChosen(idx);
+		onAnswered?.();
+	};
 
 	return (
 		<div className="lt-recall__q">
@@ -30,7 +43,7 @@ function QuestionCard({ q }: { q: LessonRecallQuestion }) {
 						<button
 							key={idx}
 							className={cls}
-							onClick={() => !answered && setChosen(idx)}
+							onClick={() => handleChoose(idx)}
 							disabled={answered}
 						>
 							{opt}
@@ -51,8 +64,27 @@ function QuestionCard({ q }: { q: LessonRecallQuestion }) {
 	);
 }
 
-export function EmbeddedRecall({ questions, placedAfter = "", lessonId = "", componentId = "recall" }: Props) {
+export function EmbeddedRecall({
+	questions,
+	placedAfter = "",
+	lessonId = "",
+	componentId = "recall",
+	onAttemptRecord,
+}: Props) {
 	if (!Array.isArray(questions) || questions.length === 0) return null;
+
+	// Track how many questions have been answered to fire onAttemptRecord once all are done.
+	const answeredCount = useRef(0);
+	const recorded = useRef(false);
+
+	const handleQuestionAnswered = () => {
+		answeredCount.current += 1;
+		if (!recorded.current && answeredCount.current >= questions.length) {
+			recorded.current = true;
+			onAttemptRecord?.();
+		}
+	};
+
 	return (
 		<div className="lt-card">
 			<div className="lt-card__header">
@@ -65,7 +97,11 @@ export function EmbeddedRecall({ questions, placedAfter = "", lessonId = "", com
 			<div className="lt-card__body">
 				<div className="lt-recall__list">
 					{questions.map((q) => (
-						<QuestionCard key={q.id} q={q} />
+						<QuestionCard
+							key={q.id}
+							q={q}
+							onAnswered={handleQuestionAnswered}
+						/>
 					))}
 				</div>
 			</div>

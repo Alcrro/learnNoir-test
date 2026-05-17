@@ -4,13 +4,15 @@ import { Zap, ArrowRight } from "lucide-react";
 type Props = {
 	question: string;
 	onContinue?: () => void;
+	onAttemptRecord?: () => void;
 };
 
-export function PredictPrompt({ question, onContinue }: Props) {
+export function PredictPrompt({ question, onContinue, onAttemptRecord }: Props) {
 	const [answered, setAnswered] = useState(false);
 
 	const handleContinue = () => {
 		setAnswered(true);
+		onAttemptRecord?.();
 		onContinue?.();
 	};
 

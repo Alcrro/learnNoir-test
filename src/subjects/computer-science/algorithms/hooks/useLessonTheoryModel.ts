@@ -4,7 +4,7 @@ import { algorithms } from "../data/algorithmsData";
 import { getFallbackProgrammingCatalog } from "../../catalog/data/programmingCatalogFallback";
 import { buildAlgorithmLessonTheoryModel } from "../lib/buildAlgorithmLessonTheory";
 import { useApprovedTheoryInteractions } from "./useTheoryInteractions";
-import { useLessonDataStore } from "../../../../features/lessons/store/useLessonDataStore";
+import { useLessonContext } from "../../../../features/lessons/context/LessonContext";
 import type { LessonTheoryModel, LessonConcreteStep, LessonRecallQuestion, LessonTransferScenario } from "../lib/buildAlgorithmLessonTheory";
 import type { TheoryInteractionDTO } from "../../../../features/lessons/api/lessonTheoryInteractionsApi";
 
@@ -81,7 +81,7 @@ export function useLessonTheoryModel() {
 		lessonSlug: string;
 	}>();
 
-	const dbLessonId = useLessonDataStore((s) => s.lesson?.id ?? "");
+	const { lessonId: dbLessonId } = useLessonContext();
 	const { data: approvedInteractions = [] } = useApprovedTheoryInteractions(dbLessonId);
 
 	const model = useMemo(() => {

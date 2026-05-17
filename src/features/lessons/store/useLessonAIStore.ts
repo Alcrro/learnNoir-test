@@ -1,19 +1,20 @@
 import { create } from "zustand";
 import { lessonAIApi, type LessonReviewResult } from "../api/lessonAIApi";
-import { useLessonDataStore } from "./useLessonDataStore";
 import { useLessonEditStore } from "./useLessonEditStore";
 
 type AIState<T> = { data: T | null; loading: boolean; error: string | null };
 const idle = <T>(): AIState<T> => ({ data: null, loading: false, error: null });
 
+type ReviewPayload = { title: string; description: string; content: string };
+
 type LessonAIStore = {
 	improveState: Record<string, AIState<string>>;
 	reviewState: AIState<LessonReviewResult>;
 	improveField: (fieldKey: string, text: string, context?: string) => Promise<string | null>;
-	handleImproveTitle: () => Promise<void>;
-	handleImproveDescription: () => Promise<void>;
-	reviewLesson: (payload: { title: string; description: string; content: string }) => Promise<void>;
-	handleReview: () => void;
+	handleImproveTitle: (text: string, context?: string) => Promise<void>;
+	handleImproveDescription: (text: string, context?: string) => Promise<void>;
+	reviewLesson: (payload: ReviewPayload) => Promise<void>;
+	handleReview: (payload: ReviewPayload) => void;
 	clearReview: () => void;
 	reset: () => void;
 };
@@ -33,7 +34,10 @@ export const useLessonAIStore = create<LessonAIStore>((set, get) => ({
 		try {
 			const result = await lessonAIApi.improve(text, context);
 			set((s) => ({
-				improveState: { ...s.improveState, [fieldKey]: { data: result, loading: false, error: null } },
+				improveState: {
+					...s.improveState,
+					[fieldKey]: { data: result, loading: false, error: null },
+				},
 			}));
 			return result;
 		} catch {
@@ -47,17 +51,13 @@ export const useLessonAIStore = create<LessonAIStore>((set, get) => ({
 		}
 	},
 
-	handleImproveTitle: async () => {
-		const { editTitle } = useLessonEditStore.getState();
-		const { lesson } = useLessonDataStore.getState();
-		const result = await get().improveField("title", editTitle, `Lesson: ${lesson?.title}`);
+	handleImproveTitle: async (text, context) => {
+		const result = await get().improveField("title", text, context);
 		if (result) useLessonEditStore.getState().setEditTitle(result);
 	},
 
-	handleImproveDescription: async () => {
-		const { editDescription } = useLessonEditStore.getState();
-		const { lesson } = useLessonDataStore.getState();
-		const result = await get().improveField("description", editDescription, `Lesson: ${lesson?.title}`);
+	handleImproveDescription: async (text, context) => {
+		const result = await get().improveField("description", text, context);
 		if (result) useLessonEditStore.getState().setEditDescription(result);
 	},
 
@@ -71,14 +71,8 @@ export const useLessonAIStore = create<LessonAIStore>((set, get) => ({
 		}
 	},
 
-	handleReview: () => {
-		const { editTitle, editDescription } = useLessonEditStore.getState();
-		const { lesson } = useLessonDataStore.getState();
-		void get().reviewLesson({
-			title: editTitle,
-			description: editDescription,
-			content: lesson?.description ?? "",
-		});
+	handleReview: (payload) => {
+		void get().reviewLesson(payload);
 	},
 
 	clearReview: () => set({ reviewState: idle() }),

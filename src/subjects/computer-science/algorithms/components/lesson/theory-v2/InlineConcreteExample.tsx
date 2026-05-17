@@ -7,9 +7,10 @@ type Props = {
 	title?: string;
 	steps: LessonConcreteStep[];
 	lessonId?: string;
+	onAttemptRecord?: () => void;
 };
 
-export function InlineConcreteExample({ title = "Exemplu concret", steps, lessonId = "" }: Props) {
+export function InlineConcreteExample({ title = "Exemplu concret", steps, lessonId = "", onAttemptRecord }: Props) {
 	const [currentStep, setCurrentStep] = useState(0);
 	const [allSeen, setAllSeen] = useState(false);
 
@@ -20,7 +21,10 @@ export function InlineConcreteExample({ title = "Exemplu concret", steps, lesson
 	const goNext = () => {
 		const next = currentStep + 1;
 		setCurrentStep(next);
-		if (next === steps.length - 1) setAllSeen(true);
+		if (next === steps.length - 1) {
+			setAllSeen(true);
+			onAttemptRecord?.();
+		}
 	};
 
 	const goPrev = () => setCurrentStep((s) => Math.max(0, s - 1));

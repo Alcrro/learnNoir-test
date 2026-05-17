@@ -1,4 +1,4 @@
-import { BookOpen, GraduationCap, TrendingUp } from "lucide-react";
+import { AlarmClock, BookOpen, GraduationCap, ShieldCheck, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageStatus from "../../../components/atoms/PageStatus";
 import {
@@ -6,11 +6,106 @@ import {
 	DashboardSectionHeading,
 	DashboardStatCard,
 } from "../components/DashboardUI";
+import { AlertCard } from "../components/atoms/AlertCard";
 import { LiveLessonBanner } from "../components/atoms/LiveLessonBanner";
 import { StatCounter } from "../components/atoms/StatCounter";
+import { useDashboardContext } from "../lib/dashboardContext";
 import { useTeacherStats } from "../hooks/useTeacherStats";
 
-export default function OverviewPage() {
+function StudentOverview() {
+	const { workspace, profileName } = useDashboardContext();
+	const { stats, alerts, quickActions } = workspace;
+	const [gradeStat, lessonStat, attendanceStat, sessionStat] = stats;
+
+	return (
+		<div className="space-y-4">
+			<DashboardPanel className="relative overflow-hidden">
+				<div className="absolute -right-14 top-0 h-44 w-44 rounded-full bg-(--blue-bg) blur-3xl" />
+				<div className="relative">
+					<DashboardSectionHeading
+						eyebrow="Tabloul tău de bord"
+						title={`Bine ai venit, ${profileName}`}
+						description="Urmărește-ți progresul, nota proiectată și sesiunile viitoare — totul într-un singur loc."
+					/>
+					<div className="mt-6 flex flex-wrap gap-3">
+						{quickActions.map((action) => (
+							<Link
+								key={action.href}
+								to={action.href}
+								className="rounded-2xl border border-(--border) bg-(--bg-secondary) px-4 py-2.5 text-sm font-semibold text-(--text-primary) transition hover:bg-(--bg-elevated)"
+							>
+								{action.cta}
+							</Link>
+						))}
+					</div>
+				</div>
+			</DashboardPanel>
+
+			<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+				{gradeStat && (
+					<DashboardStatCard
+						label={gradeStat.label}
+						value={gradeStat.value}
+						helper={gradeStat.helper}
+						trend={gradeStat.trend}
+						icon={GraduationCap}
+						tone="blue"
+					/>
+				)}
+				{lessonStat && (
+					<DashboardStatCard
+						label={lessonStat.label}
+						value={lessonStat.value}
+						helper={lessonStat.helper}
+						trend={lessonStat.trend}
+						icon={BookOpen}
+						tone="teal"
+					/>
+				)}
+				{attendanceStat && (
+					<DashboardStatCard
+						label={attendanceStat.label}
+						value={attendanceStat.value}
+						helper={attendanceStat.helper}
+						trend={attendanceStat.trend}
+						icon={ShieldCheck}
+						tone="amber"
+					/>
+				)}
+				{sessionStat && (
+					<DashboardStatCard
+						label={sessionStat.label}
+						value={sessionStat.value}
+						helper={sessionStat.helper}
+						trend={sessionStat.trend}
+						icon={AlarmClock}
+						tone="slate"
+					/>
+				)}
+			</div>
+
+			{alerts.length > 0 && (
+				<DashboardPanel>
+					<DashboardSectionHeading
+						eyebrow="Notificări"
+						title="Ce se întâmplă acum"
+						description="Actualizări despre progresul tău, teme și feedback de la profesor."
+					/>
+					<div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+						{alerts.map((alert) => (
+							<AlertCard
+								key={alert.id}
+								alert={alert}
+							/>
+						))}
+					</div>
+				</DashboardPanel>
+			)}
+		</div>
+	);
+}
+
+function TeacherOverview() {
 	const { data: stats, isLoading } = useTeacherStats();
 
 	if (isLoading)
@@ -112,4 +207,9 @@ export default function OverviewPage() {
 			</div>
 		</div>
 	);
+}
+
+export default function OverviewPage() {
+	const { previewRole } = useDashboardContext();
+	return previewRole === "student" ? <StudentOverview /> : <TeacherOverview />;
 }

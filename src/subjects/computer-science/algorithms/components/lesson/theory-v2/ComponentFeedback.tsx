@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useComponentFeedback } from "../../../hooks/useComponentFeedback";
 import { lessonComponentFeedbackApi } from "../../../../../../features/lessons/api/lessonComponentFeedbackApi";
 import type { FeedbackOption } from "../../../../../../features/lessons/api/lessonComponentFeedbackApi";
+import { useGetMe } from "../../../../../../features/auth/hooks/useAuth";
 
 type Props = {
 	lessonId: string;
@@ -11,12 +12,14 @@ type Props = {
 };
 
 export function ComponentFeedback({ lessonId, componentId }: Props) {
+	const { data: me } = useGetMe();
 	const { upvotes, downvotes, myVote, handleVote, sendMessage } = useComponentFeedback(lessonId, componentId);
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 	const [message, setMessage] = useState("");
 	const [messageSent, setMessageSent] = useState(false);
+	const [votedThisSession, setVotedThisSession] = useState(false);
 
-	const showForm = myVote === "down" && !messageSent;
+	const showForm = !!me && myVote === "down" && !messageSent && votedThisSession;
 
 	// Fetch predefined options only when the form is visible
 	const { data: options = [] } = useQuery<FeedbackOption[]>({
@@ -26,12 +29,16 @@ export function ComponentFeedback({ lessonId, componentId }: Props) {
 		staleTime: 5 * 60_000,
 	});
 
+	if (!me) return null;
+
 	const onVote = (v: "up" | "down") => {
 		handleVote(v);
+		setVotedThisSession(true);
 		if (v === "up" || myVote === v) {
 			setSelectedIds([]);
 			setMessage("");
 			setMessageSent(false);
+			setVotedThisSession(false);
 		}
 	};
 

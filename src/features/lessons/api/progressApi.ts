@@ -26,6 +26,14 @@ export type LessonProgress = {
 	updatedAt: string | null;
 };
 
+// Mirrors LessonProgressWithLesson from the backend — progress joined with lesson + module.
+export type MyLessonProgress = LessonProgress & {
+	lessonTitle: string;
+	lessonSlug: string;
+	lessonStatus: string;
+	moduleName: string;
+};
+
 export type UpsertProgressInput = {
 	status?: LessonProgress["status"];
 	quizScore?: number;
@@ -33,7 +41,20 @@ export type UpsertProgressInput = {
 	outputScore?: number;
 };
 
+export type QuizBlockScore = {
+	id: string;
+	userId: string;
+	lessonBlockId: string;
+	score: number;
+	passed: boolean;
+	attempts: number;
+};
+
 export const progressApi = {
+	// GET /progress/me — all progress rows for the current user, joined with lesson metadata.
+	getAll: () =>
+		request<{ data: MyLessonProgress[] }>(`/progress/me`).then((r) => r.data),
+
 	// GET /progress/lesson/:lessonId — current user's progress. Returns null if not started.
 	getByLesson: (lessonId: string) =>
 		request<{ data: LessonProgress | null }>(`/progress/lesson/${lessonId}`).then(
@@ -45,5 +66,18 @@ export const progressApi = {
 		request<{ data: LessonProgress }>(`/progress/lesson/${lessonId}`, {
 			method: "PATCH",
 			body: JSON.stringify(input),
+		}).then((r) => r.data),
+
+	// GET /progress/lesson/:lessonId/quiz-blocks — per-block quiz scores.
+	getQuizBlockScores: (lessonId: string) =>
+		request<{ data: QuizBlockScore[] }>(`/progress/lesson/${lessonId}/quiz-blocks`).then(
+			(r) => r.data,
+		),
+
+	// POST /progress/lesson/:lessonId/quiz-block/:blockId — save quiz block result.
+	upsertQuizBlockScore: (lessonId: string, blockId: string, score: number) =>
+		request<{ data: QuizBlockScore }>(`/progress/lesson/${lessonId}/quiz-block/${blockId}`, {
+			method: "POST",
+			body: JSON.stringify({ score }),
 		}).then((r) => r.data),
 };

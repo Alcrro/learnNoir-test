@@ -1,12 +1,15 @@
 import { Clock, Trophy } from "lucide-react";
 import { EditableField } from "./edit/EditableField";
-import { useLessonDataStore } from "../store/useLessonDataStore";
+import { useLessonContext } from "../context/LessonContext";
+import { useLessonBySlugQuery } from "../hooks/useLessonBySlugQuery";
+import { useLessonProgressQuery } from "../hooks/useLessonProgressQuery";
 import { useLessonEditStore } from "../store/useLessonEditStore";
 import { useLessonAIStore } from "../store/useLessonAIStore";
 
 const LessonHeader = () => {
-	const lesson = useLessonDataStore((s) => s.lesson);
-	const progress = useLessonDataStore((s) => s.progress);
+	const { lessonSlug, lessonId } = useLessonContext();
+	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
+	const { data: progress } = useLessonProgressQuery(lessonId);
 	const isEditing = useLessonEditStore((s) => s.isEditing);
 	const editTitle = useLessonEditStore((s) => s.editTitle);
 	const editDescription = useLessonEditStore((s) => s.editDescription);
@@ -29,7 +32,7 @@ const LessonHeader = () => {
 				placeholder="Lesson title"
 				isEditing={isEditing}
 				aiLoading={improveState["title"]?.loading}
-				onAIImprove={handleImproveTitle}
+				onAIImprove={() => handleImproveTitle(editTitle, `Lesson: ${lesson.title}`)}
 			>
 				<h1 className="text-2xl font-semibold capitalize tracking-tight text-(--text-primary)">
 					{lesson.title}
@@ -44,7 +47,9 @@ const LessonHeader = () => {
 				placeholder="Short lesson description"
 				isEditing={isEditing}
 				aiLoading={improveState["description"]?.loading}
-				onAIImprove={handleImproveDescription}
+				onAIImprove={() =>
+					handleImproveDescription(editDescription, `Lesson: ${lesson.title}`)
+				}
 			>
 				{lesson.description && (
 					<p className="text-sm text-(--text-secondary) max-w-2xl">{lesson.description}</p>

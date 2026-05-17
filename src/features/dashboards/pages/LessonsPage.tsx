@@ -4,11 +4,16 @@ import { LessonStatsBar } from "../components/organisms/LessonStatsBar";
 import { LessonList } from "../components/organisms/LessonList";
 import { LessonFormModal } from "../components/molecules/LessonFormModal";
 import { LessonHistoryDrawer } from "../components/molecules/LessonHistoryDrawer";
+import StudentLessonProgressTable from "../components/organisms/StudentLessonProgressTable";
 import { useLessonsPageController } from "../hooks/useLessonsPageController";
+import { useDashboardContext } from "../lib/dashboardContext";
+import { useMyLessonProgressQuery } from "../../lessons/hooks/useMyLessonProgressQuery";
 import PageStatus from "../../../components/atoms/PageStatus";
 import DefaultButton from "../../../components/atoms/DefaultButton";
 
 export default function LessonsPage() {
+	const { previewRole } = useDashboardContext();
+	const myProgress = useMyLessonProgressQuery();
 	const {
 		lessons,
 		isLoading,
@@ -25,6 +30,11 @@ export default function LessonsPage() {
 		onPublish,
 		isSaving,
 	} = useLessonsPageController();
+
+	if (previewRole === "student") {
+		if (myProgress.isLoading) return <PageStatus message="Se încarcă progresul…" centered />;
+		return <StudentLessonProgressTable rows={myProgress.data ?? []} />;
+	}
 
 	if (isLoading) return <PageStatus message="Loading lessons…" centered />;
 

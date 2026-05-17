@@ -3,11 +3,24 @@ import PageStatus from "../../../components/atoms/PageStatus";
 import { DashboardPanel, DashboardSectionHeading, DashboardStatCard } from "../components/DashboardUI";
 import { StudentTable } from "../components/organisms/StudentTable";
 import { TopPerformersPanel } from "../components/organisms/TopPerformersPanel";
+import { useDashboardContext } from "../lib/dashboardContext";
 import { useTeacherStudents } from "../hooks/useTeacherStudents";
 import { calcAvgCompletion, calcAvgScore, getTopStudents } from "../lib/studentStats";
 
 export default function StudentsPage() {
+	const { previewRole } = useDashboardContext();
 	const { data: students, isLoading } = useTeacherStudents();
+
+	if (previewRole === "student")
+		return (
+			<DashboardPanel>
+				<DashboardSectionHeading
+					eyebrow="Acces restricționat"
+					title="Aceasta pagina e doar pentru profesori"
+					description="Datele celorlalți studenți nu sunt vizibile din contul tău. Folosește meniul din stânga pentru a naviga la progresul tău."
+				/>
+			</DashboardPanel>
+		);
 
 	if (isLoading) return <PageStatus message="Loading students…" centered />;
 

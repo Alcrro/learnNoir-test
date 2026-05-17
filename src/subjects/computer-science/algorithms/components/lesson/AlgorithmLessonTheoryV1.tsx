@@ -4,7 +4,7 @@ import { formatRelative } from "../../../../../libs/utils/formatRelative";
 import { useLessonTheoryModel } from "../../hooks/useLessonTheoryModel";
 import { useLessonReadProgress } from "../../hooks/useLessonReadProgress";
 import { useAlgorithmLessonOverrides } from "../../hooks/useAlgorithmLessonOverrides";
-import { useLessonEditContext } from "../../../../../features/lessons/context/LessonEditContext";
+import { useLessonContext } from "../../../../../features/lessons/context/LessonContext";
 import { useLessonProgressQuery } from "../../../../../features/lessons/hooks/useLessonProgressQuery";
 import useAuth from "../../../../../hooks/useAuth";
 import { getThinkPrompts } from "../../lib/getThinkPrompts";
@@ -321,13 +321,14 @@ type Section = "concept" | "stepsPrompt" | "complexity" | "whenToUse" | "miscPro
 
 const AlgorithmLessonTheoryV1 = ({ lessonId: dbLessonId = "", updatedAt }: { lessonId?: string; updatedAt?: string }) => {
 	const { model, lessonId, lessonSlug } = useLessonTheoryModel();
-	const { stepsRevealed, setStepsRevealed, setMiscRevealed, confidence, setConfidence } =
-		useLessonReadProgress(dbLessonId, model);
-	const { overrides, save } = useAlgorithmLessonOverrides(dbLessonId);
-	const { canEdit } = useLessonEditContext();
 	const { user } = useAuth();
-	const { data: progress } = useLessonProgressQuery(dbLessonId);
-	const canFeedback = !!user && (progress?.weightedScore ?? 0) > 0;
+	const isAuthenticated = !!user;
+	const { stepsRevealed, setStepsRevealed, setMiscRevealed, confidence, setConfidence } =
+		useLessonReadProgress(dbLessonId, model, isAuthenticated);
+	const { overrides, save } = useAlgorithmLessonOverrides(dbLessonId);
+	const { canEdit } = useLessonContext();
+	const { data: progress } = useLessonProgressQuery(isAuthenticated ? dbLessonId : "");
+	const canFeedback = isAuthenticated && (progress?.weightedScore ?? 0) > 0;
 	const [editing, setEditing] = useState<Section | null>(null);
 
 	if (!model) return null;
