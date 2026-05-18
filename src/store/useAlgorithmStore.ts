@@ -34,6 +34,13 @@ export const useAlgorithmStore = create<AlgorithmStore>()(
 				}),
 			setGeneratedArray: (arr) => set({ generatedArray: arr }),
 		}),
-		{ name: "algorithm-storage" },
+		{
+			name: "algorithm-storage",
+			// steps is transient UI state — large arrays shouldn't bloat localStorage
+			partialize: (state) => ({
+				generatedArray: state.generatedArray,
+				time: state.time,
+			}),
+		},
 	),
 );

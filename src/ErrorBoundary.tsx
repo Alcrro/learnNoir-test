@@ -21,7 +21,6 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySate> {
 		if (error instanceof Response) {
 			throw error;
 		}
-		console.error("caught by boundary: ", error);
 		this.setState({ hasError: true });
 	}
 	render() {

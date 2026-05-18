@@ -15,7 +15,7 @@ export function ProblemListPanel({ exercises, selectedId, statusMap, onSelect, i
 	const solvedCount = exercises.filter((e) => statusMap[e.id] === "passed").length;
 
 	return (
-		<aside className="flex h-full w-[260px] shrink-0 flex-col border-r border-(--border)">
+		<aside className="flex h-full w-full flex-col border-r border-(--border)">
 			<div className="border-b border-(--border) px-4 py-3.5">
 				<h2 className="text-xs font-semibold uppercase tracking-wider text-(--text-secondary)">
 					Exerciții

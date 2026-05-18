@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen } from "lucide-react";
+import { BookOpen, ChevronLeft } from "lucide-react";
+import { cn } from "../../../../libs/utils/cn";
 import { blocksToQuizList } from "./quiz/lib/quizBlockMapper";
 import { QuizListPanel } from "./quiz/organisms/QuizListPanel";
 import { QuizPreviewPanel } from "./quiz/organisms/QuizPreviewPanel";
@@ -44,12 +45,14 @@ export function LessonQuizContentV2({ blocks, lessonSlug, lessonId }: Props) {
 
 	const [selectedId, setSelectedId] = useState<string | null>(() => firstAvailableId);
 	const [sessionActive, setSessionActive] = useState(false);
+	const [mobilePanel, setMobilePanel] = useState<"list" | "content">("list");
 
 	const selectedQuiz = quizList.find((q) => q.id === selectedId) ?? null;
 
 	const handleSelect = (id: string) => {
 		if (id !== selectedId) setSessionActive(false);
 		setSelectedId(id);
+		setMobilePanel("content");
 	};
 
 	if (quizList.length === 0) {
@@ -65,15 +68,36 @@ export function LessonQuizContentV2({ blocks, lessonSlug, lessonId }: Props) {
 
 	return (
 		<div className="flex h-full min-h-0">
-			{/* Left — quiz list */}
-			<QuizListPanel
-				quizzes={quizList}
-				selectedId={selectedId}
-				onSelect={handleSelect}
-			/>
+			{/* Left — quiz list: full width on mobile (when active), fixed on md+ */}
+			<div
+				className={cn(
+					"md:flex md:w-[280px] md:shrink-0",
+					mobilePanel === "list" ? "flex w-full" : "hidden md:flex",
+				)}
+			>
+				<QuizListPanel
+					quizzes={quizList}
+					selectedId={selectedId}
+					onSelect={handleSelect}
+				/>
+			</div>
 
 			{/* Center — preview or active quiz */}
-			<main className="flex min-w-0 flex-1 flex-col overflow-y-auto">
+			<main
+				className={cn(
+					"min-w-0 flex-1 flex-col overflow-y-auto",
+					mobilePanel === "content" ? "flex" : "hidden md:flex",
+				)}
+			>
+				{/* Back button — mobile only */}
+				<button
+					onClick={() => setMobilePanel("list")}
+					className="flex items-center gap-1 border-b border-(--border) px-4 py-2.5 text-xs text-(--text-secondary) transition-colors hover:text-(--text-primary) md:hidden"
+				>
+					<ChevronLeft className="h-3.5 w-3.5" />
+					Quizuri
+				</button>
+
 				{!selectedQuiz ? (
 					<div className="flex flex-1 flex-col items-center justify-center gap-2 text-(--text-muted)">
 						<BookOpen className="h-8 w-8 opacity-30" />
@@ -98,8 +122,12 @@ export function LessonQuizContentV2({ blocks, lessonSlug, lessonId }: Props) {
 				)}
 			</main>
 
-			{/* Right — related lessons & prerequisites */}
-			{selectedQuiz && <QuizRelatedPanel quizId={selectedQuiz.id} />}
+			{/* Right — related lessons & prerequisites: only on lg+ */}
+			{selectedQuiz && (
+				<div className="hidden lg:flex lg:w-[240px] lg:shrink-0">
+					<QuizRelatedPanel quizId={selectedQuiz.id} />
+				</div>
+			)}
 		</div>
 	);
 }

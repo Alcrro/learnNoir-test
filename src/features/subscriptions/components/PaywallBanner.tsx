@@ -1,6 +1,6 @@
 import { Lock, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "../../../libs/utils/cn";
-import { useCheckoutRedirect } from "../hooks/useSubscription";
 
 type Props = {
 	label?: string;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function PaywallBanner({ label = "Mai mult conținut disponibil cu Pro", className }: Props) {
-	const { startCheckout, isLoading } = useCheckoutRedirect();
+	const navigate = useNavigate();
 
 	return (
 		<div
@@ -22,17 +22,16 @@ export function PaywallBanner({ label = "Mai mult conținut disponibil cu Pro", 
 				<span className="text-[11px] font-semibold uppercase tracking-wider">Pro</span>
 			</div>
 			<p className="mt-1.5 text-[11px] text-(--text-muted) leading-snug">{label}</p>
-			<p className="mt-0.5 text-[11px] font-semibold text-amber-400">10 EUR / lună</p>
+			<p className="mt-0.5 text-[11px] font-semibold text-amber-400">începând de la 10 EUR / lună</p>
 			<button
-				onClick={() => void startCheckout()}
-				disabled={isLoading}
+				onClick={() => navigate("/pricing")}
 				className={cn(
 					"mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-[11px] font-medium text-amber-400 transition-colors",
-					"hover:bg-amber-500/20 hover:border-amber-500/60 disabled:opacity-50 disabled:cursor-not-allowed",
+					"hover:bg-amber-500/20 hover:border-amber-500/60",
 				)}
 			>
 				<Zap className="h-3 w-3" />
-				{isLoading ? "Se redirecționează..." : "Activează Pro — 10 EUR/lună"}
+				Vezi planurile disponibile
 			</button>
 		</div>
 	);

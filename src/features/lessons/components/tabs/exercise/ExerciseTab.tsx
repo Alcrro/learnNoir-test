@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, AlertCircle, RefreshCw } from "lucide-react";
+import { Loader2, AlertCircle, RefreshCw, ChevronLeft } from "lucide-react";
+import { cn } from "../../../../../libs/utils/cn";
 import { ProblemListPanel } from "./organisms/ProblemListPanel";
 import { ProblemDetailPanel } from "./organisms/ProblemDetailPanel";
 import { CodeEditorPanel } from "./organisms/CodeEditorPanel";
@@ -37,6 +38,8 @@ function ExerciseSessionView({
 	onSelect: (id: string) => void;
 	isPro: boolean;
 }) {
+	const [mobilePanel, setMobilePanel] = useState<"list" | "detail">("detail");
+
 	const { data: exercises = [] } = useQuery({
 		queryKey: ["exercises", lessonId, isPro],
 		queryFn: () =>
@@ -56,38 +59,68 @@ function ExerciseSessionView({
 
 	if (!exercise) return null;
 
+	const handleSelect = (id: string) => {
+		onSelect(id);
+		setMobilePanel("detail");
+	};
+
 	return (
 		<div className="flex h-full overflow-hidden">
-			<ProblemListPanel
-				exercises={exercises}
-				selectedId={exerciseId}
-				statusMap={statusMap}
-				onSelect={onSelect}
-				isPro={isPro}
-			/>
+			{/* Left — problem list: full width on mobile (when active), fixed on md+ */}
+			<div
+				className={cn(
+					"md:flex md:w-[260px] md:shrink-0",
+					mobilePanel === "list" ? "flex w-full" : "hidden md:flex",
+				)}
+			>
+				<ProblemListPanel
+					exercises={exercises}
+					selectedId={exerciseId}
+					statusMap={statusMap}
+					onSelect={handleSelect}
+					isPro={isPro}
+				/>
+			</div>
 
-			<ResizableSplit
-				className="flex-1 min-w-0"
-				defaultSplit={45}
-				top={
-					<ProblemDetailPanel
-						exercise={exercise}
-						revealedHints={session.revealedHints}
-						onRevealHint={session.revealHint}
-					/>
-				}
-				bottom={
-					<CodeEditorPanel
-						code={session.code}
-						onChange={session.setCode}
-						onRun={session.run}
-						onSubmit={session.submit}
-						onReset={session.reset}
-						isRunning={session.isRunning}
-						runState={session.runState}
-					/>
-				}
-			/>
+			{/* Right — detail + editor */}
+			<div
+				className={cn(
+					"min-w-0 flex-1 flex-col overflow-hidden",
+					mobilePanel === "detail" ? "flex" : "hidden md:flex",
+				)}
+			>
+				{/* Back button — mobile only */}
+				<button
+					onClick={() => setMobilePanel("list")}
+					className="flex items-center gap-1 border-b border-(--border) px-4 py-2.5 text-xs text-(--text-secondary) transition-colors hover:text-(--text-primary) md:hidden"
+				>
+					<ChevronLeft className="h-3.5 w-3.5" />
+					Exerciții
+				</button>
+
+				<ResizableSplit
+					className="flex-1 min-w-0"
+					defaultSplit={45}
+					top={
+						<ProblemDetailPanel
+							exercise={exercise}
+							revealedHints={session.revealedHints}
+							onRevealHint={session.revealHint}
+						/>
+					}
+					bottom={
+						<CodeEditorPanel
+							code={session.code}
+							onChange={session.setCode}
+							onRun={session.run}
+							onSubmit={session.submit}
+							onReset={session.reset}
+							isRunning={session.isRunning}
+							runState={session.runState}
+						/>
+					}
+				/>
+			</div>
 		</div>
 	);
 }

@@ -4,6 +4,7 @@ import "./App.scss";
 import "./styles/main.scss";
 import LoginModal from "./features/auth/components/modal/LoginModal";
 import { queryClient, persister } from "./libs/queryClient";
+import ErrorBoundary from "./ErrorBoundary";
 
 const App = () => {
 	const location = useLocation();
@@ -16,7 +17,9 @@ const App = () => {
 			client={queryClient}
 			persistOptions={{ persister }}
 		>
-			{isModal ? <LoginModal /> : <Outlet />}
+			<ErrorBoundary>
+				{isModal ? <LoginModal /> : <Outlet />}
+			</ErrorBoundary>
 		</PersistQueryClientProvider>
 	);
 };

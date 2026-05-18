@@ -8,7 +8,7 @@ export function QuizRelatedPanel({ quizId }: Props) {
 	const { prerequisites, relatedLessons } = getQuizRelatedContent(quizId);
 
 	return (
-		<aside className="flex h-full w-[240px] shrink-0 flex-col border-l border-(--border)">
+		<aside className="flex h-full w-full flex-col border-l border-(--border)">
 			<div className="border-b border-(--border) px-4 py-3.5">
 				<h2 className="text-xs font-semibold uppercase tracking-wider text-(--text-secondary)">
 					Materiale

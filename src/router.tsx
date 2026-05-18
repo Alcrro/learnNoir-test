@@ -13,6 +13,7 @@ import CategoriesListPage from "./features/categories/pages/CategoriesListPage";
 import { subjectLoader } from "./features/subjects/lib/subjectLoader";
 import { slugToText } from "./libs/utils/slugToText";
 import { PaymentSuccessPage } from "./features/subscriptions/pages/PaymentSuccessPage";
+import { PricingPage } from "./features/subscriptions/pages/PricingPage";
 
 export const router = createBrowserRouter([
 	{
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
 		errorElement: <RouteErrorPage />,
 		children: [
 			{ path: "/", element: <Home /> },
+			{ path: "pricing", element: <PricingPage /> },
 			{ path: "payment/success", element: <PaymentSuccessPage /> },
 			authRoutes,
 			dashboardRoutes,
