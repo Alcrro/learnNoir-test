@@ -65,7 +65,7 @@ function FreeCard({ isPro }: { isPro: boolean }) {
 }
 
 function ProCard({ isPro }: { isPro: boolean }) {
-	const { startCheckout, isLoading } = useCheckoutRedirect();
+	const { startCheckout, isLoading, checkoutError } = useCheckoutRedirect();
 
 	return (
 		<div className="relative flex flex-col rounded-2xl border border-amber-500/50 bg-(--bg-secondary) p-7 shadow-[0_0_40px_-8px_rgba(245,158,11,0.15)]">
@@ -102,17 +102,22 @@ function ProCard({ isPro }: { isPro: boolean }) {
 						Subscripție activă
 					</div>
 				) : (
-					<button
-						onClick={() => void startCheckout()}
-						disabled={isLoading}
-						className={cn(
-							"flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-3 text-sm font-semibold text-black transition-colors",
-							"hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed",
+					<>
+						<button
+							onClick={() => void startCheckout()}
+							disabled={isLoading}
+							className={cn(
+								"flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-3 text-sm font-semibold text-black transition-colors",
+								"hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed",
+							)}
+						>
+							<Zap className="h-4 w-4" />
+							{isLoading ? "Se redirecționează..." : "Cumpără acum"}
+						</button>
+						{checkoutError && (
+							<p className="mt-2 text-center text-xs text-red-500">{checkoutError}</p>
 						)}
-					>
-						<Zap className="h-4 w-4" />
-						{isLoading ? "Se redirecționează..." : "Cumpără acum"}
-					</button>
+					</>
 				)}
 			</div>
 		</div>

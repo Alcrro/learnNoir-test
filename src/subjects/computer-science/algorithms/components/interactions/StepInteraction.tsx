@@ -19,10 +19,6 @@ const StepInteraction = ({
 	const [hoverId, setHoverId] = useState<number | null>(null);
 
 	useEffect(() => {
-		console.log("active:", activeId, "hover:", hoverId);
-	}, [activeId, hoverId]);
-
-	useEffect(() => {
 		setItems(interactionData.items);
 	}, [interactionData]);
 
@@ -43,7 +39,6 @@ const StepInteraction = ({
 		setActiveId(null);
 		setHoverId(null);
 	};
-	console.log("is rendered?");
 
 	return (
 		<div className="flex justify-between">

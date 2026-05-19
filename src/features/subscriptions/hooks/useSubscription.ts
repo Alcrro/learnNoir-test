@@ -28,6 +28,7 @@ export function useCheckoutRedirect() {
 	const location = useLocation();
 	const qc = useQueryClient();
 	const [isLoading, setIsLoading] = useState(false);
+	const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
 	const startCheckout = async () => {
 		if (!me?.userId) {
@@ -36,13 +37,15 @@ export function useCheckoutRedirect() {
 		}
 
 		setIsLoading(true);
+		setCheckoutError(null);
 		try {
 			const stripeUrl = await subscriptionsApi.createCheckoutSession(location.pathname);
 			window.location.href = stripeUrl;
 		} catch {
 			setIsLoading(false);
+			setCheckoutError("Could not start checkout. Please try again.");
 		}
 	};
 
-	return { startCheckout, isLoading };
+	return { startCheckout, isLoading, checkoutError };
 }

@@ -24,24 +24,14 @@ export const useToggleStore = create<ToggleProps>((set, get) => ({
   openToggle: (value) => {
     set((state) => {
       const newSet = new Set(state.toggle);
-
-      if (!newSet.has(value)) {
-        newSet.add(value);
-      }
-      console.log(newSet);
-
+      if (!newSet.has(value)) newSet.add(value);
       return { toggle: newSet };
     });
   },
   closeToggle: (value) => {
     set((state) => {
       const newSet = new Set(state.toggle);
-
-      if (newSet.has(value)) {
-        newSet.delete(value);
-      }
-      console.log({ state });
-
+      if (newSet.has(value)) newSet.delete(value);
       return { toggle: newSet };
     });
   },

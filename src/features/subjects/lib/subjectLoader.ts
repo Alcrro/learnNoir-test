@@ -1,18 +1,14 @@
 import { API_URL } from "../../../libs/config";
-export function subjectLoader() {
-	async function loadSubjects() {
-		const result = await fetch(`${API_URL}/subjects/stats`, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
 
-		const data = await result.json();
-		console.log(data);
+export async function subjectLoader() {
+	const result = await fetch(`${API_URL}/subjects/stats`, {
+		method: "GET",
+		headers: { "Content-Type": "application/json" },
+	});
 
-		return data;
+	if (!result.ok) {
+		throw new Response("Failed to load subjects", { status: result.status });
 	}
 
-	loadSubjects();
+	return result.json();
 }

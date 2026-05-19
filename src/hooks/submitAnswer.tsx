@@ -14,7 +14,6 @@ export function useSubmitInteractionAnswer({
 	if (!user?.userId) return;
 
 	const isCorrect = checkAnswer(stepId, questionId, answerId);
-	console.log(isCorrect);
 }
 
 function checkAnswer(stepId: string, questionId: string, answerId: string) {

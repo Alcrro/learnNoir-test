@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import * as Sentry from "@sentry/react";
 import RouteErrorPage from "./RouteErrorPage";
 
 type ErrorBoundaryProps = {
@@ -21,6 +22,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySate> {
 		if (error instanceof Response) {
 			throw error;
 		}
+		Sentry.captureException(error);
 		this.setState({ hasError: true });
 	}
 	render() {
