@@ -1,5 +1,5 @@
-import StackAnimation from "../../subjects/computer-science/dataStructures/animations/StackAnimation";
-import BubbleSortAnimation from "../../subjects/computer-science/algorithms/bubble-sort/visualization/BubbleSortAnimation";
+import StackAnimation from "../../features/computer-science/dataStructures/animations/StackAnimation";
+import BubbleSortAnimation from "../../features/computer-science/algorithms/bubble-sort/visualization/BubbleSortAnimation";
 
 export const algorithmComponents: Record<string, Record<string, React.FC>> = {
 	algorithms: {

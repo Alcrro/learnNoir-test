@@ -5,6 +5,7 @@ import { useQuizSession } from "../hooks/useQuizSession";
 import { QuizProgressHeader } from "../molecules/QuizProgressHeader";
 import { McqQuestion } from "../molecules/McqQuestion";
 import { InputQuestion } from "../molecules/InputQuestion";
+import { DragDropQuestion } from "../molecules/DragDropQuestion";
 import { QuizSummary } from "../molecules/QuizSummary";
 import { DifficultyBadge } from "../atoms/DifficultyBadge";
 import { DIFFICULTY_WEIGHT } from "../lib/quizTypes";
@@ -158,6 +159,15 @@ export function QuizSession({
 						result={result}
 						onValueChange={(v) => session.setInputValue(q.id, v)}
 						onSubmit={(v) => session.submitInput(q.id, v)}
+					/>
+				)}
+				{q.type === "drag-drop" && (
+					<DragDropQuestion
+						question={q}
+						result={result}
+						onPlaceItem={(slotIndex, item) => session.placeDragDrop(q.id, slotIndex, item)}
+						onRemoveFromSlot={(slotIndex) => session.removeFromSlot(q.id, slotIndex)}
+						onSubmit={() => session.submitDragDrop(q.id)}
 					/>
 				)}
 			</div>

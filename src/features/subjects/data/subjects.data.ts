@@ -64,6 +64,7 @@ export type Subject = {
 	estimatedHours: number;
 	difficulty: "beginner" | "intermediate" | "advanced";
 	tags: string[];
+	tagLinks?: Record<string, string>;
 	featured: boolean;
 };
 export const SUBJECTS = [
@@ -78,7 +79,13 @@ export const SUBJECTS = [
 		completedLessons: 36,
 		estimatedHours: 18,
 		difficulty: "beginner",
-		tags: ["Python", "Variables", "Functions", "Loops"],
+		tags: ["Python", "JavaScript", "Java", "C++"],
+		tagLinks: {
+			Python: "/subjects/computer-science/fundamentals/programming-basics?lang=python",
+			JavaScript: "/subjects/computer-science/fundamentals/programming-basics?lang=javascript",
+			Java: "/subjects/computer-science/fundamentals/programming-basics?lang=java",
+			"C++": "/subjects/computer-science/fundamentals/programming-basics?lang=cpp",
+		},
 		featured: false,
 	},
 	{

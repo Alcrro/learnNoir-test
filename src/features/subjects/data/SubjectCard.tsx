@@ -1,6 +1,6 @@
 // components/SubjectCard.jsx
 import type { KeyboardEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { Subject } from "./subjects.data";
 import { COLOR_MAP, DIFFICULTY } from "./subjectsCard";
 import { SUBJECT_ICONS_MAPPER } from "./subjectCardIconsMapper";
@@ -113,19 +113,34 @@ export default function SubjectCard({
 					{subject.description}
 				</p>
 
-				{/* Tags — max 3 afișate */}
+				{/* Tags — max 4 afișate */}
 				<div className="flex flex-wrap gap-1">
-					{subject.tags.slice(0, 3).map((tag) => (
-						<span
-							key={tag}
-							className={`text-[10px] font-medium px-2 py-0.5 rounded-md ${c.tag}`}
-						>
-							{tag}
-						</span>
-					))}
-					{subject.tags.length > 3 && (
+					{subject.tags.slice(0, 4).map((tag) => {
+						const href = subject.tagLinks?.[tag];
+						if (href) {
+							return (
+								<Link
+									key={tag}
+									to={href}
+									onClick={(e) => e.stopPropagation()}
+									className={`text-[10px] font-medium px-2 py-0.5 rounded-md ${c.tag} hover:opacity-80 transition-opacity`}
+								>
+									{tag}
+								</Link>
+							);
+						}
+						return (
+							<span
+								key={tag}
+								className={`text-[10px] font-medium px-2 py-0.5 rounded-md ${c.tag}`}
+							>
+								{tag}
+							</span>
+						);
+					})}
+					{subject.tags.length > 4 && (
 						<span className="text-[10px] text-(--text-secondary) px-1 py-0.5">
-							+{subject.tags.length - 3}
+							+{subject.tags.length - 4}
 						</span>
 					)}
 				</div>

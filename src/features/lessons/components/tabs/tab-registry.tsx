@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import type { ContentBlock, AssessmentBlock } from "../../api/lessonBlocksApi";
-import { LessonWatchContent } from "./LessonWatchContent";
-import VisualizerV2 from "../../../../subjects/computer-science/algorithms/visualizer-v2/VisualizerV2";
-import { LessonQuizContentV2 } from "./LessonQuizContentV2";
+import { LessonWatchContent } from "./watch/LessonWatchContent";
+import VisualizerV2 from "../../../../features/computer-science/algorithms/visualizer-v2/VisualizerV2";
+import { LessonQuizContentV2 } from "./quiz/LessonQuizContentV2";
 import { ExerciseTab } from "./exercise/ExerciseTab";
 import { hasCapability } from "./category-capabilities";
-import { resolveTheoryRenderer } from "./theory-renderers";
+import { resolveTheoryRenderer } from "./theory/theory-renderers";
 
 export type TabContext = {
 	category: string | undefined;

@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
-import ComputerSciencePages from "../../../subjects/computer-science/pages/ComputerScience";
-import MathPage from "../../../subjects/mathematics/pages/MathPage";
+import ComputerSciencePages from "../../../features/computer-science/pages/ComputerScience";
+import MathPage from "../../../features/mathematics/pages/MathPage";
 
 /**
  * Add a new subject: create its page component, then register it here.

@@ -3,6 +3,7 @@ import { Breadcrumb } from "../../../components/molecules/Breadcrumb";
 import PageStatus from "../../../components/atoms/PageStatus";
 import { LessonsGrid } from "../components/organisms/LessonsGrid";
 import { LessonsListHeader } from "../components/molecules/LessonsListHeader";
+import { LanguageSelector } from "../components/LanguageSelector";
 import { useLessonListPage } from "../hooks/useLessonListPage";
 
 const LessonListPage = () => {
@@ -12,8 +13,18 @@ const LessonListPage = () => {
 		module: moduleSlug = "",
 	} = useParams();
 
-	const { lessons, progressMap, completedCount, buildHref, isLoading, isError } =
-		useLessonListPage({ subject, category, moduleSlug });
+	const {
+		lessons,
+		progressMap,
+		completedCount,
+		buildHref,
+		isLoading,
+		isError,
+		isLanguageModule,
+		availableLanguages,
+		selectedLanguage,
+		setLanguage,
+	} = useLessonListPage({ subject, category, moduleSlug });
 
 	if (isLoading) {
 		return (
@@ -41,6 +52,15 @@ const LessonListPage = () => {
 				lessonCount={lessons.length}
 				completedCount={completedCount}
 			/>
+			{isLanguageModule && selectedLanguage && (
+				<div className="mb-6">
+					<LanguageSelector
+						languages={availableLanguages}
+						selected={selectedLanguage}
+						onChange={setLanguage}
+					/>
+				</div>
+			)}
 			<LessonsGrid lessons={lessons} progressMap={progressMap} buildHref={buildHref} />
 		</div>
 	);

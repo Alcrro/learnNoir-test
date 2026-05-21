@@ -1,7 +1,7 @@
 import type {
 	AlgorithmStatsType,
 	Step,
-} from "../../subjects/computer-science/algorithms/shared/AlgorithmTypes";
+} from "../../features/computer-science/algorithms/shared/AlgorithmTypes";
 
 export function getAlgorithmStats(
 	steps: Step[],

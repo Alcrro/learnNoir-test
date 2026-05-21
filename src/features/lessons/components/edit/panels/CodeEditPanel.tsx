@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Field } from "../shared/Field";
 import { PanelActions } from "../shared/PanelActions";
-import type { AnyNode } from "../../tabs/node-registry";
+import type { AnyNode } from "../../tabs/theory/node-registry";
 
 type Props = {
 	node: AnyNode;

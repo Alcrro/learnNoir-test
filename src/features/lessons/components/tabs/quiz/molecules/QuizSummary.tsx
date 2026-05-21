@@ -118,7 +118,9 @@ export function QuizSummary({ questions, results, score, onRestart }: Props) {
 								)}
 							</span>
 							<p className="flex-1 line-clamp-2 text-sm text-(--text-secondary)">
-								{q.question}
+								{q.type === "drag-drop"
+									? q.sentence.replace(/\[blank\]/g, "___")
+									: q.question}
 							</p>
 							<DifficultyBadge difficulty={q.difficulty} />
 						</div>

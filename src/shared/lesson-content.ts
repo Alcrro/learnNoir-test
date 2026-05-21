@@ -6,6 +6,8 @@ export type LessonContentNode =
 	| FormulaBlock
 	| ProofBlock
 	| TheoremBlock
+	| DragSortBlock
+	| FillBlanksBlock
 	| { type: string; [key: string]: unknown };
 
 export type FormulaBlock = {
@@ -28,13 +30,25 @@ export type TheoremBlock = {
 	statement: string;
 };
 
+export type ConceptQuizOption = {
+	text: string;
+	correct?: boolean;
+	explanation?: string;
+};
+
+export type ConceptSection = {
+	label: string;
+	text: string;
+	quiz?: {
+		question: string;
+		options: ConceptQuizOption[];
+	};
+};
+
 export type ConceptBlock = {
 	type: "concept";
 	title: string;
-	sections: {
-		label: string;
-		text: string;
-	}[];
+	sections: ConceptSection[];
 };
 
 export type TextContent = Array<
@@ -74,4 +88,25 @@ export type ComplexityBlock = {
 		description: string;
 	}[];
 	space: string;
+};
+
+export type DragSortBlock = {
+	type: "drag-sort";
+	items: number[];
+	title?: string;
+	hint?: string;
+};
+
+export type FillBlanksBlank = {
+	id: number;
+	options: string[];
+	correct: string;
+};
+
+export type FillBlanksBlock = {
+	type: "fill-blanks";
+	title?: string;
+	content: string;      // text/cod cu markeri {{0}}, {{1}}, ...
+	blanks: FillBlanksBlank[];
+	language?: string;    // "js", "python", etc. → cod monospace; absent → text normal
 };

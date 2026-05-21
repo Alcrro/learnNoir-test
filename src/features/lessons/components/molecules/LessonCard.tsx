@@ -76,6 +76,11 @@ export function LessonCard({ lesson, progress, href, position }: Props) {
 
 				{/* Meta row */}
 				<div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-(--text-muted)">
+					{lesson.language && (
+						<span className="rounded border border-(--border) px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wide text-(--text-muted)">
+							{lesson.language === "cpp" ? "C++" : lesson.language}
+						</span>
+					)}
 					{lesson.durationSeconds > 0 && (
 						<div className="flex items-center gap-1">
 							<Clock className="h-3.5 w-3.5" />

@@ -5,11 +5,14 @@ import { useLessonBySlugQuery } from "../hooks/useLessonBySlugQuery";
 import { useLessonProgressQuery } from "../hooks/useLessonProgressQuery";
 import { useLessonEditStore } from "../store/useLessonEditStore";
 import { useLessonAIStore } from "../store/useLessonAIStore";
+import { useGetMe } from "../../auth/hooks/useAuth";
 
 const LessonHeader = () => {
 	const { lessonSlug, lessonId } = useLessonContext();
 	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
 	const { data: progress } = useLessonProgressQuery(lessonId);
+	const { data: me } = useGetMe();
+	const isAuthenticated = !!me?.userId;
 	const isEditing = useLessonEditStore((s) => s.isEditing);
 	const editTitle = useLessonEditStore((s) => s.editTitle);
 	const editDescription = useLessonEditStore((s) => s.editDescription);
@@ -64,10 +67,22 @@ const LessonHeader = () => {
 							<span>~{mins} min</span>
 						</div>
 					)}
-					{progress?.weightedScore !== undefined && (
-						<div className="flex items-center gap-1">
-							<Trophy className="h-3.5 w-3.5" />
-							<span>{progress.weightedScore}% score</span>
+					{isAuthenticated && (
+						<div className="flex items-center gap-2">
+							<Trophy className="h-3.5 w-3.5 shrink-0" />
+							<div className="flex items-center gap-2">
+								<div className="w-24 h-1.5 rounded-full bg-(--border) overflow-hidden">
+									<div
+										className="h-1.5 rounded-full bg-blue-500 transition-all duration-500"
+										style={{ width: `${progress?.weightedScore ?? 0}%` }}
+									/>
+								</div>
+								<span className="tabular-nums">
+									{progress?.status === "completed"
+										? "Completat"
+										: `${progress?.weightedScore ?? 0}%`}
+								</span>
+							</div>
 						</div>
 					)}
 				</div>

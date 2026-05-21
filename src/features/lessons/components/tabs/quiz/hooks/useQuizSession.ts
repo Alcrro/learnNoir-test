@@ -1,12 +1,13 @@
 import { useReducer, useCallback } from "react";
 import { weightedScore } from "../lib/quizScoring";
-import type { MockQuiz, QuizQuestion } from "../lib/quizTypes";
+import type { MockQuiz, QuizQuestion, DragDropQuestion } from "../lib/quizTypes";
 
 export type QuizPhase = "start" | "question" | "summary";
 
 export type QuestionResult = {
 	selected: number | null;
 	inputValue: string;
+	dragDropSlots: Record<number, string>;
 	isCorrect: boolean | null;
 	locked: boolean;
 };
@@ -22,6 +23,9 @@ type Action =
 	| { type: "ANSWER_MCQ"; questionId: string; optionIndex: number; isCorrect: boolean }
 	| { type: "SET_INPUT"; questionId: string; value: string }
 	| { type: "SUBMIT_INPUT"; questionId: string; isCorrect: boolean }
+	| { type: "PLACE_DRAG_DROP"; questionId: string; slotIndex: number; item: string }
+	| { type: "REMOVE_FROM_SLOT"; questionId: string; slotIndex: number }
+	| { type: "SUBMIT_DRAG_DROP"; questionId: string; isCorrect: boolean }
 	| { type: "NEXT"; lastIndex: number }
 	| { type: "PREV" }
 	| { type: "COMPLETE" }
@@ -30,6 +34,7 @@ type Action =
 const emptyResult = (): QuestionResult => ({
 	selected: null,
 	inputValue: "",
+	dragDropSlots: {},
 	isCorrect: null,
 	locked: false,
 });
@@ -69,6 +74,50 @@ function reducer(state: State, action: Action): State {
 		}
 
 		case "SUBMIT_INPUT": {
+			const existing = state.results[action.questionId] ?? emptyResult();
+			if (existing.locked) return state;
+			return {
+				...state,
+				results: {
+					...state.results,
+					[action.questionId]: { ...existing, isCorrect: action.isCorrect, locked: true },
+				},
+			};
+		}
+
+		case "PLACE_DRAG_DROP": {
+			const existing = state.results[action.questionId] ?? emptyResult();
+			if (existing.locked) return state;
+			const newSlots = { ...existing.dragDropSlots };
+			// Remove item from any slot it was already placed in
+			for (const key of Object.keys(newSlots)) {
+				if (newSlots[Number(key)] === action.item) delete newSlots[Number(key)];
+			}
+			newSlots[action.slotIndex] = action.item;
+			return {
+				...state,
+				results: {
+					...state.results,
+					[action.questionId]: { ...existing, dragDropSlots: newSlots },
+				},
+			};
+		}
+
+		case "REMOVE_FROM_SLOT": {
+			const existing = state.results[action.questionId] ?? emptyResult();
+			if (existing.locked) return state;
+			const newSlots = { ...existing.dragDropSlots };
+			delete newSlots[action.slotIndex];
+			return {
+				...state,
+				results: {
+					...state.results,
+					[action.questionId]: { ...existing, dragDropSlots: newSlots },
+				},
+			};
+		}
+
+		case "SUBMIT_DRAG_DROP": {
 			const existing = state.results[action.questionId] ?? emptyResult();
 			if (existing.locked) return state;
 			return {
@@ -143,6 +192,31 @@ export function useQuizSession(quiz: MockQuiz) {
 		[questions],
 	);
 
+	const placeDragDrop = useCallback(
+		(questionId: string, slotIndex: number, item: string) =>
+			dispatch({ type: "PLACE_DRAG_DROP", questionId, slotIndex, item }),
+		[],
+	);
+
+	const removeFromSlot = useCallback(
+		(questionId: string, slotIndex: number) =>
+			dispatch({ type: "REMOVE_FROM_SLOT", questionId, slotIndex }),
+		[],
+	);
+
+	const submitDragDrop = useCallback(
+		(questionId: string) => {
+			const q = questions.find((x) => x.id === questionId);
+			if (!q || q.type !== "drag-drop") return;
+			const result = state.results[questionId] ?? emptyResult();
+			const isCorrect = (q as DragDropQuestion).blanks.every(
+				(answer, i) => result.dragDropSlots[i] === answer,
+			);
+			dispatch({ type: "SUBMIT_DRAG_DROP", questionId, isCorrect });
+		},
+		[questions, state.results],
+	);
+
 	const goNext = useCallback(
 		() => dispatch({ type: "NEXT", lastIndex: questions.length - 1 }),
 		[questions.length],
@@ -169,6 +243,9 @@ export function useQuizSession(quiz: MockQuiz) {
 		answerMcq,
 		setInputValue,
 		submitInput,
+		placeDragDrop,
+		removeFromSlot,
+		submitDragDrop,
 		goNext,
 		goPrev,
 		complete,

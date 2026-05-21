@@ -20,10 +20,13 @@ async function put<T>(path: string, body: unknown): Promise<T> {
 	return res.json() as Promise<T>;
 }
 
+export type ProgrammingLanguage = "python" | "javascript" | "java" | "cpp";
+
 // Shape returned by every lesson endpoint.
 export type LessonDTO = {
 	id: string;
 	moduleId: string;
+	language?: ProgrammingLanguage | null;
 	title: string;
 	slug: string;
 	description: string | null;
@@ -43,9 +46,11 @@ export type UpdateLessonPayload = {
 };
 
 export const lessonsApi = {
-	// GET /lessons/module/slug/:moduleSlug — returns all lessons for a module.
-	getByModuleSlug: (moduleSlug: string) =>
-		get<{ data: LessonDTO[] }>(`/lessons/module/slug/${moduleSlug}`).then((r) => r.data),
+	// GET /lessons/module/slug/:moduleSlug — returns all lessons for a module, optionally filtered by language.
+	getByModuleSlug: (moduleSlug: string, language?: ProgrammingLanguage | null) => {
+		const qs = language ? `?language=${language}` : "";
+		return get<{ data: LessonDTO[] }>(`/lessons/module/slug/${moduleSlug}${qs}`).then((r) => r.data);
+	},
 
 	// GET /lessons/slug/:slug — returns a single lesson by its URL slug.
 	getBySlug: (slug: string) =>

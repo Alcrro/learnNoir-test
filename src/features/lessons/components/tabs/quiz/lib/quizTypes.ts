@@ -32,7 +32,17 @@ export type InputQuestion = {
 	explanation: string;
 };
 
-export type QuizQuestion = McqQuestion | InputQuestion;
+export type DragDropQuestion = {
+	id: string;
+	type: "drag-drop";
+	difficulty: Difficulty;
+	sentence: string;
+	blanks: string[];
+	items: string[];
+	explanation: string;
+};
+
+export type QuizQuestion = McqQuestion | InputQuestion | DragDropQuestion;
 
 export type MockQuiz = {
 	title: string;

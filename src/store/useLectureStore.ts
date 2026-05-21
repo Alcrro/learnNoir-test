@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { LectureType } from "../subjects/computer-science/algorithms/bubble-sort/docs/compareElements";
+import type { LectureType } from "../features/computer-science/algorithms/bubble-sort/docs/compareElements";
 
 type LectureStore = {
 	activeStep: number | null;

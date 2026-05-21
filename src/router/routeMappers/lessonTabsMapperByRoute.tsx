@@ -1,13 +1,13 @@
 // config/subjectTabs.config.ts
 
 import { ReactElement } from "react";
-import Visualizer from "../../subjects/computer-science/algorithms/bubble-sort/visualization/Visualizer";
-import AlgorithmLessonTheory from "../../subjects/computer-science/algorithms/components/lesson/AlgorithmLessonTheory";
-import CodeEditor from "../../subjects/computer-science/algorithms/components/codeEditor/CodeEditor";
+import Visualizer from "../../features/computer-science/algorithms/bubble-sort/visualization/Visualizer";
+import AlgorithmLessonTheory from "../../features/computer-science/algorithms/components/lesson/AlgorithmLessonTheory";
+import CodeEditor from "../../features/computer-science/algorithms/components/codeEditor/CodeEditor";
 import Quiz from "../../features/components/quizz/Quiz";
 import { FeatureTabUniqueIdType } from "../../content/FeaturesTabData";
 import { Subject } from "../../types/interactionTypes";
-import MathTheory from "../../subjects/mathematics/components/mathTheory/MathTheory";
+import MathTheory from "../../features/mathematics/components/mathTheory/MathTheory";
 
 type TabConfig = {
 	id: FeatureTabUniqueIdType;

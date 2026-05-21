@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import type { AlgorithmTypeProp } from "../subjects/computer-science/algorithms/data/algorithmArray";
+import type { AlgorithmTypeProp } from "../features/computer-science/algorithms/data/algorithmArray";
 import { useAlgorithmStore } from "../store/useAlgorithmStore";
-import { generateBubbleSortSteps } from "../subjects/computer-science/algorithms/bubble-sort/domain/bubbleSort";
+import { generateBubbleSortSteps } from "../features/computer-science/algorithms/bubble-sort/domain/bubbleSort";
 
 type UseAlgorithmStepProps = {
 	initialArray: AlgorithmTypeProp[];
