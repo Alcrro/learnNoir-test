@@ -1,15 +1,4 @@
-import { API_URL } from "../../../libs/config";
-
-async function post<T>(path: string, body: unknown): Promise<T> {
-	const res = await fetch(`${API_URL}${path}`, {
-		method: "POST",
-		credentials: "include",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify(body),
-	});
-	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	return res.json() as Promise<T>;
-}
+import { apiClient } from "../../../libs/apiClient";
 
 export type LessonReviewResult = {
 	clarity: number;
@@ -27,14 +16,23 @@ export type QuizQuestion = {
 
 export const lessonAIApi = {
 	generate: (topic: string, field: "title" | "description" | "content") =>
-		post<{ data: string }>("/lessons/ai/generate", { topic, field }).then((r) => r.data),
+		apiClient.post<{ data: string }>("/lessons/ai/generate", { topic, field }).then((r) => r.data),
 
 	improve: (text: string, context?: string) =>
-		post<{ data: string }>("/lessons/ai/improve", { text, context }).then((r) => r.data),
+		apiClient.post<{ data: string }>("/lessons/ai/improve", { text, context }).then((r) => r.data),
 
 	review: (lesson: { title: string; description: string; content: string }) =>
-		post<{ data: LessonReviewResult }>("/lessons/ai/review", lesson).then((r) => r.data),
+		apiClient.post<{ data: LessonReviewResult }>("/lessons/ai/review", lesson).then((r) => r.data),
 
 	generateQuiz: (content: string, count?: number) =>
-		post<{ data: QuizQuestion[] }>("/lessons/ai/quiz", { content, count }).then((r) => r.data),
+		apiClient.post<{ data: QuizQuestion[] }>("/lessons/ai/quiz", { content, count }).then((r) => r.data),
+
+	generateBlocks: (text: string) =>
+		apiClient.post<{ data: { nodes?: unknown[]; [k: string]: unknown } }>("/lessons/ai/blocks", { topic: text })
+			.then((r) => {
+				const raw = r.data;
+				if (Array.isArray(raw)) return raw as Record<string, unknown>[];
+				if (Array.isArray((raw as Record<string, unknown[]>).nodes)) return (raw as Record<string, unknown[]>).nodes;
+				return [] as Record<string, unknown>[];
+			}),
 };
