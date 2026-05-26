@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Sparkles, Pencil, Loader2, CheckCircle2 } from "lucide-react";
 import { cn } from "../../../../../libs/utils/cn";
 import { lessonAIApi } from "../../../api/lessonAIApi";
-import { NODE_REGISTRY, PRIMITIVE_EDIT_PANELS } from "../../tabs/theory/node-registry";
+import { NODE_REGISTRY } from "../../tabs/theory/node-registry";
 import type { LessonContentNode } from "@shared/lesson-content";
 import type { AnyNode } from "../../tabs/theory/node-registry";
 
@@ -22,7 +22,7 @@ export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props)
 	const [genError, setGenError] = useState<string | null>(null);
 	const [generated, setGenerated] = useState(false);
 
-	const EditPanel = NODE_REGISTRY[node.type]?.EditPanel ?? PRIMITIVE_EDIT_PANELS[node.type];
+	const EditPanel = NODE_REGISTRY[node.type]?.EditPanel;
 	const hasEditPanel = !!EditPanel;
 
 	async function handleGenerate() {

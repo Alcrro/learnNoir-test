@@ -1,7 +1,3 @@
-// Registry-ul mapează fiecare nodeType la componenta de randare + panoul de editare opțional.
-// Pattern: Open/Closed — adaugi un tip nou creând un fișier + o singură linie aici,
-// fără să atingi ContentNodeRenderer sau alte tipuri existente.
-
 import type { ComponentType, ReactNode } from "react";
 import type {
 	ConceptBlock,
@@ -27,6 +23,9 @@ import { InlineQuizNode } from "../../molecules/InlineQuizNode";
 import { CodeRunnerNode } from "../../molecules/CodeRunnerNode";
 import { DragSortNode } from "../../molecules/DragSortNode";
 import { FillBlanksNode } from "../../molecules/FillBlanksNode";
+import { HeadingNode } from "../../molecules/HeadingNode";
+import { ParagraphNode } from "../../molecules/ParagraphNode";
+import { CodeNode } from "../../molecules/CodeNode";
 
 import { ConceptEditPanel } from "../../edit/panels/ConceptEditPanel";
 import { StepsEditPanel } from "../../edit/panels/StepsEditPanel";
@@ -37,29 +36,30 @@ import { HeadingEditPanel } from "../../edit/panels/HeadingEditPanel";
 import { ParagraphEditPanel } from "../../edit/panels/ParagraphEditPanel";
 import { CodeEditPanel } from "../../edit/panels/CodeEditPanel";
 
-// ── tipul de bază al nodului ──────────────────────────────────────────────────
-
 // `type` vine din JSON-ul lecțiilor produse de backend.
 // `nodeType` e aliasul vechi — păstrat pentru compatibilitate cu date mai vechi.
 export type AnyNode = { type?: string; nodeType?: string; [key: string]: unknown };
 
-// ── structura unei înregistrări ───────────────────────────────────────────────
-
 export type NodeRegistration = {
-	// Renderer acceptă AnyNode — fiecare intrare face cast-ul necesar intern
 	Renderer: (props: { node: AnyNode }) => ReactNode;
-	// ComponentType<any> pentru că fiecare panou are props tipizate specific;
-	// type-safety e păstrată *în interiorul* fiecărui panou, nu la granița registry-ului
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	EditPanel?: ComponentType<any>;
 };
 
-// ── registrul nodurilor structurate ──────────────────────────────────────────
-// heading, paragraph, code nu sunt incluse aici — au logică JSX inline (clase condiționale,
-// tag dinamic) care nu merită extrasă într-o componentă separată la dimensiunea actuală.
-// Panourile lor de editare sunt înregistrate separat în PRIMITIVE_EDIT_PANELS.
-
+// Pattern: Open/Closed — adaugi un tip nou creând un fișier în molecules/ + o linie aici.
 export const NODE_REGISTRY: Record<string, NodeRegistration> = {
+	heading: {
+		Renderer: ({ node }) => <HeadingNode node={node} />,
+		EditPanel: HeadingEditPanel,
+	},
+	paragraph: {
+		Renderer: ({ node }) => <ParagraphNode node={node} />,
+		EditPanel: ParagraphEditPanel,
+	},
+	code: {
+		Renderer: ({ node }) => <CodeNode node={node} />,
+		EditPanel: CodeEditPanel,
+	},
 	concept: {
 		Renderer: ({ node }) => <ConceptNode node={node as ConceptBlock} />,
 		EditPanel: ConceptEditPanel,
@@ -80,15 +80,12 @@ export const NODE_REGISTRY: Record<string, NodeRegistration> = {
 		Renderer: ({ node }) => <FormulaNode node={node as FormulaBlock} />,
 		EditPanel: FormulaEditPanel,
 	},
-	// proof și example nu au panou de editare — sunt read-only în UI
 	proof: {
 		Renderer: ({ node }) => <ProofNode node={node as ProofBlock} />,
 	},
-	// ExampleNode folosește `example` ca prop — adaptorul aliniază interfața cu registry-ul
 	example: {
 		Renderer: ({ node }) => <ExampleNode example={node as ExampleBlock} />,
 	},
-	// Interactive nodes — PredictPrompt, ThinkPrompt+Steps, EmbeddedRecall
 	predict: {
 		Renderer: ({ node }) => <PredictNode node={node} />,
 	},
@@ -98,39 +95,16 @@ export const NODE_REGISTRY: Record<string, NodeRegistration> = {
 	recall: {
 		Renderer: ({ node }) => <RecallNode node={node} />,
 	},
-	// Inline MCQ — embeds a quick-check question after any paragraph
 	"inline-quiz": {
 		Renderer: ({ node }) => <InlineQuizNode node={node} />,
 	},
-	// Runnable code block — Monaco editor + sandboxed JS execution
 	"code-runner": {
 		Renderer: ({ node }) => <CodeRunnerNode node={node} />,
 	},
-	// Drag-to-sort exercise — items vin din DB
 	"drag-sort": {
 		Renderer: ({ node }) => <DragSortNode node={node} />,
 	},
-	// Fill-in-the-blanks — text sau cod cu goluri {{N}}, fiecare cu opțiuni
 	"fill-blanks": {
 		Renderer: ({ node }) => <FillBlanksNode node={node} />,
 	},
-};
-
-// Panouri de editare pentru tipurile primitive (heading, paragraph, code).
-// Separate de NODE_REGISTRY pentru că randarea lor rămâne inline în ContentNodeRenderer.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const PRIMITIVE_EDIT_PANELS: Record<string, ComponentType<any>> = {
-	heading: HeadingEditPanel,
-	paragraph: ParagraphEditPanel,
-	code: CodeEditPanel,
-};
-
-// Clase CSS pentru fiecare nivel de heading — ținute alături de registry pentru coeziune
-export const HEADING_CLASSES: Record<string, string> = {
-	h1: "text-2xl font-bold text-(--text-primary)",
-	h2: "text-xl font-semibold text-(--text-primary)",
-	h3: "text-lg font-semibold text-(--text-primary)",
-	h4: "text-base font-semibold text-(--text-primary)",
-	h5: "text-sm font-semibold text-(--text-primary)",
-	h6: "text-sm font-medium text-(--text-secondary)",
 };
