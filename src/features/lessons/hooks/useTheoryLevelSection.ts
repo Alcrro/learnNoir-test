@@ -4,7 +4,7 @@ import { useLessonContext } from "../context/LessonContext";
 import { useTheoryLevelExplanations, useExplanationByLevel } from "./useTheoryLevelExplanations";
 import { progressApi } from "../api/progressApi";
 import type { ExplanationLevel } from "../api/theoryLevelApi";
-import type { ExplanationStatus } from "../../../../../shared/src/theory-level-explanation";
+import type { ExplanationStatus } from "@shared/theory-level-explanation";
 import { getDefaultLevel, saveDefaultLevel } from "../lib/theoryLevelMeta";
 
 export function useTheoryLevelSection(blockId: string) {

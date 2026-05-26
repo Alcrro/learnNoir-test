@@ -1,4 +1,4 @@
-import { EXPLANATION_LEVELS } from "../../../../../shared/src/theory-level-explanation";
+import { EXPLANATION_LEVELS } from "@shared/theory-level-explanation";
 import type { ExplanationLevel } from "../api/theoryLevelApi";
 import { useTheoryLevelSection } from "../hooks/useTheoryLevelSection";
 import { LevelTabButton } from "./atoms/LevelTabButton";

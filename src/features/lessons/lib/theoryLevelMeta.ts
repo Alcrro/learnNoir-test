@@ -1,6 +1,6 @@
 import type { ExplanationLevel } from "../api/theoryLevelApi";
-import type { ExplanationStatus } from "../../../../../shared/src/theory-level-explanation";
-import { EXPLANATION_LEVELS } from "../../../../../shared/src/theory-level-explanation";
+import type { ExplanationStatus } from "@shared/theory-level-explanation";
+import { EXPLANATION_LEVELS } from "@shared/theory-level-explanation";
 
 export const LEVEL_LABELS: Record<ExplanationLevel, string> = {
 	copil: "Copil",

@@ -1,6 +1,6 @@
 import { cn } from "../../../../libs/utils/cn";
 import type { ExplanationLevel } from "../../api/theoryLevelApi";
-import type { ExplanationStatus } from "../../../../../../shared/src/theory-level-explanation";
+import type { ExplanationStatus } from "@shared/theory-level-explanation";
 import { LEVEL_LABELS, LEVEL_TOOLTIPS } from "../../lib/theoryLevelMeta";
 import { LevelStatusDot } from "./LevelStatusDot";
 

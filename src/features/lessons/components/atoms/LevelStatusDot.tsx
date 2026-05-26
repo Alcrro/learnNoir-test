@@ -1,5 +1,5 @@
 import { cn } from "../../../../libs/utils/cn";
-import type { ExplanationStatus } from "../../../../../../shared/src/theory-level-explanation";
+import type { ExplanationStatus } from "@shared/theory-level-explanation";
 import { STATUS_ICON } from "../../lib/theoryLevelMeta";
 
 type Props = { status: ExplanationStatus };

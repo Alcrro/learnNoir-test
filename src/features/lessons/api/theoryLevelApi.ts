@@ -3,7 +3,7 @@ import { API_URL } from "../../../libs/config";
 import type {
 	TheoryLevelExplanation,
 	ExplanationLevel,
-} from "../../../../../shared/src/theory-level-explanation";
+} from "@shared/theory-level-explanation";
 
 export type { TheoryLevelExplanation, ExplanationLevel };
 
