@@ -1,18 +1,6 @@
 import { apiClient } from "../../../libs/apiClient";
-
-export type LessonReviewResult = {
-	clarity: number;
-	accuracy: string;
-	completeness: string;
-	suggestions: string[];
-};
-
-export type QuizQuestion = {
-	question: string;
-	options: [string, string, string, string];
-	correctIndex: number;
-	explanation: string;
-};
+import type { LessonReviewResult, QuizQuestion } from "../types/ai.types";
+export type { LessonReviewResult, QuizQuestion };
 
 export const lessonAIApi = {
 	generate: (topic: string, field: "title" | "description" | "content") =>

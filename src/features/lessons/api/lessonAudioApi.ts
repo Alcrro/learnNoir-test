@@ -1,14 +1,6 @@
 import { apiClient } from "../../../libs/apiClient";
-
-export type AudioSegment = { text: string; start_ms: number; end_ms: number };
-
-export type LessonAudioData = {
-	id: string;
-	lessonId: string;
-	script: AudioSegment[];
-	audioUrl: string;
-	generatedAt: string;
-};
+import type { AudioSegment, LessonAudioData } from "../types/audio.types";
+export type { AudioSegment, LessonAudioData };
 
 export const lessonAudioApi = {
 	// Returns null when no audio exists yet (404).

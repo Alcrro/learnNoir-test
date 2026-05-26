@@ -1,62 +1,6 @@
 import { apiClient } from "../../../libs/apiClient";
-
-export type SpacedRepetitionInfo = {
-	reviewCount: number;
-	lastReviewedAt: string | null;
-	nextReviewAt: string | null;
-	isDue: boolean;
-	daysUntilReview: number | null;
-};
-
-export type LessonWithReview = {
-	lessonId: string;
-	lessonSlug: string;
-	lessonTitle: string;
-	sr: SpacedRepetitionInfo;
-};
-
-// Mirrors the backend LessonProgress type.
-export type LessonProgress = {
-	id: string;
-	userId: string;
-	lessonId: string;
-	status: "not_started" | "in_progress" | "completed";
-	// Composite score: average of quizScore, readScore, outputScore (0–100).
-	weightedScore: number;
-	quizScore: number;
-	readScore: number;
-	outputScore: number;
-	lastActivityAt: string | null;
-	createdAt: string | null;
-	updatedAt: string | null;
-	nextReviewAt: string | null;
-	lastReviewedAt: string | null;
-	reviewCount: number;
-};
-
-// Mirrors LessonProgressWithLesson from the backend — progress joined with lesson + module.
-export type MyLessonProgress = LessonProgress & {
-	lessonTitle: string;
-	lessonSlug: string;
-	lessonStatus: string;
-	moduleName: string;
-};
-
-export type UpsertProgressInput = {
-	status?: LessonProgress["status"];
-	quizScore?: number;
-	readScore?: number;
-	outputScore?: number;
-};
-
-export type QuizBlockScore = {
-	id: string;
-	userId: string;
-	lessonBlockId: string;
-	score: number;
-	passed: boolean;
-	attempts: number;
-};
+import type { SpacedRepetitionInfo, LessonWithReview, LessonProgress, MyLessonProgress, UpsertProgressInput, QuizBlockScore } from "../types/progress.types";
+export type { SpacedRepetitionInfo, LessonWithReview, LessonProgress, MyLessonProgress, UpsertProgressInput, QuizBlockScore };
 
 export const progressApi = {
 	// GET /progress/me — all progress rows for the current user, joined with lesson metadata.

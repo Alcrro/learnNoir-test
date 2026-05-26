@@ -1,19 +1,6 @@
 import { apiClient } from "../../../libs/apiClient";
-
-export type FeedbackVote = "up" | "down";
-
-export type FeedbackCounts = {
-	upvotes: number;
-	downvotes: number;
-	myVote: FeedbackVote | null;
-};
-
-export type FeedbackOption = {
-	id: string;
-	componentType: string;
-	label: string;
-	position: number;
-};
+import type { FeedbackVote, FeedbackCounts, FeedbackOption } from "../types/feedback.types";
+export type { FeedbackVote, FeedbackCounts, FeedbackOption };
 
 function base(lessonId: string, componentId: string) {
 	return `/lessons/${lessonId}/theory-interactions/${componentId}/feedback`;

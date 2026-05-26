@@ -1,4 +1,6 @@
-import type { ComponentType, ReactNode } from "react";
+import type { ComponentType } from "react";
+import type { AnyNode, EditPanelProps, NodeRegistration } from "../../../types/node.types";
+export type { AnyNode, EditPanelProps, NodeRegistration };
 import type {
 	ConceptBlock,
 	StepsBlock,
@@ -35,21 +37,6 @@ import { FormulaEditPanel } from "../../edit/panels/FormulaEditPanel";
 import { HeadingEditPanel } from "../../edit/panels/HeadingEditPanel";
 import { ParagraphEditPanel } from "../../edit/panels/ParagraphEditPanel";
 import { CodeEditPanel } from "../../edit/panels/CodeEditPanel";
-
-// `type` vine din JSON-ul lecțiilor produse de backend.
-// `nodeType` e aliasul vechi — păstrat pentru compatibilitate cu date mai vechi.
-export type AnyNode = { type?: string; nodeType?: string; [key: string]: unknown };
-
-export type EditPanelProps = {
-	node: AnyNode;
-	onSave: (n: AnyNode) => void;
-	onCancel: () => void;
-};
-
-export type NodeRegistration = {
-	Renderer: (props: { node: AnyNode }) => ReactNode;
-	EditPanel?: ComponentType<EditPanelProps>;
-};
 
 // Pattern: Open/Closed — adaugi un tip nou creând un fișier în molecules/ + o linie aici.
 export const NODE_REGISTRY: Record<string, NodeRegistration> = {

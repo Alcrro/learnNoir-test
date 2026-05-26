@@ -1,35 +1,6 @@
 import { apiClient } from "../../../libs/apiClient";
-
-// The three block types that can appear in a lesson, discriminated by `type`.
-export type ContentBlock = {
-	id: string;
-	lessonId: string;
-	position: number;
-	type: "content";
-	data: { content: Record<string, unknown>[] };
-};
-
-export type InteractiveBlock = {
-	id: string;
-	lessonId: string;
-	position: number;
-	type: "interactive";
-	// e.g. "algorithm:bubble-sort", "math:formula"
-	engine: string;
-	data: Record<string, unknown>;
-};
-
-export type AssessmentBlock = {
-	id: string;
-	lessonId: string;
-	position: number;
-	type: "assessment";
-	// e.g. "quiz:mcq", "quiz:input", "quiz:code"
-	engine: string;
-	data: Record<string, unknown>;
-};
-
-export type LessonBlock = ContentBlock | InteractiveBlock | AssessmentBlock;
+import type { ContentBlock, InteractiveBlock, AssessmentBlock, LessonBlock } from "../types/block.types";
+export type { ContentBlock, InteractiveBlock, AssessmentBlock, LessonBlock };
 
 export const lessonBlocksApi = {
 	// GET /lessons-block/lesson/:lessonId — all blocks (pro only).
