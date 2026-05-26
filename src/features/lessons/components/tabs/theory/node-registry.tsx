@@ -40,10 +40,15 @@ import { CodeEditPanel } from "../../edit/panels/CodeEditPanel";
 // `nodeType` e aliasul vechi — păstrat pentru compatibilitate cu date mai vechi.
 export type AnyNode = { type?: string; nodeType?: string; [key: string]: unknown };
 
+export type EditPanelProps = {
+	node: AnyNode;
+	onSave: (n: AnyNode) => void;
+	onCancel: () => void;
+};
+
 export type NodeRegistration = {
 	Renderer: (props: { node: AnyNode }) => ReactNode;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	EditPanel?: ComponentType<any>;
+	EditPanel?: ComponentType<EditPanelProps>;
 };
 
 // Pattern: Open/Closed — adaugi un tip nou creând un fișier în molecules/ + o linie aici.
@@ -62,23 +67,23 @@ export const NODE_REGISTRY: Record<string, NodeRegistration> = {
 	},
 	concept: {
 		Renderer: ({ node }) => <ConceptNode node={node as ConceptBlock} />,
-		EditPanel: ConceptEditPanel,
+		EditPanel: ConceptEditPanel as ComponentType<EditPanelProps>,
 	},
 	steps: {
 		Renderer: ({ node }) => <StepsNode node={node as StepsBlock} />,
-		EditPanel: StepsEditPanel,
+		EditPanel: StepsEditPanel as ComponentType<EditPanelProps>,
 	},
 	complexity: {
 		Renderer: ({ node }) => <ComplexityNode node={node as ComplexityBlock} />,
-		EditPanel: ComplexityEditPanel,
+		EditPanel: ComplexityEditPanel as ComponentType<EditPanelProps>,
 	},
 	theorem: {
 		Renderer: ({ node }) => <TheoremNode node={node as TheoremBlock} />,
-		EditPanel: TheoremEditPanel,
+		EditPanel: TheoremEditPanel as ComponentType<EditPanelProps>,
 	},
 	formula: {
 		Renderer: ({ node }) => <FormulaNode node={node as FormulaBlock} />,
-		EditPanel: FormulaEditPanel,
+		EditPanel: FormulaEditPanel as ComponentType<EditPanelProps>,
 	},
 	proof: {
 		Renderer: ({ node }) => <ProofNode node={node as ProofBlock} />,
