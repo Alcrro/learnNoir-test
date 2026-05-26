@@ -1,6 +1,4 @@
-type CodeNodeData = { code?: unknown; language?: unknown; [key: string]: unknown };
-
-export function CodeNode({ node }: { node: CodeNodeData }) {
+export function CodeNode({ node }: { node: Record<string, unknown> }) {
 	const code = typeof node.code === "string" ? node.code : "";
 	const language = typeof node.language === "string" ? node.language : "";
 	return (
