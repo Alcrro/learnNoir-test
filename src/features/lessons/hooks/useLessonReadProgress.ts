@@ -3,8 +3,6 @@ import { useLessonProgressQuery, useUpsertProgressMutation } from "./useLessonPr
 import { useGuestProgressStore } from "../store/useGuestProgressStore";
 import UseGetProfile from "../../profiles/hooks/UseGetProfile";
 
-const READ_DWELL_MS = 3000;
-
 export function useLessonReadProgress(lessonId: string) {
 	const { isAuthenticated } = UseGetProfile();
 	const { data: progress } = useLessonProgressQuery(lessonId);
@@ -16,9 +14,9 @@ export function useLessonReadProgress(lessonId: string) {
 		progress?.status === "completed" || guestLesson?.status === "completed";
 
 	const [scrollProgress, setScrollProgress] = useState(isCompleted ? 100 : 0);
+	const [hasScrollableContent, setHasScrollableContent] = useState(false);
 	const contentRef = useRef<HTMLDivElement>(null);
 	const savedRef = useRef(false);
-	const dwellTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const markCompleted = useCallback(() => {
 		if (savedRef.current) return;
@@ -38,7 +36,8 @@ export function useLessonReadProgress(lessonId: string) {
 		}
 	}, [isCompleted]);
 
-	// Scroll progress for content taller than viewport
+	// Determine if content is taller than the viewport and track scroll progress.
+	// Short content (fits in viewport) is never auto-completed.
 	useEffect(() => {
 		if (isCompleted) return;
 
@@ -51,9 +50,12 @@ export function useLessonReadProgress(lessonId: string) {
 			const viewportHeight = window.innerHeight;
 			const scrollEnd = elTop + elHeight - viewportHeight;
 
-			// Content shorter than viewport: progress tracked via IntersectionObserver
-			if (scrollEnd <= 0) return;
+			if (scrollEnd <= 0) {
+				setHasScrollableContent(false);
+				return;
+			}
 
+			setHasScrollableContent(true);
 			const pct = Math.min(
 				100,
 				Math.max(0, Math.round(((window.scrollY - elTop) / scrollEnd) * 100)),
@@ -62,40 +64,16 @@ export function useLessonReadProgress(lessonId: string) {
 			if (pct >= 95) markCompleted();
 		}
 
+		// Run once on mount to detect content height, then on every scroll
+		calcProgress();
 		window.addEventListener("scroll", calcProgress, { passive: true });
 		return () => window.removeEventListener("scroll", calcProgress);
 	}, [isCompleted, markCompleted]);
 
-	// For content that fits entirely in the viewport, require READ_DWELL_MS of visibility
-	useEffect(() => {
-		if (isCompleted) return;
-		const el = contentRef.current;
-		if (!el) return;
-
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				if (!entry) return;
-				if (entry.isIntersecting) {
-					dwellTimerRef.current = setTimeout(() => {
-						setScrollProgress(100);
-						markCompleted();
-					}, READ_DWELL_MS);
-				} else {
-					if (dwellTimerRef.current !== null) {
-						clearTimeout(dwellTimerRef.current);
-						dwellTimerRef.current = null;
-					}
-				}
-			},
-			{ threshold: 0.9 },
-		);
-
-		observer.observe(el);
-		return () => {
-			observer.disconnect();
-			if (dwellTimerRef.current !== null) clearTimeout(dwellTimerRef.current);
-		};
-	}, [isCompleted, markCompleted]);
-
-	return { scrollProgress: isCompleted ? 100 : scrollProgress, isCompleted, contentRef };
+	return {
+		scrollProgress: isCompleted ? 100 : scrollProgress,
+		isCompleted,
+		hasScrollableContent: isCompleted || hasScrollableContent,
+		contentRef,
+	};
 }

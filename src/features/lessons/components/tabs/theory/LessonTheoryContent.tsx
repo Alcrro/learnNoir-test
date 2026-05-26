@@ -16,7 +16,7 @@ export function LessonTheoryContent({ blocks, lessonId }: Props) {
 	const { mutate: saveContent } = useUpdateBlockContent(lessonId);
 	const { prerequisites, relatedLessons, nextLesson } =
 		useLessonSidebarData(lessonId);
-	const { scrollProgress, isCompleted, contentRef } =
+	const { scrollProgress, isCompleted, hasScrollableContent, contentRef } =
 		useLessonReadProgress(lessonId);
 
 	function handleUpdate(block: ContentBlock, nodeIdx: number, updated: AnyNode) {
@@ -29,10 +29,12 @@ export function LessonTheoryContent({ blocks, lessonId }: Props) {
 
 	return (
 		<div className="lesson-theory">
-			<ReadProgressBar
-				progress={scrollProgress}
-				isCompleted={isCompleted}
-			/>
+			{hasScrollableContent && (
+				<ReadProgressBar
+					progress={scrollProgress}
+					isCompleted={isCompleted}
+				/>
+			)}
 			<div className="lesson-theory__layout">
 				<TheoryBlockList
 					blocks={blocks}
