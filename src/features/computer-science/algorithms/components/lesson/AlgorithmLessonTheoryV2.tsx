@@ -1,7 +1,7 @@
 // View pur — nu conține logică de date sau derivări.
 // Toată orchestrarea e în useAlgorithmTheoryController.
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAlgorithmTheoryController } from "../../hooks/algorithmTheoryController";
 import "./lessonTheory.css";
 import "./theory-v2/theoryV2.css";
@@ -27,13 +27,18 @@ import { TheoryInteractionBlock } from "./theory-v2/TheoryInteractionBlock";
 import { TheoryFooter } from "./theory-v2/TheoryFooter";
 import { TheoryCompletionCelebration } from "./theory-v2/TheoryCompletionCelebration";
 import { FillBlanksNode } from "../../../../../features/lessons/components/molecules/FillBlanksNode";
+import { TheoryLevelSection } from "../../../../../features/lessons/components/TheoryLevelSection";
+import type { ContentBlock } from "../../../../../features/lessons/api/lessonBlocksApi";
+import UseGetProfile from "../../../../profiles/hooks/UseGetProfile";
 
 const AlgorithmLessonTheoryV2 = ({
 	lessonId: dbLessonIdProp = "",
 	updatedAt,
+	contentBlocks = [],
 }: {
 	lessonId?: string;
 	updatedAt?: string;
+	contentBlocks?: ContentBlock[];
 }) => {
 	const {
 		model,
@@ -50,12 +55,11 @@ const AlgorithmLessonTheoryV2 = ({
 		onStepsReveal,
 		onMiscReveal,
 	} = useAlgorithmTheoryController(dbLessonIdProp);
+	const { isAuthenticated } = UseGetProfile();
 
-	const [celebrationOpen, setCelebrationOpen] = useState(false);
-
-	useEffect(() => {
-		if (completedCount === totalComponents) setCelebrationOpen(true);
-	}, [completedCount, totalComponents]);
+	const [celebrationDismissed, setCelebrationDismissed] = useState(false);
+	const celebrationOpen =
+		completedCount === totalComponents && !celebrationDismissed;
 
 	if (!model) return null;
 
@@ -63,7 +67,7 @@ const AlgorithmLessonTheoryV2 = ({
 		<div className="lesson-theory">
 			<TheoryCompletionCelebration
 				open={celebrationOpen}
-				onClose={() => setCelebrationOpen(false)}
+				onClose={() => setCelebrationDismissed(true)}
 				model={model}
 				quizScore={quizScore}
 				justCompleted={justCompleted}
@@ -197,6 +201,9 @@ const AlgorithmLessonTheoryV2 = ({
 							/>
 						)}
 					</TheoryInteractionBlock>
+					{contentBlocks[0] && isAuthenticated && (
+						<TheoryLevelSection blockId={contentBlocks[0].id} />
+					)}
 					<TheoryFooter updatedAt={updatedAt} />
 				</main>
 

@@ -1,13 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { lessonAudioApi } from "../api/lessonAudioApi";
-
-const queryKey = (lessonId: string) => ["lesson-audio", lessonId];
+import { lessonQueryKeys } from "../lib/lessonQueryKeys";
 
 export function useLessonAudio(lessonId: string) {
 	const qc = useQueryClient();
 
 	const query = useQuery({
-		queryKey: queryKey(lessonId),
+		queryKey: lessonQueryKeys.audio(lessonId),
 		queryFn: () => lessonAudioApi.get(lessonId),
 		staleTime: Infinity,
 	});
@@ -15,7 +14,7 @@ export function useLessonAudio(lessonId: string) {
 	const generate = useMutation({
 		mutationFn: () => lessonAudioApi.generate(lessonId),
 		onSuccess: (data) => {
-			qc.setQueryData(queryKey(lessonId), data);
+			qc.setQueryData(lessonQueryKeys.audio(lessonId), data);
 		},
 	});
 

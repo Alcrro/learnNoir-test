@@ -1,14 +1,19 @@
-import { API_URL } from "../../../libs/config";
+import { apiClient } from "../../../libs/apiClient";
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
-	const res = await fetch(`${API_URL}${path}`, {
-		credentials: "include",
-		headers: { "Content-Type": "application/json" },
-		...options,
-	});
-	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	return res.json() as Promise<T>;
-}
+export type SpacedRepetitionInfo = {
+	reviewCount: number;
+	lastReviewedAt: string | null;
+	nextReviewAt: string | null;
+	isDue: boolean;
+	daysUntilReview: number | null;
+};
+
+export type LessonWithReview = {
+	lessonId: string;
+	lessonSlug: string;
+	lessonTitle: string;
+	sr: SpacedRepetitionInfo;
+};
 
 // Mirrors the backend LessonProgress type.
 export type LessonProgress = {
@@ -24,6 +29,9 @@ export type LessonProgress = {
 	lastActivityAt: string | null;
 	createdAt: string | null;
 	updatedAt: string | null;
+	nextReviewAt: string | null;
+	lastReviewedAt: string | null;
+	reviewCount: number;
 };
 
 // Mirrors LessonProgressWithLesson from the backend — progress joined with lesson + module.
@@ -53,31 +61,31 @@ export type QuizBlockScore = {
 export const progressApi = {
 	// GET /progress/me — all progress rows for the current user, joined with lesson metadata.
 	getAll: () =>
-		request<{ data: MyLessonProgress[] }>(`/progress/me`).then((r) => r.data),
+		apiClient.get<{ data: MyLessonProgress[] }>(`/progress/me`).then((r) => r.data),
 
 	// GET /progress/lesson/:lessonId — current user's progress. Returns null if not started.
 	getByLesson: (lessonId: string) =>
-		request<{ data: LessonProgress | null }>(`/progress/lesson/${lessonId}`).then(
-			(r) => r.data,
-		),
+		apiClient.get<{ data: LessonProgress | null }>(`/progress/lesson/${lessonId}`)
+			.then((r) => r.data),
 
 	// PATCH /progress/lesson/:lessonId — create or update progress for the current user.
 	upsert: (lessonId: string, input: UpsertProgressInput) =>
-		request<{ data: LessonProgress }>(`/progress/lesson/${lessonId}`, {
-			method: "PATCH",
-			body: JSON.stringify(input),
-		}).then((r) => r.data),
+		apiClient.patch<{ data: LessonProgress }>(`/progress/lesson/${lessonId}`, input)
+			.then((r) => r.data),
 
 	// GET /progress/lesson/:lessonId/quiz-blocks — per-block quiz scores.
 	getQuizBlockScores: (lessonId: string) =>
-		request<{ data: QuizBlockScore[] }>(`/progress/lesson/${lessonId}/quiz-blocks`).then(
-			(r) => r.data,
-		),
+		apiClient.get<{ data: QuizBlockScore[] }>(`/progress/lesson/${lessonId}/quiz-blocks`)
+			.then((r) => r.data),
 
 	// POST /progress/lesson/:lessonId/quiz-block/:blockId — save quiz block result.
 	upsertQuizBlockScore: (lessonId: string, blockId: string, score: number) =>
-		request<{ data: QuizBlockScore }>(`/progress/lesson/${lessonId}/quiz-block/${blockId}`, {
-			method: "POST",
-			body: JSON.stringify({ score }),
-		}).then((r) => r.data),
+		apiClient.post<{ data: QuizBlockScore }>(
+			`/progress/lesson/${lessonId}/quiz-block/${blockId}`,
+			{ score },
+		).then((r) => r.data),
+
+	// GET /progress/due-for-review — completed lessons whose next review is due.
+	getDueForReview: () =>
+		apiClient.get<{ data: LessonWithReview[] }>(`/progress/due-for-review`).then((r) => r.data),
 };

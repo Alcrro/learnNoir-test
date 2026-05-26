@@ -7,12 +7,14 @@ import {
 	type LessonContextForAI,
 } from "../../../../features/lessons/api/lessonTheoryInteractionsApi";
 import { useGuestProgressStore } from "../../../../features/lessons/store/useGuestProgressStore";
+import { theoryQueryKeys } from "../lib/theoryQueryKeys";
+import { lessonQueryKeys } from "../../../../features/lessons/lib/lessonQueryKeys";
 
 // ── Student hook: fetch only approved interactions ────────────────────────────
 
 export function useApprovedTheoryInteractions(lessonId: string) {
 	return useQuery({
-		queryKey: ["theory-interactions", lessonId, "approved"],
+		queryKey: theoryQueryKeys.approved(lessonId),
 		queryFn: () => lessonTheoryInteractionsApi.getApproved(lessonId),
 		enabled: !!lessonId,
 		staleTime: 5 * 60 * 1000,
@@ -39,7 +41,7 @@ export function useStudentTheoryProgress(lessonId: string, isAuthenticated = tru
 
 	// My existing attempts for this lesson — used to display completion state.
 	const { data: myAttempts = [] } = useQuery({
-		queryKey: ["theory-interactions", lessonId, "my-attempts"],
+		queryKey: theoryQueryKeys.myAttempts(lessonId),
 		queryFn: () => lessonTheoryInteractionsApi.getMyAttempts(lessonId),
 		enabled: !!lessonId && isAuthenticated,
 		staleTime: 2 * 60 * 1000,
@@ -62,7 +64,7 @@ export function useStudentTheoryProgress(lessonId: string, isAuthenticated = tru
 		mutationFn: (component: TheoryInteractionComponentType) =>
 			lessonTheoryInteractionsApi.engage(lessonId, component),
 		onSuccess: () => {
-			void qc.invalidateQueries({ queryKey: ["my-lesson-progress"] });
+			void qc.invalidateQueries({ queryKey: lessonQueryKeys.myProgress });
 		},
 	});
 
@@ -95,7 +97,7 @@ export function useTheoryInteractionsEditor(lessonId: string) {
 	const [approvingId, setApprovingId] = useState<string | null>(null);
 
 	const { data: interactions = [], isLoading } = useQuery({
-		queryKey: ["theory-interactions", lessonId, "all"],
+		queryKey: theoryQueryKeys.allVersions(lessonId),
 		queryFn: () => lessonTheoryInteractionsApi.getAll(lessonId),
 		enabled: !!lessonId,
 		staleTime: 0,
@@ -110,7 +112,7 @@ export function useTheoryInteractionsEditor(lessonId: string) {
 			lessonContext: LessonContextForAI;
 		}) => lessonTheoryInteractionsApi.generate(lessonId, component, lessonContext),
 		onSuccess: () => {
-			void qc.invalidateQueries({ queryKey: ["theory-interactions", lessonId] });
+			void qc.invalidateQueries({ queryKey: theoryQueryKeys.root(lessonId) });
 		},
 	});
 
@@ -118,9 +120,8 @@ export function useTheoryInteractionsEditor(lessonId: string) {
 		mutationFn: (interactionId: string) =>
 			lessonTheoryInteractionsApi.approve(lessonId, interactionId),
 		onSuccess: () => {
-			void qc.invalidateQueries({ queryKey: ["theory-interactions", lessonId] });
-			// Also invalidate approved so student view updates
-			void qc.invalidateQueries({ queryKey: ["theory-interactions", lessonId, "approved"] });
+			void qc.invalidateQueries({ queryKey: theoryQueryKeys.root(lessonId) });
+			void qc.invalidateQueries({ queryKey: theoryQueryKeys.approved(lessonId) });
 		},
 	});
 

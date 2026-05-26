@@ -1,16 +1,15 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { subscriptionsApi } from "../api/subscriptionsApi";
 import { useGetMe } from "../../auth/hooks/useAuth";
-
-const SUBSCRIPTION_QUERY_KEY = ["subscription"] as const;
+import { subscriptionQueryKeys } from "../lib/subscriptionQueryKeys";
 
 export function useSubscription() {
 	const { data: me } = useGetMe();
 
 	return useQuery({
-		queryKey: SUBSCRIPTION_QUERY_KEY,
+		queryKey: subscriptionQueryKeys.myPlan,
 		queryFn: () => subscriptionsApi.getMyPlan(),
 		enabled: !!me?.userId,
 		staleTime: 5 * 60 * 1000,
@@ -26,7 +25,6 @@ export function useCheckoutRedirect() {
 	const { data: me } = useGetMe();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const qc = useQueryClient();
 	const [isLoading, setIsLoading] = useState(false);
 	const [checkoutError, setCheckoutError] = useState<string | null>(null);
 

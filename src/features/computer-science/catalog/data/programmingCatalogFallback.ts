@@ -8,8 +8,6 @@ import {
 } from "../../algorithms/data/algorithmsData";
 import {
 	buildLessonChips,
-	deriveProgress,
-	deriveStatus,
 	getDefaultDescription,
 	getDefaultDifficulty,
 	getGroupMeta,
@@ -26,8 +24,6 @@ type LessonOverride = Partial<{
 	timeComplexity: string;
 	spaceComplexity: string;
 	stable: boolean;
-	progress: number;
-	status: "not-started" | "in-progress" | "completed";
 	group: string;
 }>;
 
@@ -39,8 +35,6 @@ const algorithmOverrides: Record<string, LessonOverride> = {
 		timeComplexity: "O(n²)",
 		spaceComplexity: "O(1)",
 		stable: false,
-		progress: 100,
-		status: "completed",
 	},
 	"insertion-sort": {
 		description:
@@ -49,8 +43,6 @@ const algorithmOverrides: Record<string, LessonOverride> = {
 		timeComplexity: "O(n²)",
 		spaceComplexity: "O(1)",
 		stable: true,
-		progress: 60,
-		status: "in-progress",
 	},
 	"heap-sort": {
 		description:
@@ -89,8 +81,6 @@ const algorithmOverrides: Record<string, LessonOverride> = {
 		difficulty: "easy",
 		timeComplexity: "O(n)",
 		spaceComplexity: "O(1)",
-		progress: 100,
-		status: "completed",
 	},
 	"jump-search": {
 		description:
@@ -98,8 +88,6 @@ const algorithmOverrides: Record<string, LessonOverride> = {
 		difficulty: "medium",
 		timeComplexity: "O(√n)",
 		spaceComplexity: "O(1)",
-		progress: 35,
-		status: "in-progress",
 	},
 	"interpolation-search": {
 		description:
@@ -130,8 +118,8 @@ function buildAlgorithmFallback(): ProgrammingCatalogItem[] {
 			item.id,
 			override?.group ?? detail?.group ?? item.group,
 		);
-		const progress = deriveProgress(override?.progress, override?.status);
-		const status = deriveStatus(override?.progress, override?.status);
+		const progress = 0;
+		const status = "not-started" as const;
 
 		return {
 			id: item.id,

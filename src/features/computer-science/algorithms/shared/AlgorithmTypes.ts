@@ -24,14 +24,6 @@ export type Step = {
   line?: number | number[];
 };
 
-type TextBlock = {
-  type: "text";
-  content: Array<
-    | { type: "paragraph"; text: string }
-    | { type: "inlineCode"; code: string }
-    | { type: "label"; text: string }
-  >;
-};
 export type StepType = "compare" | "swap" | "sorted";
 export type ComplexityType = "best" | "average" | "worst" | "space";
 

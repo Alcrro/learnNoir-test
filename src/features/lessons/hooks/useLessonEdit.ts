@@ -3,6 +3,7 @@ import { lessonsApi } from "../api/lessonsApi";
 import { useLessonContext } from "../context/LessonContext";
 import { useLessonBySlugQuery } from "./useLessonBySlugQuery";
 import { useLessonEditStore } from "../store/useLessonEditStore";
+import { lessonQueryKeys } from "../lib/lessonQueryKeys";
 
 export function useLessonEdit() {
 	const { lessonSlug } = useLessonContext();
@@ -20,7 +21,7 @@ export function useLessonEdit() {
 			});
 		},
 		onSuccess: () => {
-			void queryClient.invalidateQueries({ queryKey: ["lesson-by-slug", lessonSlug] });
+			void queryClient.invalidateQueries({ queryKey: lessonQueryKeys.bySlug(lessonSlug) });
 			useLessonEditStore.getState().setIsEditing(false);
 		},
 	});

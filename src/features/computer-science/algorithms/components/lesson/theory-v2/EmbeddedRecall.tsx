@@ -71,11 +71,11 @@ export function EmbeddedRecall({
 	componentId = "recall",
 	onAttemptRecord,
 }: Props) {
-	if (!Array.isArray(questions) || questions.length === 0) return null;
-
-	// Track how many questions have been answered to fire onAttemptRecord once all are done.
+	// Hooks must be called before any early return.
 	const answeredCount = useRef(0);
 	const recorded = useRef(false);
+
+	if (!Array.isArray(questions) || questions.length === 0) return null;
 
 	const handleQuestionAnswered = () => {
 		answeredCount.current += 1;

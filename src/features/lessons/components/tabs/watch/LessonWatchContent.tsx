@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { useLessonAudio } from "../../../hooks/useLessonAudio";
 import UseGetProfile from "../../../../profiles/hooks/UseGetProfile";
+import { useLessonContext } from "../../../context/LessonContext";
 
-type Props = { lessonId: string };
-
-export function LessonWatchContent({ lessonId }: Props) {
+export function LessonWatchContent() {
+	const { lessonId } = useLessonContext();
 	const { query, generate } = useLessonAudio(lessonId);
 	const { data: profile } = UseGetProfile();
 	const audioRef = useRef<HTMLAudioElement>(null);

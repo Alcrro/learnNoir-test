@@ -1,4 +1,4 @@
-import { API_URL } from "../../../libs/config";
+import { apiClient } from "../../../libs/apiClient";
 
 export type FeedbackVote = "up" | "down";
 
@@ -20,39 +20,17 @@ function base(lessonId: string, componentId: string) {
 }
 
 export const lessonComponentFeedbackApi = {
-	getOptions: async (lessonId: string, componentId: string): Promise<FeedbackOption[]> => {
-		const res = await fetch(`${API_URL}${base(lessonId, componentId)}-options`, {
-			credentials: "include",
-		});
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-		const json = (await res.json()) as { data: FeedbackOption[] };
-		return json.data;
-	},
+	getOptions: (lessonId: string, componentId: string) =>
+		apiClient.get<{ data: FeedbackOption[] }>(`${base(lessonId, componentId)}-options`)
+			.then((r) => r.data),
 
-	getCounts: async (lessonId: string, componentId: string): Promise<FeedbackCounts> => {
-		const res = await fetch(`${API_URL}${base(lessonId, componentId)}`, {
-			credentials: "include",
-		});
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-		const json = (await res.json()) as { data: FeedbackCounts };
-		return json.data;
-	},
+	getCounts: (lessonId: string, componentId: string) =>
+		apiClient.get<{ data: FeedbackCounts }>(base(lessonId, componentId))
+			.then((r) => r.data),
 
-	upsert: async (lessonId: string, componentId: string, vote: FeedbackVote, message?: string, selectedOptionIds?: string[]): Promise<void> => {
-		const res = await fetch(`${API_URL}${base(lessonId, componentId)}`, {
-			method: "POST",
-			credentials: "include",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ vote, message, selectedOptionIds }),
-		});
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	},
+	upsert: (lessonId: string, componentId: string, vote: FeedbackVote, message?: string, selectedOptionIds?: string[]) =>
+		apiClient.post<void>(base(lessonId, componentId), { vote, message, selectedOptionIds }),
 
-	remove: async (lessonId: string, componentId: string): Promise<void> => {
-		const res = await fetch(`${API_URL}${base(lessonId, componentId)}`, {
-			method: "DELETE",
-			credentials: "include",
-		});
-		if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	},
+	remove: (lessonId: string, componentId: string) =>
+		apiClient.delete<void>(base(lessonId, componentId)),
 };

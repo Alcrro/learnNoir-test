@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { memo, type FC } from "react";
 import { Code2, Lightbulb } from "lucide-react";
 import { cn } from "../../../../../libs/utils/cn";
 import type { AlgorithmTypes, Step } from "../../shared/AlgorithmTypes";
@@ -10,7 +10,7 @@ type Props = {
 	steps: Step[];
 };
 
-const PseudocodePanel: FC<Props> = ({ algorithm, currentStep, steps }) => {
+const PseudocodePanel: FC<Props> = memo(({ algorithm, currentStep, steps }) => {
 	const entry = algorithm ? pseudocodeRegistry[algorithm] : null;
 	if (!entry) return null;
 
@@ -102,6 +102,6 @@ const PseudocodePanel: FC<Props> = ({ algorithm, currentStep, steps }) => {
 			)}
 		</div>
 	);
-};
+});
 
 export default PseudocodePanel;

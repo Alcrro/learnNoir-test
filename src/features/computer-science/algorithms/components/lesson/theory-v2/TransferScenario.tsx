@@ -51,11 +51,11 @@ type Props = {
 };
 
 export function TransferScenario({ scenarios, lessonId = "", onAttemptRecord }: Props) {
-	if (!Array.isArray(scenarios) || scenarios.length === 0) return null;
-
-	// Fire onAttemptRecord once all scenarios have been answered.
+	// Hooks must be called before any early return.
 	const answeredCount = useRef(0);
 	const recorded = useRef(false);
+
+	if (!Array.isArray(scenarios) || scenarios.length === 0) return null;
 
 	const handleScenarioAnswered = () => {
 		answeredCount.current += 1;

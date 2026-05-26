@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "../../../libs/utils/cn";
 import type { DashboardTone, WorkspaceRole } from "../data/dashboardData";
@@ -44,7 +44,7 @@ type PanelProps = {
 	className?: string;
 };
 
-export function DashboardPanel({ children, className }: PanelProps) {
+export const DashboardPanel = memo(function DashboardPanel({ children, className }: PanelProps) {
 	return (
 		<section
 			className={cn(
@@ -55,7 +55,7 @@ export function DashboardPanel({ children, className }: PanelProps) {
 			{children}
 		</section>
 	);
-}
+});
 
 type SectionHeadingProps = {
 	eyebrow?: string;
@@ -64,7 +64,7 @@ type SectionHeadingProps = {
 	action?: ReactNode;
 };
 
-export function DashboardSectionHeading({
+export const DashboardSectionHeading = memo(function DashboardSectionHeading({
 	eyebrow,
 	title,
 	description,
@@ -88,7 +88,7 @@ export function DashboardSectionHeading({
 			{action ? <div className="shrink-0">{action}</div> : null}
 		</div>
 	);
-}
+});
 
 type StatCardProps = {
 	label: string;
@@ -99,7 +99,7 @@ type StatCardProps = {
 	tone?: DashboardTone;
 };
 
-export function DashboardStatCard({
+export const DashboardStatCard = memo(function DashboardStatCard({
 	label,
 	value,
 	helper,
@@ -128,7 +128,7 @@ export function DashboardStatCard({
 			</div>
 		</DashboardPanel>
 	);
-}
+});
 
 type BadgeProps = {
 	label: string;
@@ -136,7 +136,7 @@ type BadgeProps = {
 	className?: string;
 };
 
-export function DashboardBadge({
+export const DashboardBadge = memo(function DashboardBadge({
 	label,
 	tone = "slate",
 	className,
@@ -152,7 +152,7 @@ export function DashboardBadge({
 			{label}
 		</span>
 	);
-}
+});
 
 type ProgressBarProps = {
 	value: number;
@@ -160,7 +160,7 @@ type ProgressBarProps = {
 	className?: string;
 };
 
-export function DashboardProgressBar({
+export const DashboardProgressBar = memo(function DashboardProgressBar({
 	value,
 	tone = "blue",
 	className,
@@ -178,14 +178,14 @@ export function DashboardProgressBar({
 			/>
 		</div>
 	);
-}
+});
 
 type RoleSwitchProps = {
 	value: WorkspaceRole;
 	onChange: (role: WorkspaceRole) => void;
 };
 
-export function DashboardRoleSwitch({ value, onChange }: RoleSwitchProps) {
+export const DashboardRoleSwitch = memo(function DashboardRoleSwitch({ value, onChange }: RoleSwitchProps) {
 	return (
 		<div className="inline-flex items-center gap-1 rounded-2xl border border-[color:var(--border)] bg-[var(--bg-secondary)] p-1">
 			{(["teacher", "student"] as const).map((role) => {
@@ -209,4 +209,4 @@ export function DashboardRoleSwitch({ value, onChange }: RoleSwitchProps) {
 			})}
 		</div>
 	);
-}
+});

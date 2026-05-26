@@ -10,21 +10,17 @@ import { QuizSession } from "./organisms/QuizSession";
 import { useLessonBySlugQuery } from "../../../hooks/useLessonBySlugQuery";
 import { progressApi } from "../../../api/progressApi";
 import { useGetMe } from "../../../../auth/hooks/useAuth";
-import type { AssessmentBlock } from "../../../api/lessonBlocksApi";
+import { lessonQueryKeys } from "../../../lib/lessonQueryKeys";
+import { useLessonTabContext } from "../../../context/LessonTabContext";
 
-type Props = {
-	blocks: AssessmentBlock[];
-	lessonSlug: string;
-	lessonId: string;
-};
-
-export function LessonQuizContentV2({ blocks, lessonSlug, lessonId }: Props) {
+export function LessonQuizContentV2() {
+	const { assessmentBlocks: blocks, lessonSlug, lessonId } = useLessonTabContext();
 	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
 	const lessonTitle = lesson?.title;
 	const { data: me } = useGetMe();
 
 	const { data: blockScoreRows = [] } = useQuery({
-		queryKey: ["quiz-block-scores", lessonId],
+		queryKey: lessonQueryKeys.quizBlockScores(lessonId),
 		queryFn: () => progressApi.getQuizBlockScores(lessonId),
 		enabled: !!lessonId && !!me?.userId,
 		staleTime: 30 * 1000,

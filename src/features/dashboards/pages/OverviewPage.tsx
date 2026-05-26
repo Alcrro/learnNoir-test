@@ -11,6 +11,7 @@ import { LiveLessonBanner } from "../components/atoms/LiveLessonBanner";
 import { StatCounter } from "../components/atoms/StatCounter";
 import { useDashboardContext } from "../lib/dashboardContext";
 import { useTeacherStats } from "../hooks/useTeacherStats";
+import { DueForReviewWidget } from "../../lessons/components/DueForReviewWidget";
 
 function StudentOverview() {
 	const { workspace, profileName } = useDashboardContext();
@@ -83,6 +84,8 @@ function StudentOverview() {
 					/>
 				)}
 			</div>
+
+			<DueForReviewWidget />
 
 			{alerts.length > 0 && (
 				<DashboardPanel>

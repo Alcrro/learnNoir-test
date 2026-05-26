@@ -1,4 +1,4 @@
-import type { FC, RefObject } from "react";
+import { memo, type FC, type RefObject } from "react";
 import type { AlgorithmTypeProp } from "../../data/algorithmArray";
 import { useCurrentAlgorithm } from "../hooks/useCurrentAlgorithm";
 import {
@@ -11,13 +11,13 @@ export type CanvasProps = {
 	boxesRef: RefObject<HTMLDivElement[]>;
 };
 
-const VisualizerCanvas: FC<CanvasProps> = (props) => {
+const VisualizerCanvas: FC<CanvasProps> = memo((props) => {
 	const algorithm = useCurrentAlgorithm();
 	const canvasType = algorithm
 		? (algorithmCanvasRegistry[algorithm] ?? "array")
 		: "array";
 	const Canvas = CANVAS_COMPONENT_REGISTRY[canvasType];
 	return <Canvas {...props} />;
-};
+});
 
 export default VisualizerCanvas;

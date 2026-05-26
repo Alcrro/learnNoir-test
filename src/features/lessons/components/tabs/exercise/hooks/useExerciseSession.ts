@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { exercisesApi } from "../lib/exercisesApi";
 import type { CodeRunResult } from "../lib/exerciseTypes";
+import { lessonQueryKeys } from "../../../../lib/lessonQueryKeys";
 
 type RunState =
 	| { phase: "idle" }
@@ -40,7 +41,7 @@ export function useExerciseSession(exerciseId: string, lessonId: string, starter
 				},
 				submitted: true,
 			});
-			void qc.invalidateQueries({ queryKey: ["exercise-progress", lessonId] });
+			void qc.invalidateQueries({ queryKey: lessonQueryKeys.exerciseProgress(lessonId) });
 		},
 		onError: () => setRunState({ phase: "idle" }),
 	});

@@ -17,9 +17,7 @@ const CategoriesListPage = lazy(() => import("./features/categories/pages/Catego
 const PaymentSuccessPage = lazy(() => import("./features/subscriptions/pages/PaymentSuccessPage").then((m) => ({ default: m.PaymentSuccessPage })));
 const PricingPage = lazy(() => import("./features/subscriptions/pages/PricingPage").then((m) => ({ default: m.PricingPage })));
 
-const Fallback = () => null;
-
-const s = (el: React.ReactNode) => <Suspense fallback={<Fallback />}>{el}</Suspense>;
+const s = (el: React.ReactNode) => <Suspense fallback={null}>{el}</Suspense>;
 
 export const router = createBrowserRouter([
 	{

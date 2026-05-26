@@ -5,6 +5,7 @@ import {
 	useGuestProgressStore,
 	type LessonGuestProgress,
 } from "../store/useGuestProgressStore";
+import { lessonQueryKeys } from "../lib/lessonQueryKeys";
 
 // All possible theory interaction component types — used as denominator for guest quizScore.
 const TOTAL_THEORY_COMPONENTS = 8;
@@ -31,6 +32,9 @@ function guestToProgress(lessonId: string, g: LessonGuestProgress): LessonProgre
 		lastActivityAt: null,
 		createdAt: null,
 		updatedAt: null,
+		nextReviewAt: null,
+		lastReviewedAt: null,
+		reviewCount: 0,
 	};
 }
 
@@ -46,7 +50,7 @@ export function useProgressMap(lessonIds: string[]): Record<string, LessonProgre
 
 	const progressQueries = useQueries({
 		queries: lessonIds.map((lessonId) => ({
-			queryKey: ["lesson-progress", lessonId],
+			queryKey: lessonQueryKeys.progress(lessonId),
 			queryFn: () => progressApi.getByLesson(lessonId),
 			staleTime: 60 * 1000,
 			enabled: !isAuthLoading && isAuthenticated && !!lessonId,

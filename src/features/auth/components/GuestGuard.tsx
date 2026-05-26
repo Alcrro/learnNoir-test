@@ -1,8 +1,8 @@
 import { Navigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
+import { useGetMe } from "../hooks/useAuth";
 
 const GuestGuard = ({ children }: { children: React.ReactNode }) => {
-	const { user } = useAuth();
+	const { data: user } = useGetMe();
 
 	if (user)
 		return (

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useId } from "react";
 import Editor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
 import { Play, RotateCcw, Terminal, CheckCircle } from "lucide-react";
@@ -27,7 +27,7 @@ window.addEventListener('message', function(e) {
     e.source.postMessage({ type: 'result', channelId: e.data.channelId, lines: lines, error: err.message }, '*');
   }
 });
-<\/script>`;
+</script>`;
 
 const JS_RUNNABLE = new Set(["javascript", "js", ""]);
 
@@ -43,7 +43,8 @@ export function CodeRunnerNode({ node }: { node: AnyNode }) {
 	const { theme } = useTheme();
 	const monacoTheme = theme === "dark" ? "vs-dark" : "vs";
 
-	const channelId = useRef(Math.random().toString(36).slice(2));
+	const reactId = useId();
+	const channelId = useRef(reactId.replace(/:/g, ""));
 	const [code, setCode] = useState(initialCode);
 	const [output, setOutput] = useState<RunResult | null>(null);
 	const [running, setRunning] = useState(false);

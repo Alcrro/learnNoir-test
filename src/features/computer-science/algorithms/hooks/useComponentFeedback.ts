@@ -3,13 +3,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useFeedbackStore } from "../../../../store/useFeedbackStore";
 import { lessonComponentFeedbackApi } from "../../../../features/lessons/api/lessonComponentFeedbackApi";
 import type { FeedbackVote, FeedbackCounts } from "../../../../features/lessons/api/lessonComponentFeedbackApi";
+import { theoryQueryKeys } from "../lib/theoryQueryKeys";
 
 function storeKey(lessonId: string, componentId: string) {
 	return `${lessonId}:${componentId}`;
-}
-
-function queryKey(lessonId: string, componentId: string) {
-	return ["feedback", lessonId, componentId] as const;
 }
 
 function applyVote(prev: FeedbackCounts, vote: FeedbackVote): FeedbackCounts {
@@ -43,7 +40,7 @@ export function useComponentFeedback(lessonId: string, componentId: string) {
 
 	// Fetch from DB — retry: false to avoid spamming 404s when componentId has no DB record yet
 	const { data: serverData } = useQuery({
-		queryKey: queryKey(lessonId, componentId),
+		queryKey: theoryQueryKeys.feedback(lessonId, componentId),
 		queryFn: () => lessonComponentFeedbackApi.getCounts(lessonId, componentId),
 		enabled: !!lessonId,
 		staleTime: 60_000,
@@ -69,7 +66,7 @@ export function useComponentFeedback(lessonId: string, componentId: string) {
 		mutationFn: ({ vote, message, selectedOptionIds }: { vote: FeedbackVote; message?: string; selectedOptionIds?: string[] }) =>
 			lessonComponentFeedbackApi.upsert(lessonId, componentId, vote, message, selectedOptionIds),
 		onMutate: async ({ vote }) => {
-			await qc.cancelQueries({ queryKey: queryKey(lessonId, componentId) });
+			await qc.cancelQueries({ queryKey: theoryQueryKeys.feedback(lessonId, componentId) });
 			const prev = getEntry(sk);
 			const next = applyVote({ myVote: prev.vote, upvotes: prev.upvotes, downvotes: prev.downvotes }, vote);
 			setEntry(sk, { vote: next.myVote, upvotes: next.upvotes, downvotes: next.downvotes });
@@ -79,14 +76,14 @@ export function useComponentFeedback(lessonId: string, componentId: string) {
 			if (ctx?.prev) setEntry(sk, ctx.prev);
 		},
 		onSettled: () => {
-			void qc.invalidateQueries({ queryKey: queryKey(lessonId, componentId) });
+			void qc.invalidateQueries({ queryKey: theoryQueryKeys.feedback(lessonId, componentId) });
 		},
 	});
 
 	const deleteMutation = useMutation({
 		mutationFn: () => lessonComponentFeedbackApi.remove(lessonId, componentId),
 		onMutate: async () => {
-			await qc.cancelQueries({ queryKey: queryKey(lessonId, componentId) });
+			await qc.cancelQueries({ queryKey: theoryQueryKeys.feedback(lessonId, componentId) });
 			const prev = getEntry(sk);
 			setEntry(sk, {
 				vote: null,
@@ -99,7 +96,7 @@ export function useComponentFeedback(lessonId: string, componentId: string) {
 			if (ctx?.prev) setEntry(sk, ctx.prev);
 		},
 		onSettled: () => {
-			void qc.invalidateQueries({ queryKey: queryKey(lessonId, componentId) });
+			void qc.invalidateQueries({ queryKey: theoryQueryKeys.feedback(lessonId, componentId) });
 		},
 	});
 

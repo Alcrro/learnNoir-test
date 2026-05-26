@@ -1,9 +1,15 @@
-import UseAuth from "./protectedRoute";
+import { queryClient } from "../libs/queryClient";
+import { authQueryKeys } from "../features/auth/lib/authQueryKeys";
+import { getMe } from "../features/auth/api/me.api";
 
 export async function requireAuth() {
-	const { userId } = await UseAuth();
+	const user = await queryClient.ensureQueryData({
+		queryKey: authQueryKeys.me,
+		queryFn: getMe,
+		staleTime: 10 * 60 * 1000,
+	});
 
-	if (!userId)
+	if (!user?.userId)
 		throw new Response("You are not authorized to access this page.", {
 			status: 401,
 		});

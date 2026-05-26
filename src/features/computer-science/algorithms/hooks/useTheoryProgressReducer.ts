@@ -6,6 +6,8 @@ import {
 } from "../../../../features/lessons/api/lessonTheoryInteractionsApi";
 import { useGuestProgressStore } from "../../../../features/lessons/store/useGuestProgressStore";
 import UseGetProfile from "../../../../features/profiles/hooks/UseGetProfile";
+import { theoryQueryKeys } from "../lib/theoryQueryKeys";
+import { lessonQueryKeys } from "../../../../features/lessons/lib/lessonQueryKeys";
 
 const TOTAL_COMPONENTS = 8;
 
@@ -57,7 +59,7 @@ export function useTheoryProgressReducer(lessonId: string) {
 
 	// Auth users: fetch which components they've already engaged with.
 	const { data: serverProgress = [], isFetched: progressFetched } = useQuery({
-		queryKey: ["theory-interactions", lessonId, "my-progress"],
+		queryKey: theoryQueryKeys.myProgress(lessonId),
 		queryFn: () => lessonTheoryInteractionsApi.getMyProgress(lessonId),
 		enabled: !!lessonId && !isAuthLoading && isAuthenticated,
 		staleTime: 2 * 60 * 1000,
@@ -92,7 +94,7 @@ export function useTheoryProgressReducer(lessonId: string) {
 		mutationFn: (component: TheoryInteractionComponentType) =>
 			lessonTheoryInteractionsApi.engage(lessonId, component),
 		onSuccess: () => {
-			void qc.invalidateQueries({ queryKey: ["my-lesson-progress"] });
+			void qc.invalidateQueries({ queryKey: lessonQueryKeys.myProgress });
 		},
 	});
 

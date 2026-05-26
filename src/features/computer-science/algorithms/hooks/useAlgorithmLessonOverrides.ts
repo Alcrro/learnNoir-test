@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { lessonBlocksApi, type ContentBlock, type LessonBlock } from "../../../../features/lessons/api/lessonBlocksApi";
+import { lessonQueryKeys } from "../../../../features/lessons/lib/lessonQueryKeys";
 
 export type AlgorithmLessonOverrides = {
 	keyIdea?: string;
@@ -37,7 +38,7 @@ export function useAlgorithmLessonOverrides(lessonId: string) {
 	// Subscribe to the same cache key as useLessonBlocksQuery so we re-render on updates.
 	// staleTime: Infinity because LessonPage already owns the fetching.
 	const { data: blocks = [] } = useQuery<LessonBlock[]>({
-		queryKey: ["lesson-blocks", lessonId],
+		queryKey: lessonQueryKeys.blocks(lessonId),
 		queryFn: () => lessonBlocksApi.getByLessonId(lessonId),
 		staleTime: Infinity,
 		enabled: !!lessonId,
@@ -49,7 +50,7 @@ export function useAlgorithmLessonOverrides(lessonId: string) {
 	const { mutate: save, isPending: isSaving } = useMutation({
 		mutationFn: async (patch: Partial<AlgorithmLessonOverrides>) => {
 			// Read latest from cache at call time to avoid stale closure
-			const latest = qc.getQueryData<LessonBlock[]>(["lesson-blocks", lessonId]) ?? [];
+			const latest = qc.getQueryData<LessonBlock[]>(lessonQueryKeys.blocks(lessonId)) ?? [];
 			const latestBlock = findOverridesBlock(latest);
 			const latestOverrides = extractOverrides(latestBlock);
 
@@ -65,7 +66,7 @@ export function useAlgorithmLessonOverrides(lessonId: string) {
 				await lessonBlocksApi.createContentBlock(lessonId, [node]);
 			}
 		},
-		onSuccess: () => qc.invalidateQueries({ queryKey: ["lesson-blocks", lessonId] }),
+		onSuccess: () => qc.invalidateQueries({ queryKey: lessonQueryKeys.blocks(lessonId) }),
 	});
 
 	return { overrides, save, isSaving };

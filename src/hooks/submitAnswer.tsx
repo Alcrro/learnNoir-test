@@ -1,4 +1,4 @@
-import useAuth from "./useAuth";
+import { useGetMe } from "../features/auth/hooks/useAuth";
 
 export function useSubmitInteractionAnswer({
 	stepId,
@@ -9,11 +9,11 @@ export function useSubmitInteractionAnswer({
 	questionId: string;
 	answerId: string;
 }) {
-	const { user } = useAuth();
+	const { data: user } = useGetMe();
 
 	if (!user?.userId) return;
 
-	const isCorrect = checkAnswer(stepId, questionId, answerId);
+	const _isCorrect = checkAnswer(stepId, questionId, answerId);
 }
 
 function checkAnswer(stepId: string, questionId: string, answerId: string) {

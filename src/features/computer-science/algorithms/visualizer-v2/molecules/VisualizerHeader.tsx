@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { memo, type FC } from "react";
 import type { AlgorithmTypes, Step } from "../../shared/AlgorithmTypes";
 import AlgorithmLabel from "../atoms/AlgorithmLabel";
 import StepBadge from "../atoms/StepBadge";
@@ -11,7 +11,7 @@ type Props = {
 	steps: Step[];
 };
 
-const VisualizerHeader: FC<Props> = ({ algorithm, currentStep, steps }) => {
+const VisualizerHeader: FC<Props> = memo(({ algorithm, currentStep, steps }) => {
 	const currentStepData = steps[currentStep];
 	return (
 		<div className="flex items-center justify-between flex-wrap gap-2 px-1 pb-2">
@@ -31,6 +31,6 @@ const VisualizerHeader: FC<Props> = ({ algorithm, currentStep, steps }) => {
 			</div>
 		</div>
 	);
-};
+});
 
 export default VisualizerHeader;

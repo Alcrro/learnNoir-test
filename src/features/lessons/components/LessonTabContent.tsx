@@ -9,6 +9,7 @@ import { useLessonBySlugQuery } from "../hooks/useLessonBySlugQuery";
 import { useLessonBlocksQuery } from "../hooks/useLessonBlocksQuery";
 import type { ContentBlock, AssessmentBlock } from "../api/lessonBlocksApi";
 import { TAB_REGISTRY } from "./tabs/tab-registry";
+import LessonTabContext from "../context/LessonTabContext";
 
 const LessonTabContent = () => {
 	const { category } = useParams<{ category: string }>();
@@ -29,9 +30,9 @@ const LessonTabContent = () => {
 	if (!registration || registration.isAvailable?.(category) === false) return null;
 
 	return (
-		<>
-			{registration.render({ category, lessonId, lessonSlug, lessonUpdatedAt, contentBlocks, assessmentBlocks })}
-		</>
+		<LessonTabContext.Provider value={{ category, lessonId, lessonSlug, lessonUpdatedAt, contentBlocks, assessmentBlocks }}>
+			{registration.render()}
+		</LessonTabContext.Provider>
 	);
 };
 

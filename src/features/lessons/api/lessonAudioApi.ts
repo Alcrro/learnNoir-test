@@ -1,4 +1,4 @@
-import { API_URL } from "../../../libs/config";
+import { apiClient } from "../../../libs/apiClient";
 
 export type AudioSegment = { text: string; start_ms: number; end_ms: number };
 
@@ -10,36 +10,14 @@ export type LessonAudioData = {
 	generatedAt: string;
 };
 
-async function get<T>(path: string): Promise<T> {
-	const res = await fetch(`${API_URL}${path}`, {
-		credentials: "include",
-		headers: { "Content-Type": "application/json" },
-	});
-	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	return res.json() as Promise<T>;
-}
-
-async function post<T>(path: string): Promise<T> {
-	const res = await fetch(`${API_URL}${path}`, {
-		method: "POST",
-		credentials: "include",
-		headers: { "Content-Type": "application/json" },
-	});
-	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	return res.json() as Promise<T>;
-}
-
 export const lessonAudioApi = {
+	// Returns null when no audio exists yet (404).
 	get: (lessonId: string) =>
-		get<{ success: boolean; data: LessonAudioData }>(`/lessons/${lessonId}/audio`)
+		apiClient.get<{ data: LessonAudioData }>(`/lessons/${lessonId}/audio`)
 			.then((r) => r.data)
-			.catch((err: unknown) => {
-				if (err instanceof Error && err.message.includes("404")) return null;
-				throw err;
-			}),
+			.catch(() => null),
 
 	generate: (lessonId: string) =>
-		post<{ success: boolean; data: LessonAudioData }>(`/lessons/${lessonId}/audio/generate`).then(
-			(r) => r.data,
-		),
+		apiClient.post<{ data: LessonAudioData }>(`/lessons/${lessonId}/audio/generate`, {})
+			.then((r) => r.data),
 };

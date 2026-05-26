@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { CheckCircle } from "lucide-react";
+import { subscriptionQueryKeys } from "../lib/subscriptionQueryKeys";
 
 export function PaymentSuccessPage() {
 	const navigate = useNavigate();
@@ -9,7 +10,7 @@ export function PaymentSuccessPage() {
 
 	useEffect(() => {
 		// Invalidate subscription cache so the new Pro plan is fetched immediately
-		void qc.invalidateQueries({ queryKey: ["subscription"] });
+		void qc.invalidateQueries({ queryKey: subscriptionQueryKeys.myPlan });
 
 		const timer = setTimeout(() => navigate("/"), 4000);
 		return () => clearTimeout(timer);

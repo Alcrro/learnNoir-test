@@ -14,14 +14,6 @@ type TabConfig = {
 	component: ReactElement;
 };
 
-function MathVisualizer() {
-	return (
-		<div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">
-			Math visualizer is not available yet.
-		</div>
-	);
-}
-
 export const subjectTabsConfig: Record<Subject, TabConfig[]> = {
 	"computer-science": [
 		{ id: "theoryTab", component: <AlgorithmLessonTheory /> },
@@ -32,7 +24,7 @@ export const subjectTabsConfig: Record<Subject, TabConfig[]> = {
 
 	mathematics: [
 		{ id: "theoryTab", component: <MathTheory /> },
-		{ id: "vizTab", component: <MathVisualizer /> },
+		{ id: "vizTab", component: <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-500">Math visualizer is not available yet.</div> },
 		// ❌ NO codeTab
 		{ id: "quizTab", component: <Quiz /> },
 	],

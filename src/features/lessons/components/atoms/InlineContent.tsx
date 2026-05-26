@@ -1,5 +1,4 @@
 import type { TextContent } from "@shared/lesson-content";
-import { cn } from "../../../../libs/utils/cn";
 
 type Props = { content: TextContent };
 

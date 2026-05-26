@@ -10,10 +10,8 @@ import { useExerciseSession } from "./hooks/useExerciseSession";
 import { exercisesApi } from "./lib/exercisesApi";
 import { useIsPro } from "../../../../../features/subscriptions/hooks/useSubscription";
 import type { ExerciseStatus, ExerciseProgressItem } from "./lib/exerciseTypes";
-
-type Props = {
-	lessonId: string;
-};
+import { lessonQueryKeys } from "../../../lib/lessonQueryKeys";
+import { useLessonContext } from "../../../context/LessonContext";
 
 function buildStatusMap(items: ExerciseProgressItem[]): Record<string, ExerciseStatus> {
 	const map: Record<string, ExerciseStatus> = {};
@@ -27,7 +25,7 @@ function ExerciseSessionView({
 	lessonId,
 	exerciseId,
 	statusMap,
-	allExerciseIds,
+	allExerciseIds: _allExerciseIds,
 	onSelect,
 	isPro,
 }: {
@@ -41,7 +39,7 @@ function ExerciseSessionView({
 	const [mobilePanel, setMobilePanel] = useState<"list" | "detail">("detail");
 
 	const { data: exercises = [] } = useQuery({
-		queryKey: ["exercises", lessonId, isPro],
+		queryKey: lessonQueryKeys.exercises(lessonId, isPro),
 		queryFn: () =>
 			isPro
 				? exercisesApi.getByLesson(lessonId)
@@ -125,13 +123,14 @@ function ExerciseSessionView({
 	);
 }
 
-export function ExerciseTab({ lessonId }: Props) {
+export function ExerciseTab() {
+	const { lessonId } = useLessonContext();
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const qc = useQueryClient();
 	const isPro = useIsPro();
 
 	const { data: exercises = [], isLoading: loadingExercises, isError, error } = useQuery({
-		queryKey: ["exercises", lessonId, isPro],
+		queryKey: lessonQueryKeys.exercises(lessonId, isPro),
 		queryFn: () =>
 			isPro
 				? exercisesApi.getByLesson(lessonId)
@@ -142,7 +141,7 @@ export function ExerciseTab({ lessonId }: Props) {
 	});
 
 	const { data: progressItems = [] } = useQuery({
-		queryKey: ["exercise-progress", lessonId],
+		queryKey: lessonQueryKeys.exerciseProgress(lessonId),
 		queryFn: () => exercisesApi.getMyProgress(lessonId),
 		enabled: !!lessonId,
 		staleTime: 60 * 1000,
@@ -168,7 +167,7 @@ export function ExerciseTab({ lessonId }: Props) {
 				<p className="text-sm">Eroare la încărcarea exercițiilor.</p>
 				<p className="text-xs text-(--text-muted) opacity-60">{(error as Error)?.message}</p>
 				<button
-					onClick={() => void qc.invalidateQueries({ queryKey: ["exercises", lessonId] })}
+					onClick={() => void qc.invalidateQueries({ queryKey: lessonQueryKeys.exercisesRoot(lessonId) })}
 					className="flex items-center gap-1.5 rounded-md border border-(--border) px-3 py-1.5 text-xs text-(--text-secondary) transition-colors hover:border-(--border-strong)"
 				>
 					<RefreshCw className="h-3 w-3" />

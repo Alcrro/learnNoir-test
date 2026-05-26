@@ -5,6 +5,7 @@ import { useComponentFeedback } from "../../../hooks/useComponentFeedback";
 import { lessonComponentFeedbackApi } from "../../../../../../features/lessons/api/lessonComponentFeedbackApi";
 import type { FeedbackOption } from "../../../../../../features/lessons/api/lessonComponentFeedbackApi";
 import { useGetMe } from "../../../../../../features/auth/hooks/useAuth";
+import { theoryQueryKeys } from "../../../lib/theoryQueryKeys";
 
 type Props = {
 	lessonId: string;
@@ -23,7 +24,7 @@ export function ComponentFeedback({ lessonId, componentId }: Props) {
 
 	// Fetch predefined options only when the form is visible
 	const { data: options = [] } = useQuery<FeedbackOption[]>({
-		queryKey: ["feedback-options", lessonId, componentId],
+		queryKey: theoryQueryKeys.feedbackOptions(lessonId, componentId),
 		queryFn: () => lessonComponentFeedbackApi.getOptions(lessonId, componentId),
 		enabled: showForm && !!lessonId,
 		staleTime: 5 * 60_000,

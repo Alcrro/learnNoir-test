@@ -1,13 +1,4 @@
-import { API_URL } from "../../../libs/config";
-
-async function get<T>(path: string): Promise<T> {
-	const res = await fetch(`${API_URL}${path}`, {
-		credentials: "include",
-		headers: { "Content-Type": "application/json" },
-	});
-	if (!res.ok) throw new Error(`HTTP ${res.status}`);
-	return res.json() as Promise<T>;
-}
+import { apiClient } from "../../../libs/apiClient";
 
 export type ModuleCard = {
 	id: string;
@@ -29,7 +20,6 @@ export type CategoryWithModules = {
 
 export const categoriesApi = {
 	getBySubject: (subjectSlug: string) =>
-		get<{ success: boolean; data: CategoryWithModules[] }>(
-			`/categories/by-subject/${subjectSlug}`,
-		).then((r) => r.data),
+		apiClient.get<{ data: CategoryWithModules[] }>(`/categories/by-subject/${subjectSlug}`)
+			.then((r) => r.data),
 };

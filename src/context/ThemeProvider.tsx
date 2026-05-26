@@ -1,5 +1,6 @@
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import type { ReactNode } from "react";
+import { Toaster } from "../components/atoms/Toaster";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 	return (
@@ -9,6 +10,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 			enableSystem={false}
 		>
 			{children}
+			<Toaster />
 		</NextThemeProvider>
 	);
 };

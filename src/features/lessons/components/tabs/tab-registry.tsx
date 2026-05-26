@@ -1,29 +1,19 @@
 import type { ReactNode } from "react";
-import type { ContentBlock, AssessmentBlock } from "../../api/lessonBlocksApi";
 import { LessonWatchContent } from "./watch/LessonWatchContent";
 import VisualizerV2 from "../../../../features/computer-science/algorithms/visualizer-v2/VisualizerV2";
 import { LessonQuizContentV2 } from "./quiz/LessonQuizContentV2";
 import { ExerciseTab } from "./exercise/ExerciseTab";
 import { hasCapability } from "./category-capabilities";
-import { resolveTheoryRenderer } from "./theory/theory-renderers";
-
-export type TabContext = {
-	category: string | undefined;
-	lessonId: string;
-	lessonSlug: string;
-	lessonUpdatedAt: string | undefined;
-	contentBlocks: ContentBlock[];
-	assessmentBlocks: AssessmentBlock[];
-};
+import { TheoryTabContent } from "./theory/theory-renderers";
 
 export type TabRegistration = {
-	render: (ctx: TabContext) => ReactNode;
+	render: () => ReactNode;
 	isAvailable?: (category: string | undefined) => boolean;
 };
 
 export const TAB_REGISTRY: Record<string, TabRegistration> = {
 	theoryTab: {
-		render: (ctx) => resolveTheoryRenderer(ctx.category)(ctx),
+		render: () => <TheoryTabContent />,
 	},
 
 	vizTab: {
@@ -41,17 +31,15 @@ export const TAB_REGISTRY: Record<string, TabRegistration> = {
 	},
 
 	quizTab: {
-		render: ({ assessmentBlocks, lessonSlug, lessonId }) => (
-			<LessonQuizContentV2 blocks={assessmentBlocks} lessonSlug={lessonSlug} lessonId={lessonId} />
-		),
+		render: () => <LessonQuizContentV2 />,
 	},
 
 	watchTab: {
-		render: ({ lessonId }) => <LessonWatchContent lessonId={lessonId} />,
+		render: () => <LessonWatchContent />,
 	},
 
 	exerciseTab: {
 		isAvailable: (category) => hasCapability(category, "exercises"),
-		render: ({ lessonId }) => <ExerciseTab lessonId={lessonId} />,
+		render: () => <ExerciseTab />,
 	},
 };
