@@ -1,10 +1,45 @@
-import { useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
 import type { LessonDTO, ProgrammingLanguage } from "../api/lessonsApi";
 import { useLessonsByModuleQuery } from "./useLessonsByModuleQuery";
 import { useProgressMap } from "./useProgressMap";
 
-const ALL_LANGUAGES: ProgrammingLanguage[] = ["python", "javascript", "java", "cpp"];
+export const LANGUAGE_LABELS: Record<ProgrammingLanguage, string> = {
+	python: "Python",
+	javascript: "JavaScript",
+	java: "Java",
+	cpp: "C++",
+};
+
+export type LessonGroup = {
+	baseTitle: string;
+	description: string | null;
+	position: number;
+	variants: LessonDTO[];
+};
+
+function stripLanguageSuffix(title: string, language?: ProgrammingLanguage | null): string {
+	if (!language) return title;
+	const pattern = ` — ${LANGUAGE_LABELS[language]}`;
+	return title.endsWith(pattern) ? title.slice(0, -pattern.length) : title;
+}
+
+export function groupLessonsByTopic(lessons: LessonDTO[]): LessonGroup[] {
+	const map = new Map<string, LessonGroup>();
+	for (const lesson of lessons) {
+		const baseTitle = stripLanguageSuffix(lesson.title, lesson.language);
+		const existing = map.get(baseTitle);
+		if (existing) {
+			existing.variants.push(lesson);
+		} else {
+			map.set(baseTitle, {
+				baseTitle,
+				description: lesson.description,
+				position: lesson.position ?? 0,
+				variants: [lesson],
+			});
+		}
+	}
+	return [...map.values()].sort((a, b) => a.position - b.position);
+}
 
 type Params = {
 	subject: string;
@@ -13,56 +48,30 @@ type Params = {
 };
 
 export function useLessonListPage({ subject, category, moduleSlug }: Params) {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const { data: allLessons = [], isLoading, isError } = useLessonsByModuleQuery(moduleSlug);
 
-	// Fetch once without filter to detect available languages in this module.
-	const { data: allLessons = [] } = useLessonsByModuleQuery(moduleSlug);
+	const isLanguageModule = allLessons.some((l) => l.language);
+	const groupedLessons = isLanguageModule ? groupLessonsByTopic(allLessons) : [];
 
-	const availableLanguages = ALL_LANGUAGES.filter((lang) =>
-		allLessons.some((l) => l.language === lang),
-	);
+	const progressMap = useProgressMap(allLessons.map((l) => l.id));
 
-	const isLanguageModule = availableLanguages.length > 0;
-
-	const selectedLanguage = isLanguageModule
-		? ((searchParams.get("lang") as ProgrammingLanguage | null) ?? availableLanguages[0] ?? null)
-		: null;
-
-	const { data: lessons = [], isLoading, isError } = useLessonsByModuleQuery(
-		moduleSlug,
-		selectedLanguage,
-	);
-
-	const setLanguage = useCallback(
-		(lang: ProgrammingLanguage) => {
-			setSearchParams((prev) => {
-				const next = new URLSearchParams(prev);
-				next.set("lang", lang);
-				return next;
-			}, { replace: true });
-		},
-		[setSearchParams],
-	);
-
-	const progressMap = useProgressMap(lessons.map((l) => l.id));
-
-	const completedCount = Object.values(progressMap).filter(
-		(p) => p?.status === "completed",
-	).length;
+	const completedCount = isLanguageModule
+		? groupedLessons.filter((g) =>
+				g.variants.some((v) => progressMap[v.id]?.status === "completed"),
+			).length
+		: Object.values(progressMap).filter((p) => p?.status === "completed").length;
 
 	const buildHref = (lesson: LessonDTO) =>
 		`/subjects/${subject}/${category}/${moduleSlug}/${lesson.slug}`;
 
 	return {
-		lessons,
+		lessons: allLessons,
+		groupedLessons,
 		progressMap,
 		completedCount,
 		buildHref,
 		isLoading,
 		isError,
 		isLanguageModule,
-		availableLanguages,
-		selectedLanguage,
-		setLanguage,
 	};
 }

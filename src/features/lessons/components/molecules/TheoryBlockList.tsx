@@ -24,7 +24,7 @@ export function TheoryBlockList({ blocks, overrides, contentRef, onUpdate }: Pro
 			) : (
 				<div className="space-y-8 py-2">
 					{blocks.map((block) => (
-						<div key={block.id}>
+						<div key={block.id} className="flex flex-col gap-6">
 							{(block.data.content ?? []).map((node, ni) => {
 								const key = `${block.id}-${ni}`;
 								const effectiveNode = overrides.get(key) ?? (node as AnyNode);
@@ -36,9 +36,11 @@ export function TheoryBlockList({ blocks, overrides, contentRef, onUpdate }: Pro
 									/>
 								);
 							})}
-							{isAuthenticated && <TheoryLevelSection blockId={block.id} />}
 						</div>
 					))}
+					{isAuthenticated && blocks[0] && (
+						<TheoryLevelSection blockId={blocks[0].id} />
+					)}
 				</div>
 			)}
 		</main>

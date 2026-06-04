@@ -3,8 +3,8 @@ import { cn } from "../../../../../../libs/utils/cn";
 import { DifficultyBadge } from "../atoms/DifficultyBadge";
 import { QuizProgressBar } from "../atoms/QuizProgressBar";
 import { QuizStatusIcon } from "../atoms/QuizStatusIcon";
-import { PaywallBanner } from "../../../../../../features/subscriptions/components/PaywallBanner";
-import { useIsPro } from "../../../../../../features/subscriptions/hooks/useSubscription";
+import { PaywallBanner } from "../../../../../../features/subscriptions/components/molecules/PaywallBanner";
+import { useIsPro } from "../../../../../../features/subscriptions/hooks/useIsPro";
 import type { QuizSummaryItem } from "../lib/quizTypes";
 
 type QuizCardProps = {

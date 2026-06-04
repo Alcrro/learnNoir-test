@@ -16,6 +16,13 @@ const FALLBACK: SubjectMetadata = {
 };
 
 const SUBJECT_METADATA: Record<string, SubjectMetadata> = {
+	"logic-and-critical-thinking": {
+		subtitle: "Deductive reasoning, argumentation, and LSAT/GMAT prep",
+		track: "mathematics",
+		accent: "violet",
+		topics: ["Logic Grids", "Fallacies", "LSAT", "GMAT"],
+		featured: true,
+	},
 	"computer-science": {
 		subtitle: "Algorithms, data structures and software thinking",
 		track: "technology",

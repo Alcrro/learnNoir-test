@@ -6,22 +6,24 @@ import { useLayoutBuilder } from "../hooks/useLayoutBuilder";
 import { CompletenessPanel } from "../molecules/CompletenessPanel";
 import { BuilderCanvas } from "./BuilderCanvas";
 import { NodePicker } from "./NodePicker";
+import { TemplatePicker } from "../molecules/TemplatePicker";
 import type { LessonContentNode } from "@shared/lesson-content";
 
 type Props = {
 	lessonId: string;
 	lessonTitle?: string;
+	lessonDescription?: string;
 	blockId: string | null;
 	initialNodes: LessonContentNode[];
 	onSaveSuccess: () => void;
 };
 
-export function LayoutBuilder({ lessonId, lessonTitle, blockId, initialNodes, onSaveSuccess }: Props) {
+export function LayoutBuilder({ lessonId, lessonTitle, lessonDescription, blockId, initialNodes, onSaveSuccess }: Props) {
 	const [pickerOpen, setPickerOpen] = useState(false);
 	const toast = useToastStore();
 
 	const builder = useLayoutBuilder({ lessonId, blockId, initialNodes });
-	const { nodes, isDirty, saving, completeness, addNode, removeNode, reorderNodes, updateNode, save } = builder;
+	const { nodes, isDirty, saving, completeness, addNode, removeNode, reorderNodes, updateNode, save, loadNodes } = builder;
 
 	function handleSelect(nodeType: string) {
 		const warnings = addNode(nodeType);
@@ -42,6 +44,23 @@ export function LayoutBuilder({ lessonId, lessonTitle, blockId, initialNodes, on
 	}
 
 	const canSave = isDirty && !saving && nodes.length > 0;
+
+	if (nodes.length === 0) {
+		return (
+			<div className="rounded-xl border border-(--border) bg-(--bg-card) p-6">
+				<TemplatePicker
+					lessonTitle={lessonTitle}
+					lessonDescription={lessonDescription}
+					lessonId={lessonId}
+					blockId={blockId}
+					onApply={(tplNodes) => {
+						loadNodes(tplNodes);
+						onSaveSuccess();
+					}}
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<div className="flex flex-col gap-4">

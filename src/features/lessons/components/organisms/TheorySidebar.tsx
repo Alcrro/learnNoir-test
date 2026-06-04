@@ -7,10 +7,10 @@ type Props = Pick<LessonSidebarData, "prerequisites" | "relatedLessons" | "nextL
 
 export function TheorySidebar({ prerequisites, relatedLessons, nextLesson }: Props) {
 	return (
-		<aside className="lesson-theory__sidebar">
+		<>
 			{prerequisites.length > 0 && <PrerequisitesCard prerequisites={prerequisites} />}
 			<RelatedLessonsCard relatedLessons={relatedLessons} />
 			{nextLesson && <NextLessonCard nextLesson={nextLesson} />}
-		</aside>
+		</>
 	);
 }

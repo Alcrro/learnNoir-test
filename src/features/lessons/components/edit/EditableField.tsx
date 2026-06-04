@@ -1,4 +1,5 @@
 import { Sparkles, Loader2 } from "lucide-react";
+import { CreatorPaywallBanner } from "../../../subscriptions/components/molecules/CreatorPaywallBanner";
 
 type Props = {
 	fieldKey: string;
@@ -9,6 +10,7 @@ type Props = {
 	isEditing: boolean;
 	aiLoading?: boolean;
 	onAIImprove?: () => void;
+	isCreatorRequired?: boolean;
 	children: React.ReactNode;
 };
 
@@ -21,6 +23,7 @@ export const EditableField = ({
 	isEditing,
 	aiLoading,
 	onAIImprove,
+	isCreatorRequired = false,
 	children,
 }: Props) => {
 	if (!isEditing) return <>{children}</>;
@@ -46,19 +49,24 @@ export const EditableField = ({
 			)}
 
 			{onAIImprove && (
-				<button
-					type="button"
-					onClick={onAIImprove}
-					disabled={aiLoading || !value.trim()}
-					className="self-start flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-(--text-muted) hover:text-(--accent) hover:bg-(--accent-subtle) transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-				>
-					{aiLoading ? (
-						<Loader2 className="h-3 w-3 animate-spin" />
-					) : (
-						<Sparkles className="h-3 w-3" />
+				<>
+					<button
+						type="button"
+						onClick={isCreatorRequired ? undefined : onAIImprove}
+						disabled={aiLoading || !value.trim() || isCreatorRequired}
+						className="self-start flex items-center gap-1.5 rounded-md px-2 py-1 text-xs text-(--text-muted) hover:text-(--accent) hover:bg-(--accent-subtle) transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+					>
+						{aiLoading ? (
+							<Loader2 className="h-3 w-3 animate-spin" />
+						) : (
+							<Sparkles className="h-3 w-3" />
+						)}
+						{aiLoading ? "Improving…" : "Improve with AI"}
+					</button>
+					{isCreatorRequired && (
+						<CreatorPaywallBanner feature="Îmbunătățire AI" className="max-w-xs" />
 					)}
-					{aiLoading ? "Improving…" : "Improve with AI"}
-				</button>
+				</>
 			)}
 		</div>
 	);

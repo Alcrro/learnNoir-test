@@ -53,7 +53,10 @@ export const useLessonAIStore = create<LessonAIStore>((set, get) => ({
 
 	handleImproveTitle: async (text, context) => {
 		const result = await get().improveField("title", text, context);
-		if (result) useLessonEditStore.getState().setEditTitle(result);
+		if (result) {
+			const truncated = result.length <= 150 ? result : result.slice(0, 150).replace(/\s+\S*$/, "");
+			useLessonEditStore.getState().setEditTitle(truncated);
+		}
 	},
 
 	handleImproveDescription: async (text, context) => {

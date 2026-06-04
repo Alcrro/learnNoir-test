@@ -8,7 +8,7 @@ import { CodeEditorPanel } from "./organisms/CodeEditorPanel";
 import { ResizableSplit } from "./molecules/ResizableSplit";
 import { useExerciseSession } from "./hooks/useExerciseSession";
 import { exercisesApi } from "./lib/exercisesApi";
-import { useIsPro } from "../../../../../features/subscriptions/hooks/useSubscription";
+import { useIsPro } from "../../../../../features/subscriptions/hooks/useIsPro";
 import type { ExerciseStatus, ExerciseProgressItem } from "./lib/exerciseTypes";
 import { lessonQueryKeys } from "../../../lib/lessonQueryKeys";
 import { useLessonContext } from "../../../context/LessonContext";

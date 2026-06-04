@@ -102,13 +102,14 @@ export function NodePicker({ open, onClose, onSelect, existingNodes, disabled }:
 				</div>
 
 				{/* Warning banner */}
-				{warnings.length > 0 && (
-					<div className="border-b border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/30 px-4 py-2">
-						<p className="text-xs text-orange-700 dark:text-orange-300">
-							⚠ {warnings[0].message}
-						</p>
-					</div>
-				)}
+				<div
+					className="border-b border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-950/30 px-4 py-2"
+					style={{ visibility: warnings.length > 0 ? "visible" : "hidden" }}
+				>
+					<p className="text-xs text-orange-700 dark:text-orange-300">
+						⚠ {warnings[0]?.message ?? ""}
+					</p>
+				</div>
 
 				{/* Grid */}
 				<div className="flex-1 overflow-y-auto p-4">

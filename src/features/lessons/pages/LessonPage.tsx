@@ -5,7 +5,6 @@ import { LessonFeatureTabs } from "../components/LessonFeatureTabs";
 import { useLessonPageController } from "../hooks/useLessonPageController";
 import LessonHeader from "../components/LessonHeader";
 import LessonTabContent from "../components/LessonTabContent";
-import { LessonEditBar } from "../components/edit/LessonEditBar";
 import { AIReviewPanel } from "../components/edit/AIReviewPanel";
 import PageStatus from "../../../components/atoms/PageStatus";
 import { useLessonPermissions } from "../hooks/useLessonPermissions";
@@ -32,10 +31,6 @@ const LessonPage = () => {
 	return (
 		<LessonContext.Provider value={{ lessonSlug: lessonSlug!, lessonId: lesson.id, canEdit }}>
 			<div className="relative">
-				<div className="absolute right-0 top-0 z-10 flex items-center gap-3">
-					{canEdit && <LessonEditBar />}
-				</div>
-
 				<LessonPageLayout
 					header={<LessonHeader />}
 					tabs={loadingBlocks ? null : <LessonFeatureTabs />}

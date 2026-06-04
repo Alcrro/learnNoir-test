@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { ContentBlock } from "../../../api/lessonBlocksApi";
 import { useLessonReadProgress } from "../../../hooks/useLessonReadProgress";
 import { useLessonSidebarData } from "../../../hooks/useLessonSidebarData";
@@ -9,9 +9,9 @@ import { ReadProgressBar } from "../../atoms/ReadProgressBar";
 import { TheoryBlockList } from "../../molecules/TheoryBlockList";
 import { TheorySidebar } from "../../organisms/TheorySidebar";
 
-type Props = { blocks: ContentBlock[]; lessonId: string };
+type Props = { blocks: ContentBlock[]; lessonId: string; sidebarTop?: ReactNode };
 
-export function LessonTheoryContent({ blocks, lessonId }: Props) {
+export function LessonTheoryContent({ blocks, lessonId, sidebarTop }: Props) {
 	const [overrides, setOverrides] = useState<Map<string, AnyNode>>(new Map());
 	const { mutate: saveContent } = useUpdateBlockContent(lessonId);
 	const { prerequisites, relatedLessons, nextLesson } =
@@ -42,11 +42,14 @@ export function LessonTheoryContent({ blocks, lessonId }: Props) {
 					contentRef={contentRef}
 					onUpdate={handleUpdate}
 				/>
-				<TheorySidebar
-					prerequisites={prerequisites}
-					relatedLessons={relatedLessons}
-					nextLesson={nextLesson}
-				/>
+				<aside className="lesson-theory__sidebar">
+					{sidebarTop}
+					<TheorySidebar
+						prerequisites={prerequisites}
+						relatedLessons={relatedLessons}
+						nextLesson={nextLesson}
+					/>
+				</aside>
 			</div>
 		</div>
 	);

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Sparkles, Pencil, Loader2, CheckCircle2 } from "lucide-react";
 import { cn } from "../../../../../libs/utils/cn";
+import { useIsCreator } from "../../../../subscriptions/hooks/useIsCreator";
+import { CreatorPaywallBanner } from "../../../../subscriptions/components/molecules/CreatorPaywallBanner";
 import { lessonAIApi } from "../../../api/lessonAIApi";
 import { NODE_REGISTRY } from "../../tabs/theory/node-registry";
 import type { LessonContentNode } from "@shared/lesson-content";
@@ -13,20 +15,25 @@ type Props = {
 	node: LessonContentNode;
 	lessonTitle?: string;
 	onUpdate: (id: string, updated: LessonContentNode) => void;
+	onClose: () => void;
 };
 
-export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props) {
+export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate, onClose }: Props) {
 	const [tab, setTab] = useState<Tab>("ai");
 	const [context, setContext] = useState("");
 	const [generating, setGenerating] = useState(false);
 	const [genError, setGenError] = useState<string | null>(null);
 	const [generated, setGenerated] = useState(false);
+	const isCreator = useIsCreator();
 
 	const EditPanel = NODE_REGISTRY[node.type]?.EditPanel;
 	const hasEditPanel = !!EditPanel;
 
 	async function handleGenerate() {
-		if (!context.trim()) return;
+		if (!context.trim()) {
+			setGenError("Completează câmpul de mai sus înainte de a genera.");
+			return;
+		}
 		setGenerating(true);
 		setGenError(null);
 		setGenerated(false);
@@ -39,8 +46,12 @@ export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props)
 			const match = nodes.find((n) => (n as Record<string, unknown>).type === node.type) ?? nodes[0];
 			if (match) {
 				onUpdate(nodeId, match as LessonContentNode);
+				if (hasEditPanel) {
+					setTab("manual");
+				} else {
+					onClose();
+				}
 				setGenerated(true);
-				if (hasEditPanel) setTab("manual");
 			} else {
 				setGenError("AI-ul nu a generat un nod valid. Încearcă cu mai mult context.");
 			}
@@ -94,7 +105,7 @@ export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props)
 					</label>
 					<textarea
 						value={context}
-						onChange={(e) => { setContext(e.target.value); setGenerated(false); }}
+						onChange={(e) => { setContext(e.target.value); setGenerated(false); setGenError(null); }}
 						placeholder={getPlaceholder(node.type)}
 						rows={3}
 						className={cn(
@@ -114,12 +125,12 @@ export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props)
 					)}
 					<button
 						type="button"
-						onClick={handleGenerate}
-						disabled={generating || !context.trim()}
+						onClick={isCreator ? handleGenerate : undefined}
+						disabled={generating || !isCreator}
 						className={cn(
 							"flex items-center gap-2 self-start rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
 							"bg-(--btn-primary-bg) text-(--btn-primary-text) hover:bg-(--btn-primary-bg-hover)",
-							(generating || !context.trim()) && "opacity-50 cursor-not-allowed",
+							(generating || !isCreator) && "opacity-50 cursor-not-allowed",
 						)}
 					>
 						{generating ? (
@@ -128,6 +139,9 @@ export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props)
 							<><Sparkles size={14} /> Generează</>
 						)}
 					</button>
+					{!isCreator && (
+						<CreatorPaywallBanner feature="Generare blocuri AI" />
+					)}
 				</div>
 			)}
 
@@ -136,8 +150,11 @@ export function NodeContentPanel({ nodeId, node, lessonTitle, onUpdate }: Props)
 				<div className="flex flex-col gap-2">
 					<EditPanel
 						node={node as AnyNode}
-						onSave={(updated: AnyNode) => onUpdate(nodeId, updated as LessonContentNode)}
-						onCancel={() => {}}
+						onSave={(updated: AnyNode) => {
+							onUpdate(nodeId, updated as LessonContentNode);
+							onClose();
+						}}
+						onCancel={onClose}
 					/>
 				</div>
 			)}

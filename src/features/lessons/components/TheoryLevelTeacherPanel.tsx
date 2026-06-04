@@ -2,6 +2,8 @@ import DefaultButton from "../../../components/atoms/DefaultButton";
 import { DefaultTextarea } from "../../../components/atoms/DefaultTextarea";
 import type { ExplanationLevel, TheoryLevelExplanation } from "../api/theoryLevelApi";
 import { useTheoryLevelTeacherPanel } from "../hooks/useTheoryLevelTeacherPanel";
+import { useIsCreator } from "../../subscriptions/hooks/useIsCreator";
+import { CreatorPaywallBanner } from "../../subscriptions/components/molecules/CreatorPaywallBanner";
 
 type Props = {
 	lessonId: string;
@@ -13,6 +15,7 @@ type Props = {
 export function TheoryLevelTeacherPanel({ lessonId, blockId, activeLevel, currentExplanation }: Props) {
 	const { draft, setDraft, handleSave, handleGenerate, isSaving, isGenerating } =
 		useTheoryLevelTeacherPanel({ lessonId, blockId, activeLevel, currentExplanation });
+	const isCreator = useIsCreator();
 
 	return (
 		<div className="mt-3 rounded-lg border border-(--border) bg-(--surface) p-3">
@@ -48,13 +51,16 @@ export function TheoryLevelTeacherPanel({ lessonId, blockId, activeLevel, curren
 				<DefaultButton
 					variant="outline"
 					size="sm"
-					onClick={handleGenerate}
-					disabled={isGenerating}
+					onClick={isCreator ? handleGenerate : undefined}
+					disabled={isGenerating || !isCreator}
 					className="text-xs disabled:opacity-50"
 				>
 					{isGenerating ? "Se generează..." : "Generează cu AI"}
 				</DefaultButton>
 			</div>
+			{!isCreator && (
+				<CreatorPaywallBanner feature="Generare explicații AI" className="mt-2" />
+			)}
 		</div>
 	);
 }

@@ -43,7 +43,7 @@ export default function SubjectsStats({ subjects }: SubjectsStatsProps) {
 			color: "text-emerald-600 dark:text-emerald-400",
 		},
 		{
-			value: `~${totalHours}h`,
+			value: `~${parseFloat(totalHours.toFixed(1))}h`,
 			label: "Est. total",
 			color: "text-amber-600 dark:text-amber-400",
 		},

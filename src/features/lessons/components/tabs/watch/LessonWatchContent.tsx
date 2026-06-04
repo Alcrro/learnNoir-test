@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { useLessonAudio } from "../../../hooks/useLessonAudio";
 import UseGetProfile from "../../../../profiles/hooks/UseGetProfile";
 import { useLessonContext } from "../../../context/LessonContext";
+import { useIsCreator } from "../../../../subscriptions/hooks/useIsCreator";
+import { CreatorPaywallBanner } from "../../../../subscriptions/components/molecules/CreatorPaywallBanner";
 
 export function LessonWatchContent() {
 	const { lessonId } = useLessonContext();
@@ -11,6 +13,7 @@ export function LessonWatchContent() {
 	const [currentMs, setCurrentMs] = useState(0);
 
 	const isTeacherOrAdmin = profile?.role === "teacher" || profile?.role === "admin";
+	const isCreator = useIsCreator();
 	const audio = query.data;
 
 	const activeIndex = audio
@@ -39,13 +42,18 @@ export function LessonWatchContent() {
 					Naratia audio nu a fost inca generata pentru aceasta lectie.
 				</p>
 				{isTeacherOrAdmin && (
-					<button
-						onClick={() => generate.mutate()}
-						disabled={generate.isPending}
-						className="rounded-lg bg-(--accent) px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
-					>
-						{generate.isPending ? "Se genereaza..." : "Genereaza naratie"}
-					</button>
+					<>
+						<button
+							onClick={() => isCreator && generate.mutate()}
+							disabled={generate.isPending || !isCreator}
+							className="rounded-lg bg-(--accent) px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
+						>
+							{generate.isPending ? "Se genereaza..." : "Genereaza naratie"}
+						</button>
+						{!isCreator && (
+							<CreatorPaywallBanner feature="Audio narație TTS" className="max-w-sm" />
+						)}
+					</>
 				)}
 				{generate.isError && (
 					<p className="text-xs text-red-500">
@@ -87,13 +95,18 @@ export function LessonWatchContent() {
 
 			{/* Regenerate button for teachers */}
 			{isTeacherOrAdmin && (
-				<button
-					onClick={() => generate.mutate()}
-					disabled={generate.isPending}
-					className="text-xs text-(--text-muted) underline underline-offset-2 disabled:opacity-50"
-				>
-					{generate.isPending ? "Se regenereaza..." : "Regenereaza naratie"}
-				</button>
+				<div className="flex flex-col gap-2">
+					<button
+						onClick={() => isCreator && generate.mutate()}
+						disabled={generate.isPending || !isCreator}
+						className="self-start text-xs text-(--text-muted) underline underline-offset-2 disabled:opacity-50"
+					>
+						{generate.isPending ? "Se regenereaza..." : "Regenereaza naratie"}
+					</button>
+					{!isCreator && (
+						<CreatorPaywallBanner feature="Audio narație TTS" className="max-w-sm" />
+					)}
+				</div>
 			)}
 		</div>
 	);

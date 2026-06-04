@@ -22,7 +22,12 @@ export const AIReviewPanel = () => {
 	if (!result) return null;
 
 	return (
-		<div className="fixed right-0 top-0 h-full w-80 z-50 border-l border-(--border) bg-(--bg-surface) shadow-xl flex flex-col">
+		<>
+		<div
+			className="fixed inset-0 z-40 bg-black/40"
+			onClick={clearReview}
+		/>
+		<div className="fixed right-0 top-0 h-full w-96 z-50 border-l border-(--border) bg-(--bg-card) shadow-xl flex flex-col">
 			<div className="flex items-center justify-between border-b border-(--border) px-4 py-3">
 				<span className="text-sm font-semibold text-(--text-primary)">AI Review</span>
 				<button
@@ -85,5 +90,6 @@ export const AIReviewPanel = () => {
 				)}
 			</div>
 		</div>
+		</>
 	);
 };

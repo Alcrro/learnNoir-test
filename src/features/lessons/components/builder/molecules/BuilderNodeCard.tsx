@@ -128,6 +128,7 @@ export function BuilderNodeCard({ id, node, lessonTitle, onDelete, onUpdate }: P
 						node={node}
 						lessonTitle={lessonTitle}
 						onUpdate={onUpdate}
+						onClose={() => setExpanded(false)}
 					/>
 				</div>
 			)}

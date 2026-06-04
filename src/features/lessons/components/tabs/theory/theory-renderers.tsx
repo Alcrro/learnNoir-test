@@ -4,13 +4,15 @@ import { LayoutDashboard } from "lucide-react";
 import { LessonTheoryContent } from "./LessonTheoryContent";
 import { useLessonTabContext } from "../../../context/LessonTabContext";
 import { useLessonContext } from "../../../context/LessonContext";
+import { useLessonBySlugQuery } from "../../../hooks/useLessonBySlugQuery";
 import { lessonQueryKeys } from "../../../lib/lessonQueryKeys";
 import { LayoutBuilder } from "../../builder/organisms/LayoutBuilder";
 import type { LessonContentNode } from "@shared/lesson-content";
 
 export function TheoryTabContent() {
 	const { lessonId, contentBlocks } = useLessonTabContext();
-	const { canEdit } = useLessonContext();
+	const { canEdit, lessonSlug } = useLessonContext();
+	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
 	const queryClient = useQueryClient();
 	const [isBuilderMode, setIsBuilderMode] = useState(false);
 
@@ -26,6 +28,8 @@ export function TheoryTabContent() {
 		return (
 			<LayoutBuilder
 				lessonId={lessonId}
+				lessonTitle={lesson?.title}
+				lessonDescription={lesson?.description ?? undefined}
 				blockId={contentBlock?.id ?? null}
 				initialNodes={[]}
 				onSaveSuccess={invalidateBlocks}
@@ -46,6 +50,8 @@ export function TheoryTabContent() {
 				</button>
 				<LayoutBuilder
 					lessonId={lessonId}
+					lessonTitle={lesson?.title}
+					lessonDescription={lesson?.description ?? undefined}
 					blockId={contentBlock?.id ?? null}
 					initialNodes={(contentBlock?.data?.content ?? []) as LessonContentNode[]}
 					onSaveSuccess={() => { setIsBuilderMode(false); invalidateBlocks(); }}
@@ -54,27 +60,25 @@ export function TheoryTabContent() {
 		);
 	}
 
-	// "Edit Layout" button — shown above content for professors
-	const editButton = canEdit && (
-		<div className="flex justify-end mb-3">
-			<button
-				type="button"
-				onClick={() => setIsBuilderMode(true)}
-				className="flex items-center gap-1.5 rounded-lg border border-(--border) px-3 py-1.5 text-sm text-(--text-secondary) hover:bg-(--surface-hover) transition-colors"
-			>
-				<LayoutDashboard size={14} />
-				Edit Layout
-			</button>
-		</div>
-	);
+	const editLayoutButton = canEdit ? (
+		<button
+			type="button"
+			onClick={() => setIsBuilderMode(true)}
+			className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-(--border) px-3 py-2 text-xs text-(--text-secondary) hover:bg-(--surface-hover) transition-colors"
+		>
+			<LayoutDashboard size={13} />
+			Edit Layout
+		</button>
+	) : null;
 
 	// Preview: all lesson types render via ContentNodeRenderer (node registry).
 	// AlgorithmLessonTheoryV2 has a hardcoded structure that ignores data.content,
 	// so builder-saved nodes would never appear through it.
 	return (
-		<>
-			{editButton}
-			<LessonTheoryContent blocks={contentBlocks} lessonId={lessonId} />
-		</>
+		<LessonTheoryContent
+			blocks={contentBlocks}
+			lessonId={lessonId}
+			sidebarTop={editLayoutButton}
+		/>
 	);
 }

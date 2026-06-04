@@ -1,26 +1,47 @@
 import { useState, useMemo } from "react";
-import { CATEGORY_META, SUBJECTS } from "../../subjects/data/subjects.data";
+import { useParams } from "react-router-dom";
 import SubjectsFilter from "../../subjects/components/organisms/SubjectsFilter";
 import SubjectsStats from "../../subjects/components/organisms/SubjectsStats";
 import { Breadcrumb } from "../../../components/molecules/Breadcrumb";
-import { buildCategories } from "../lib/buildCategories";
 import { applyFilters } from "../lib/categoriesApplyFilters";
-import { groupByCategory } from "../lib/groupByCategory";
+import { mapCatalogToSubjects } from "../lib/mapCatalogToSubjects";
 import { CategoriesHeader } from "../components/molecules/CategoriesHeader";
 import { CategoriesFilterSummary } from "../components/molecules/CategoriesFilterSummary";
 import { CategorySection } from "../components/organisms/CategorySection";
 import { CategoriesEmptyState } from "../components/organisms/CategoriesEmptyState";
-import { useCatalogSubjectsQuery } from "../hooks/useCatalogSubjectsQuery";
+import { useCategoriesWithModulesQuery } from "../hooks/useCategoriesWithModulesQuery";
+import { useSubjectsQuery } from "../../subjects/hooks/useSubjectsQuery";
+import type { Subject } from "../../subjects/data/subjects.data";
+
+const FALLBACK_META = { label: "", description: "", color: "slate", icon: "layers" };
 
 export default function CategoriesListPage() {
+	const { subject = "" } = useParams<{ subject: string }>();
 	const [activeCategory, setActiveCategory] = useState("all");
 	const [activeDiff, setActiveDiff] = useState("all");
 	const [search, setSearch] = useState("");
 
-	const { data: backendSubjects } = useCatalogSubjectsQuery("computer-science");
-	const subjects = backendSubjects ?? SUBJECTS;
+	const { data: categories = [] } = useCategoriesWithModulesQuery(subject);
+	const { data: allSubjects = [] } = useSubjectsQuery();
+	const subjectTitle = allSubjects.find((s) => s.slug === subject)?.title ?? "";
 
-	const categories = buildCategories();
+	const subjects = useMemo(() => mapCatalogToSubjects(categories), [categories]);
+
+	const categoryFilterOptions = useMemo(
+		() => categories.map((c) => ({ id: c.slug, label: c.name })),
+		[categories],
+	);
+
+	const categoryMetaMap = useMemo(
+		() =>
+			new Map(
+				categories.map((c) => [
+					c.slug,
+					{ label: c.name, description: "", color: "slate", icon: "layers" },
+				]),
+			),
+		[categories],
+	);
 
 	const filtered = useMemo(
 		() =>
@@ -32,7 +53,13 @@ export default function CategoriesListPage() {
 		[subjects, activeCategory, activeDiff, search],
 	);
 
-	const grouped = useMemo(() => groupByCategory(filtered), [filtered]);
+	const grouped = useMemo((): [string, Subject[]][] => {
+		const map = new Map<string, Subject[]>(
+			categories.map((c) => [c.slug, []]),
+		);
+		filtered.forEach((s) => map.get(s.category)?.push(s));
+		return [...map.entries()].filter(([, items]) => items.length > 0);
+	}, [categories, filtered]);
 
 	const isFiltering =
 		activeCategory !== "all" || activeDiff !== "all" || search.trim() !== "";
@@ -49,8 +76,9 @@ export default function CategoriesListPage() {
 				<Breadcrumb />
 
 				<CategoriesHeader
+					title={subjectTitle}
 					subjectCount={subjects.length}
-					categoryCount={Object.keys(CATEGORY_META).length}
+					categoryCount={categories.length}
 				/>
 
 				<div className="mb-5 mt-2">
@@ -59,7 +87,7 @@ export default function CategoriesListPage() {
 
 				<div className="mb-5">
 					<SubjectsFilter
-						categories={categories}
+						categories={categoryFilterOptions}
 						activeCategory={activeCategory}
 						activeDiff={activeDiff}
 						search={search}
@@ -79,11 +107,11 @@ export default function CategoriesListPage() {
 
 				{filtered.length > 0 ? (
 					<div className="flex flex-col gap-10">
-						{grouped.map(([categoryId, items]) => (
+						{grouped.map(([categorySlug, items]) => (
 							<CategorySection
-								key={categoryId}
-								categoryId={categoryId}
-								meta={CATEGORY_META[categoryId]}
+								key={categorySlug}
+								categoryId={categorySlug}
+								meta={categoryMetaMap.get(categorySlug) ?? FALLBACK_META}
 								items={items}
 							/>
 						))}

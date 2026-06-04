@@ -76,11 +76,16 @@ export function useLayoutBuilder({ lessonId, blockId, initialNodes }: Params) {
 		}
 	}
 
+	function loadNodes(incoming: LessonContentNode[]) {
+		setNodes(incoming.map(toBuilderNode));
+		setIsDirty(true);
+	}
+
 	function reset() {
 		setNodes(initialNodes.map(toBuilderNode));
 		setIsDirty(false);
 		setSaveError(null);
 	}
 
-	return { nodes, isDirty, saving, saveError, completeness, addNode, removeNode, reorderNodes, updateNode, save, reset };
+	return { nodes, isDirty, saving, saveError, completeness, addNode, removeNode, reorderNodes, updateNode, save, reset, loadNodes };
 }

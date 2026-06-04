@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useIsPro } from "../../subscriptions/hooks/useSubscription";
+import { useIsPro } from "../../subscriptions/hooks/useIsPro";
 import { useLessonContext } from "../context/LessonContext";
 import { useTheoryLevelExplanations, useExplanationByLevel } from "./useTheoryLevelExplanations";
 import { progressApi } from "../api/progressApi";

@@ -1,9 +1,11 @@
-import { Pencil, Save, X, Bot, Loader2 } from "lucide-react";
+import { Pencil, Save, X, Bot, Loader2, AlertCircle } from "lucide-react";
 import { useLessonContext } from "../../context/LessonContext";
 import { useLessonBySlugQuery } from "../../hooks/useLessonBySlugQuery";
 import { useLessonEditStore } from "../../store/useLessonEditStore";
 import { useLessonAIStore } from "../../store/useLessonAIStore";
 import { useLessonEdit } from "../../hooks/useLessonEdit";
+import { useIsCreator } from "../../../subscriptions/hooks/useIsCreator";
+import { CreatorPaywallBanner } from "../../../subscriptions/components/molecules/CreatorPaywallBanner";
 
 export const LessonEditBar = () => {
 	const { lessonSlug } = useLessonContext();
@@ -15,7 +17,8 @@ export const LessonEditBar = () => {
 	const cancelEdit = useLessonEditStore((s) => s.cancelEdit);
 	const isReviewing = useLessonAIStore((s) => s.reviewState.loading);
 	const handleReview = useLessonAIStore((s) => s.handleReview);
-	const { save, isSaving } = useLessonEdit();
+	const { save, isSaving, saveError } = useLessonEdit();
+	const isCreator = useIsCreator();
 
 	const isDirty = lesson
 		? editTitle !== lesson.title || editDescription !== (lesson.description ?? "")
@@ -32,6 +35,13 @@ export const LessonEditBar = () => {
 	};
 
 	return (
+		<div className="flex flex-col items-end gap-1.5">
+		{saveError && isEditing && (
+			<div className="flex items-center gap-1.5 text-xs text-red-500">
+				<AlertCircle className="h-3.5 w-3.5 shrink-0" />
+				{saveError}
+			</div>
+		)}
 		<div className="flex items-center gap-2">
 			{!isEditing ? (
 				<button
@@ -47,13 +57,14 @@ export const LessonEditBar = () => {
 					<button
 						type="button"
 						onClick={() =>
+							isCreator &&
 							handleReview({
 								title: editTitle,
 								description: editDescription,
 								content: lesson?.description ?? "",
 							})
 						}
-						disabled={isReviewing}
+						disabled={isReviewing || !isCreator}
 						className="flex items-center gap-1.5 rounded-lg border border-(--border) px-3 py-1.5 text-xs font-medium text-(--text-muted) hover:text-(--accent) hover:border-(--accent) transition-colors disabled:opacity-50"
 					>
 						{isReviewing ? (
@@ -63,6 +74,9 @@ export const LessonEditBar = () => {
 						)}
 						{isReviewing ? "Reviewing…" : "AI Review"}
 					</button>
+					{!isCreator && (
+						<CreatorPaywallBanner feature="AI Review" className="w-56" />
+					)}
 
 					<button
 						type="button"
@@ -89,6 +103,7 @@ export const LessonEditBar = () => {
 					</button>
 				</>
 			)}
+		</div>
 		</div>
 	);
 };

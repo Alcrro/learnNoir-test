@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import { Breadcrumb } from "../../../components/molecules/Breadcrumb";
 import PageStatus from "../../../components/atoms/PageStatus";
 import { LessonsGrid } from "../components/organisms/LessonsGrid";
+import { LessonsGroupedGrid } from "../components/organisms/LessonsGroupedGrid";
 import { LessonsListHeader } from "../components/molecules/LessonsListHeader";
-import { LanguageSelector } from "../components/LanguageSelector";
 import { useLessonListPage } from "../hooks/useLessonListPage";
 
 const LessonListPage = () => {
@@ -15,15 +15,13 @@ const LessonListPage = () => {
 
 	const {
 		lessons,
+		groupedLessons,
 		progressMap,
 		completedCount,
 		buildHref,
 		isLoading,
 		isError,
 		isLanguageModule,
-		availableLanguages,
-		selectedLanguage,
-		setLanguage,
 	} = useLessonListPage({ subject, category, moduleSlug });
 
 	if (isLoading) {
@@ -44,24 +42,25 @@ const LessonListPage = () => {
 		);
 	}
 
+	const lessonCount = isLanguageModule ? groupedLessons.length : lessons.length;
+
 	return (
 		<div className="py-2">
 			<Breadcrumb />
 			<LessonsListHeader
 				moduleName={moduleSlug.replace(/-/g, " ")}
-				lessonCount={lessons.length}
+				lessonCount={lessonCount}
 				completedCount={completedCount}
 			/>
-			{isLanguageModule && selectedLanguage && (
-				<div className="mb-6">
-					<LanguageSelector
-						languages={availableLanguages}
-						selected={selectedLanguage}
-						onChange={setLanguage}
-					/>
-				</div>
+			{isLanguageModule ? (
+				<LessonsGroupedGrid
+					groups={groupedLessons}
+					progressMap={progressMap}
+					buildHref={buildHref}
+				/>
+			) : (
+				<LessonsGrid lessons={lessons} progressMap={progressMap} buildHref={buildHref} />
 			)}
-			<LessonsGrid lessons={lessons} progressMap={progressMap} buildHref={buildHref} />
 		</div>
 	);
 };

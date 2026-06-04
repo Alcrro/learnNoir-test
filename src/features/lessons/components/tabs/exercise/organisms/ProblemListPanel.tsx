@@ -1,6 +1,6 @@
 import { Code2 } from "lucide-react";
 import { ProblemCard } from "../molecules/ProblemCard";
-import { PaywallBanner } from "../../../../../../features/subscriptions/components/PaywallBanner";
+import { PaywallBanner } from "../../../../../../features/subscriptions/components/molecules/PaywallBanner";
 import type { Exercise, ExerciseStatus } from "../lib/exerciseTypes";
 
 type Props = {
