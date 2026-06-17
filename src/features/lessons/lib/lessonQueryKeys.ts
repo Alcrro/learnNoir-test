@@ -15,4 +15,5 @@ export const lessonQueryKeys = {
 	exerciseProgress: (lessonId: string) => ["exercise-progress", lessonId] as const,
 	theoryLevels: (blockId: string) => ["theory-levels", blockId] as const,
 	theoryLevel: (blockId: string, level: string) => ["theory-level", blockId, level] as const,
+	translation: (lessonId: string, lang: string) => ["lesson-translation", lessonId, lang] as const,
 };

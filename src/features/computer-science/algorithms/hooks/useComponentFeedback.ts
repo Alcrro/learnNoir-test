@@ -4,6 +4,7 @@ import { useFeedbackStore } from "../../../../store/useFeedbackStore";
 import { lessonComponentFeedbackApi } from "../../../../features/lessons/api/lessonComponentFeedbackApi";
 import type { FeedbackVote, FeedbackCounts } from "../../../../features/lessons/api/lessonComponentFeedbackApi";
 import { theoryQueryKeys } from "../lib/theoryQueryKeys";
+import { useGetMe } from "../../../auth/hooks/useAuth";
 
 function storeKey(lessonId: string, componentId: string) {
 	return `${lessonId}:${componentId}`;
@@ -37,12 +38,13 @@ export function useComponentFeedback(lessonId: string, componentId: string) {
 	const sk = storeKey(lessonId, componentId);
 	const getEntry = useFeedbackStore((s) => s.getEntry);
 	const setEntry = useFeedbackStore((s) => s.setEntry);
+	const { data: me } = useGetMe();
 
 	// Fetch from DB — retry: false to avoid spamming 404s when componentId has no DB record yet
 	const { data: serverData } = useQuery({
 		queryKey: theoryQueryKeys.feedback(lessonId, componentId),
 		queryFn: () => lessonComponentFeedbackApi.getCounts(lessonId, componentId),
-		enabled: !!lessonId,
+		enabled: !!lessonId && !!me?.userId,
 		staleTime: 60_000,
 		retry: false,
 	});

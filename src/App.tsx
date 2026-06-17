@@ -15,7 +15,15 @@ const App = () => {
 	return (
 		<PersistQueryClientProvider
 			client={queryClient}
-			persistOptions={{ persister }}
+			persistOptions={{
+				persister,
+				dehydrateOptions: {
+					shouldDehydrateQuery: (query) => {
+						const key = query.queryKey[0];
+						return key !== "lesson-translation" && key !== "feedback" && key !== "feedback-options";
+					},
+				},
+			}}
 		>
 			<ErrorBoundary>
 				{isModal ? <LoginModal /> : <Outlet />}

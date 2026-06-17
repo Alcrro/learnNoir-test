@@ -5,11 +5,14 @@ import { useLessonContext } from "../context/LessonContext";
 import { useLessonBySlugQuery } from "../hooks/useLessonBySlugQuery";
 import { useLessonProgressQuery } from "../hooks/useLessonProgressQuery";
 import { useLessonLanguageVariants } from "../hooks/useLessonLanguageVariants";
+import { useLessonTranslationQuery } from "../hooks/useLessonTranslationQuery";
+import { useLessonTranslationStore } from "../store/useLessonTranslationStore";
 import { useLessonEditStore } from "../store/useLessonEditStore";
 import { useLessonAIStore } from "../store/useLessonAIStore";
 import { useGetMe } from "../../auth/hooks/useAuth";
 import { useIsCreator } from "../../subscriptions/hooks/useIsCreator";
 import { LessonLanguageSwitcher } from "./atoms/LessonLanguageSwitcher";
+import { TranslationPicker } from "./molecules/TranslationPicker";
 
 const SEPARATORS = [" — ", " - ", ": "];
 
@@ -34,6 +37,8 @@ const StyledTitle = ({ title }: { title: string }) => {
 const LessonHeader = () => {
 	const { lessonSlug, lessonId, canEdit } = useLessonContext();
 	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
+	const activeLang = useLessonTranslationStore((s) => s.getLang(lessonId));
+	const { data: translation } = useLessonTranslationQuery(lessonId, activeLang);
 	const langVariants = useLessonLanguageVariants(lessonId);
 	const { data: progress } = useLessonProgressQuery(lessonId);
 	const { data: me } = useGetMe();
@@ -51,6 +56,8 @@ const LessonHeader = () => {
 	if (!lesson) return null;
 
 	const mins = lesson.durationSeconds > 0 ? Math.round(lesson.durationSeconds / 60) : null;
+	const displayTitle = translation?.title ?? lesson.title;
+	const displayDescription = translation?.description ?? lesson.description;
 
 	return (
 		<div className="flex flex-col gap-2">
@@ -75,7 +82,7 @@ const LessonHeader = () => {
 							/>
 						</>
 					) : (
-						<StyledTitle title={lesson.title} />
+						<StyledTitle title={displayTitle} />
 					)}
 				</h1>
 			</EditableField>
@@ -93,8 +100,8 @@ const LessonHeader = () => {
 				}
 				isCreatorRequired={!isCreator}
 			>
-				{lesson.description && (
-					<p className="text-sm text-(--text-secondary) max-w-2xl">{lesson.description}</p>
+				{displayDescription && (
+					<p className="text-sm text-(--text-secondary) max-w-2xl">{displayDescription}</p>
 				)}
 			</EditableField>
 
@@ -125,6 +132,7 @@ const LessonHeader = () => {
 								</div>
 							</div>
 						)}
+						<TranslationPicker lessonId={lessonId} />
 					</div>
 				)}
 				{canEdit && <LessonEditBar />}
