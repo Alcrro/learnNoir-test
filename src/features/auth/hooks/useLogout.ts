@@ -7,10 +7,7 @@ export const useLogout = () => {
 	return useMutation({
 		mutationFn: async () => logout(),
 		onSuccess: () => {
-			queryClient.setQueryData(authQueryKeys.me, null);
-			queryClient.setQueriesData({ queryKey: ["profile"] }, null);
-			queryClient.invalidateQueries({ queryKey: authQueryKeys.me });
-			queryClient.invalidateQueries({ queryKey: ["profile"] });
+			queryClient.clear();
 		},
 	});
 };
