@@ -1,55 +1,24 @@
-import { useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { BookOpen, ChevronLeft } from "lucide-react";
 import { cn } from "../../../../../libs/utils/cn";
-import { blocksToQuizList } from "./lib/quizBlockMapper";
-import { QuizListPanel } from "./organisms/QuizListPanel";
-import { QuizPreviewPanel } from "./organisms/QuizPreviewPanel";
-import { QuizRelatedPanel } from "./organisms/QuizRelatedPanel";
-import { QuizSession } from "./organisms/QuizSession";
-import { useLessonBySlugQuery } from "../../../hooks/useLessonBySlugQuery";
-import { progressApi } from "../../../api/progressApi";
-import { useGetMe } from "../../../../auth/hooks/useAuth";
-import { lessonQueryKeys } from "../../../lib/lessonQueryKeys";
-import { useLessonTabContext } from "../../../context/LessonTabContext";
+import { QuizListPanel } from "./components/organisms/QuizListPanel";
+import { QuizPreviewPanel } from "./components/organisms/QuizPreviewPanel";
+import { QuizRelatedPanel } from "./components/organisms/QuizRelatedPanel";
+import { QuizSession } from "./components/organisms/QuizSession";
+import { useQuizContent } from "./hooks/useQuizContent";
 
 export function LessonQuizContentV2() {
-	const { assessmentBlocks: blocks, lessonSlug, lessonId } = useLessonTabContext();
-	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
-	const lessonTitle = lesson?.title;
-	const { data: me } = useGetMe();
-
-	const { data: blockScoreRows = [] } = useQuery({
-		queryKey: lessonQueryKeys.quizBlockScores(lessonId),
-		queryFn: () => progressApi.getQuizBlockScores(lessonId),
-		enabled: !!lessonId && !!me?.userId,
-		staleTime: 30 * 1000,
-		retry: false,
-	});
-
-	const blockScores = useMemo(
-		() => new Map(blockScoreRows.map((s) => [s.lessonBlockId, s.score])),
-		[blockScoreRows],
-	);
-
-	const quizList = useMemo(
-		() => blocksToQuizList(blocks, lessonTitle, blockScores),
-		[blocks, lessonTitle, blockScores],
-	);
-
-	const firstAvailableId = quizList.find((q) => q.status !== "locked")?.id ?? null;
-
-	const [selectedId, setSelectedId] = useState<string | null>(() => firstAvailableId);
-	const [sessionActive, setSessionActive] = useState(false);
-	const [mobilePanel, setMobilePanel] = useState<"list" | "content">("list");
-
-	const selectedQuiz = quizList.find((q) => q.id === selectedId) ?? null;
-
-	const handleSelect = (id: string) => {
-		if (id !== selectedId) setSessionActive(false);
-		setSelectedId(id);
-		setMobilePanel("content");
-	};
+	const {
+		lessonId,
+		lessonTitle,
+		quizList,
+		selectedId,
+		selectedQuiz,
+		sessionActive,
+		setSessionActive,
+		mobilePanel,
+		setMobilePanel,
+		handleSelect,
+	} = useQuizContent();
 
 	if (quizList.length === 0) {
 		return (
@@ -67,7 +36,7 @@ export function LessonQuizContentV2() {
 			{/* Left — quiz list: full width on mobile (when active), fixed on md+ */}
 			<div
 				className={cn(
-					"md:flex md:w-[280px] md:shrink-0",
+					"md:flex md:w-70 md:shrink-0",
 					mobilePanel === "list" ? "flex w-full" : "hidden md:flex",
 				)}
 			>
@@ -120,7 +89,7 @@ export function LessonQuizContentV2() {
 
 			{/* Right — related lessons & prerequisites: only on lg+ */}
 			{selectedQuiz && (
-				<div className="hidden lg:flex lg:w-[240px] lg:shrink-0">
+				<div className="hidden lg:flex lg:w-60 lg:shrink-0">
 					<QuizRelatedPanel quizId={selectedQuiz.id} />
 				</div>
 			)}

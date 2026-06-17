@@ -6,11 +6,19 @@ import type { AnyNode } from "../tabs/theory/node-registry";
 import { useLessonContext } from "../../context/LessonContext";
 import { useUpsertProgressMutation } from "../tabs/../../../lessons/hooks/useLessonProgressQuery";
 
-type Option = { text: string; correct?: boolean; explanation?: string };
-
 export function InlineQuizNode({ node }: { node: AnyNode }) {
 	const question = typeof node.question === "string" ? node.question : "";
-	const options = Array.isArray(node.options) ? (node.options as Option[]) : [];
+	const options = Array.isArray(node.options)
+		? (node.options as unknown[]).map((o) => {
+				if (typeof o === "string") return o;
+				if (o && typeof o === "object") {
+					const obj = o as Record<string, unknown>;
+					return typeof obj.text === "string" ? obj.text : String(o);
+				}
+				return String(o);
+			})
+		: [];
+	const correctIndex = typeof node.correct === "number" ? node.correct : -1;
 	const [selected, setSelected] = useState<number | null>(null);
 	const { lessonId } = useLessonContext();
 	const { mutate: upsertProgress } = useUpsertProgressMutation(lessonId);
@@ -18,8 +26,7 @@ export function InlineQuizNode({ node }: { node: AnyNode }) {
 	if (!question || options.length === 0) return null;
 
 	const answered = selected !== null;
-	const selectedOpt = answered ? options[selected] : null;
-	const isCorrect = answered && !!selectedOpt?.correct;
+	const isCorrect = answered && selected === correctIndex;
 
 	function handleSelect(idx: number) {
 		setSelected(idx);
@@ -40,7 +47,7 @@ export function InlineQuizNode({ node }: { node: AnyNode }) {
 					{options.map((opt, i) => {
 						let cls = "lt-recall__opt";
 						if (answered) {
-							if (opt.correct) cls += " lt-recall__opt--correct";
+							if (i === correctIndex) cls += " lt-recall__opt--correct";
 							else if (i === selected) cls += " lt-recall__opt--wrong";
 							else cls += " lt-recall__opt--dim";
 						}
@@ -52,7 +59,7 @@ export function InlineQuizNode({ node }: { node: AnyNode }) {
 								onClick={() => handleSelect(i)}
 								className={cls}
 							>
-								{opt.text}
+								{opt}
 							</button>
 						);
 					})}
@@ -66,7 +73,6 @@ export function InlineQuizNode({ node }: { node: AnyNode }) {
 							{isCorrect ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
 							<span>{isCorrect ? "Corect!" : "Nu — încearcă să recitești secțiunea."}</span>
 						</div>
-						{selectedOpt?.explanation && <p>{selectedOpt.explanation}</p>}
 					</div>
 				)}
 			</div>

@@ -14,11 +14,14 @@ type Props = {
 	lessonTitle?: string;
 	lessonDescription?: string;
 	blockId: string | null;
+	subject?: string;
+	category?: string;
+	moduleSlug?: string;
 	initialNodes: LessonContentNode[];
 	onSaveSuccess: () => void;
 };
 
-export function LayoutBuilder({ lessonId, lessonTitle, lessonDescription, blockId, initialNodes, onSaveSuccess }: Props) {
+export function LayoutBuilder({ lessonId, lessonTitle, lessonDescription, blockId, subject, category, moduleSlug, initialNodes, onSaveSuccess }: Props) {
 	const [pickerOpen, setPickerOpen] = useState(false);
 	const toast = useToastStore();
 
@@ -53,6 +56,9 @@ export function LayoutBuilder({ lessonId, lessonTitle, lessonDescription, blockI
 					lessonDescription={lessonDescription}
 					lessonId={lessonId}
 					blockId={blockId}
+					subject={subject}
+					category={category}
+					moduleSlug={moduleSlug}
 					onApply={(tplNodes) => {
 						loadNodes(tplNodes);
 						onSaveSuccess();

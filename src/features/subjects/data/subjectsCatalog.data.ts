@@ -20,24 +20,8 @@ export const SUBJECT_AVAILABILITY_OPTIONS: FilterOption<
 	{ value: "coming-soon", label: "Coming soon" },
 ];
 
+// Only subjects that don't exist in the DB yet (coming-soon roadmap)
 export const SUBJECT_DOMAINS: SubjectDomain[] = [
-	{
-		id: "computer-science",
-		title: "Computer Science",
-		subtitle: "Algorithms, data structures and software thinking",
-		description:
-			"Programming fundamentals, algorithms, data structures and practical system design lessons.",
-		track: "technology",
-		availability: "available",
-		accent: "indigo",
-		href: "/subjects/computer-science",
-		modules: 7,
-		completedModules: 3,
-		lessons: 238,
-		estimatedHours: 126,
-		topics: ["Algorithms", "Data Structures", "Web", "Databases"],
-		featured: true,
-	},
 	{
 		id: "mathematics",
 		title: "Mathematics",
@@ -45,15 +29,28 @@ export const SUBJECT_DOMAINS: SubjectDomain[] = [
 		description:
 			"Foundational math topics for reasoning, proofs, geometry and discrete thinking.",
 		track: "mathematics",
-		availability: "available",
+		availability: "coming-soon",
 		accent: "emerald",
-		href: "/subjects/mathematics",
 		modules: 4,
-		completedModules: 1,
+		completedModules: 0,
 		lessons: 64,
 		estimatedHours: 42,
 		topics: ["Geometry", "Algebra", "Functions", "Proofs"],
-		featured: true,
+	},
+	{
+		id: "history",
+		title: "History",
+		subtitle: "Events, causes and consequences across civilizations",
+		description:
+			"World history structured around key events, turning points and the forces that shaped modern society.",
+		track: "science",
+		availability: "coming-soon",
+		accent: "purple",
+		modules: 4,
+		completedModules: 0,
+		lessons: 55,
+		estimatedHours: 36,
+		topics: ["Ancient World", "Middle Ages", "Modern Era", "Geopolitics"],
 	},
 	{
 		id: "physics",
@@ -63,7 +60,7 @@ export const SUBJECT_DOMAINS: SubjectDomain[] = [
 			"Mechanics, electricity, waves and problem-based intuition for how systems behave.",
 		track: "science",
 		availability: "coming-soon",
-		accent: "amber",
+		accent: "orange",
 		modules: 5,
 		completedModules: 0,
 		lessons: 72,
@@ -108,7 +105,7 @@ export const SUBJECT_DOMAINS: SubjectDomain[] = [
 			"Probability, distributions, inference and the math behind reading data correctly.",
 		track: "mathematics",
 		availability: "coming-soon",
-		accent: "violet",
+		accent: "amber",
 		modules: 3,
 		completedModules: 0,
 		lessons: 45,

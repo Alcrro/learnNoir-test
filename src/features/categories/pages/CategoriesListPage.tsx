@@ -9,8 +9,11 @@ import { CategoriesHeader } from "../components/molecules/CategoriesHeader";
 import { CategoriesFilterSummary } from "../components/molecules/CategoriesFilterSummary";
 import { CategorySection } from "../components/organisms/CategorySection";
 import { CategoriesEmptyState } from "../components/organisms/CategoriesEmptyState";
+import { RoadmapView } from "../components/organisms/RoadmapView";
+import { ViewToggle } from "../../../components/atoms/ViewToggle";
 import { useCategoriesWithModulesQuery } from "../hooks/useCategoriesWithModulesQuery";
 import { useSubjectsQuery } from "../../subjects/hooks/useSubjectsQuery";
+import { CATEGORY_ORDER } from "../lib/categoryOrder";
 import type { Subject } from "../../subjects/data/subjects.data";
 
 const FALLBACK_META = { label: "", description: "", color: "slate", icon: "layers" };
@@ -20,10 +23,34 @@ export default function CategoriesListPage() {
 	const [activeCategory, setActiveCategory] = useState("all");
 	const [activeDiff, setActiveDiff] = useState("all");
 	const [search, setSearch] = useState("");
+	const [viewMode, setViewMode] = useState<"grid" | "roadmap">(() => {
+		try {
+			return (localStorage.getItem("modules-view-mode") as "grid" | "roadmap") ?? "grid";
+		} catch {
+			return "grid";
+		}
+	});
 
-	const { data: categories = [] } = useCategoriesWithModulesQuery(subject);
+	function handleViewChange(mode: "grid" | "roadmap") {
+		setViewMode(mode);
+		try {
+			localStorage.setItem("modules-view-mode", mode);
+		} catch {
+			// ignore
+		}
+	}
+
+	const { data: rawCategories = [] } = useCategoriesWithModulesQuery(subject);
+	const categories = useMemo(
+		() => [...rawCategories].sort((a, b) => {
+			const ao = CATEGORY_ORDER[a.slug] ?? 99;
+			const bo = CATEGORY_ORDER[b.slug] ?? 99;
+			return ao - bo;
+		}),
+		[rawCategories],
+	);
 	const { data: allSubjects = [] } = useSubjectsQuery();
-	const subjectTitle = allSubjects.find((s) => s.slug === subject)?.title ?? "";
+	const subjectTitle = allSubjects.find((s) => s.id === subject)?.title ?? "";
 
 	const subjects = useMemo(() => mapCatalogToSubjects(categories), [categories]);
 
@@ -106,16 +133,38 @@ export default function CategoriesListPage() {
 				)}
 
 				{filtered.length > 0 ? (
-					<div className="flex flex-col gap-10">
-						{grouped.map(([categorySlug, items]) => (
-							<CategorySection
-								key={categorySlug}
-								categoryId={categorySlug}
-								meta={categoryMetaMap.get(categorySlug) ?? FALLBACK_META}
-								items={items}
-							/>
-						))}
-					</div>
+					viewMode === "roadmap" ? (
+						<>
+							<div className="mb-4 flex justify-end">
+								<ViewToggle
+									value={viewMode}
+									onChange={handleViewChange}
+									disabled={filtered.length === 0}
+								/>
+							</div>
+							<RoadmapView items={filtered} subjectSlug={subject} />
+						</>
+					) : (
+						<>
+							<div className="mb-4 flex justify-end">
+								<ViewToggle
+									value={viewMode}
+									onChange={handleViewChange}
+									disabled={filtered.length === 0}
+								/>
+							</div>
+						<div className="flex flex-col gap-10">
+							{grouped.map(([categorySlug, items]) => (
+								<CategorySection
+									key={categorySlug}
+									categoryId={categorySlug}
+									meta={categoryMetaMap.get(categorySlug) ?? FALLBACK_META}
+									items={items}
+								/>
+							))}
+						</div>
+					</>
+				)
 				) : (
 					<CategoriesEmptyState onReset={resetFilters} />
 				)}

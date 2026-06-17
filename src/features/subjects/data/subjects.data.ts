@@ -52,6 +52,12 @@ export const CATEGORY_META: Record<string, CATEGORY_METAProps> = {
 		icon: "function",
 		description: "Matematică discretă, logică și teoria calculabilității",
 	},
+	"system-design": {
+		label: "System Design",
+		color: "slate",
+		icon: "server",
+		description: "Arhitectura sistemelor distribuite la scară largă",
+	},
 };
 
 export type Subject = {
@@ -66,6 +72,7 @@ export type Subject = {
 	tags: string[];
 	tagLinks?: Record<string, string>;
 	featured: boolean;
+	importance: "essential" | "normal" | "optional";
 };
 export const SUBJECTS = [
 	// ── FUNDAMENTALS ──────────────────────────────────────────────────────────
@@ -87,6 +94,7 @@ export const SUBJECTS = [
 			"C++": "/subjects/computer-science/fundamentals/programming-basics?lang=cpp",
 		},
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "oop",
@@ -99,6 +107,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Classes", "Inheritance", "SOLID", "Design Patterns"],
 		featured: true,
+		importance: "essential",
 	},
 	{
 		id: "functional",
@@ -112,6 +121,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Pure Functions", "Map/Filter", "Closures"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "git",
@@ -124,6 +134,7 @@ export const SUBJECTS = [
 		difficulty: "beginner",
 		tags: ["Git", "GitHub", "Branching", "CI/CD"],
 		featured: false,
+		importance: "normal",
 	},
 
 	// ── ALGORITHMS ────────────────────────────────────────────────────────────
@@ -139,6 +150,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Sorting", "Complexity", "Divide & Conquer"],
 		featured: true,
+		importance: "essential",
 	},
 	{
 		id: "searching-algorithms",
@@ -152,6 +164,7 @@ export const SUBJECTS = [
 		difficulty: "beginner",
 		tags: ["Binary Search", "BFS", "DFS"],
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "dynamic-programming",
@@ -164,6 +177,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["Memoization", "Knapsack", "LCS", "DP"],
 		featured: true,
+		importance: "normal",
 	},
 	{
 		id: "greedy",
@@ -177,6 +191,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Greedy", "Huffman", "Interval Scheduling"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "graph-algorithms",
@@ -189,6 +204,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["Dijkstra", "BFS/DFS", "MST", "Shortest Path"],
 		featured: false,
+		importance: "normal",
 	},
 
 	// ── DATA STRUCTURES ───────────────────────────────────────────────────────
@@ -204,6 +220,7 @@ export const SUBJECTS = [
 		difficulty: "beginner",
 		tags: ["Arrays", "Two Pointers", "Sliding Window"],
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "linked-lists",
@@ -217,6 +234,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Singly", "Doubly", "Cycle Detection"],
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "stacks-queues",
@@ -229,6 +247,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Stack", "Queue", "Deque", "Priority Queue"],
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "trees",
@@ -241,6 +260,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["BST", "AVL", "Traversal", "Heap"],
 		featured: true,
+		importance: "essential",
 	},
 	{
 		id: "hash-tables",
@@ -254,6 +274,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Hashing", "Collision", "HashMap"],
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "graphs",
@@ -267,6 +288,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["Adjacency", "Directed", "Weighted", "DAG"],
 		featured: false,
+		importance: "normal",
 	},
 
 	// ── SYSTEMS ───────────────────────────────────────────────────────────────
@@ -282,6 +304,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["Linux", "Processes", "Memory", "Scheduling"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "networking",
@@ -295,6 +318,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["TCP/IP", "HTTP", "DNS", "Sockets"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "computer-architecture",
@@ -307,6 +331,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["CPU", "Cache", "Pipeline", "Assembly"],
 		featured: false,
+		importance: "optional",
 	},
 
 	// ── WEB DEVELOPMENT ───────────────────────────────────────────────────────
@@ -322,6 +347,7 @@ export const SUBJECTS = [
 		difficulty: "beginner",
 		tags: ["HTML5", "CSS3", "Flexbox", "Grid", "Responsive"],
 		featured: false,
+		importance: "essential",
 	},
 	{
 		id: "javascript",
@@ -334,6 +360,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["ES6+", "Async", "DOM", "Closures"],
 		featured: true,
+		importance: "essential",
 	},
 	{
 		id: "react",
@@ -346,6 +373,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Hooks", "Context", "Redux", "Performance"],
 		featured: true,
+		importance: "normal",
 	},
 	{
 		id: "nodejs",
@@ -359,6 +387,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Node.js", "Express", "REST", "JWT"],
 		featured: false,
+		importance: "normal",
 	},
 
 	// ── DATABASES ─────────────────────────────────────────────────────────────
@@ -373,6 +402,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["SQL", "PostgreSQL", "Joins", "Indexing"],
 		featured: true,
+		importance: "essential",
 	},
 	{
 		id: "nosql",
@@ -385,6 +415,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["MongoDB", "Redis", "Document", "Key-Value"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "db-design",
@@ -398,6 +429,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["ER Diagrams", "Normalization", "Sharding"],
 		featured: false,
+		importance: "normal",
 	},
 
 	// ── CS THEORY ─────────────────────────────────────────────────────────────
@@ -412,6 +444,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Logic", "Sets", "Combinatorics", "Graphs"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "complexity-theory",
@@ -424,6 +457,165 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["Big O", "P vs NP", "NP-Hard", "Reductions"],
 		featured: false,
+		importance: "optional",
+	},
+
+	// ── SYSTEM DESIGN ────────────────────────────────────────────────────────
+	{
+		id: "sd-scalability",
+		category: "system-design",
+		title: "Scalability & Performance",
+		description: "Vertical vs horizontal scaling, throughput, latency și capacity estimation.",
+		totalLessons: 4,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "intermediate",
+		tags: ["Scaling", "Latency", "Throughput"],
+		featured: false,
+		importance: "essential",
+	},
+	{
+		id: "sd-reliability",
+		category: "system-design",
+		title: "Reliability & Availability",
+		description: "SLAs, SLOs, fault tolerance și disaster recovery patterns.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 3,
+		difficulty: "intermediate",
+		tags: ["SLA", "Fault Tolerance", "Redundancy"],
+		featured: false,
+		importance: "normal",
+	},
+	{
+		id: "sd-cap-theorem",
+		category: "system-design",
+		title: "CAP Theorem & Consistency",
+		description: "Consistency, Availability, Partition Tolerance și modele de consistență.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "advanced",
+		tags: ["CAP", "Consistency", "Distributed"],
+		featured: false,
+		importance: "normal",
+	},
+	{
+		id: "sd-caching",
+		category: "system-design",
+		title: "Caching Strategies",
+		description: "Cache eviction, invalidation, write-through/write-behind și Redis.",
+		totalLessons: 4,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "intermediate",
+		tags: ["Redis", "Cache", "LRU", "TTL"],
+		featured: true,
+		importance: "normal",
+	},
+	{
+		id: "sd-load-balancers",
+		category: "system-design",
+		title: "Load Balancers",
+		description: "L4 vs L7 load balancing, algoritmi de distribuție și health checks.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 3,
+		difficulty: "beginner",
+		tags: ["L4/L7", "Round-Robin", "Health Check"],
+		featured: false,
+		importance: "normal",
+	},
+	{
+		id: "sd-message-queues",
+		category: "system-design",
+		title: "Message Queues",
+		description: "Pub/sub, Kafka vs RabbitMQ, idempotency și dead letter queues.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "intermediate",
+		tags: ["Kafka", "RabbitMQ", "Pub/Sub"],
+		featured: false,
+		importance: "optional",
+	},
+	{
+		id: "sd-api-design",
+		category: "system-design",
+		title: "API Design",
+		description: "REST vs GraphQL vs gRPC, WebSockets și rate limiting.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 3,
+		difficulty: "intermediate",
+		tags: ["REST", "GraphQL", "gRPC", "Rate Limiting"],
+		featured: false,
+		importance: "normal",
+	},
+	{
+		id: "sd-database-scaling",
+		category: "system-design",
+		title: "Database Scaling",
+		description: "Read replicas, sharding, consistent hashing și CQRS pattern.",
+		totalLessons: 4,
+		completedLessons: 0,
+		estimatedHours: 5,
+		difficulty: "advanced",
+		tags: ["Sharding", "Replication", "CQRS"],
+		featured: false,
+		importance: "optional",
+	},
+	{
+		id: "sd-microservices",
+		category: "system-design",
+		title: "Microservices Architecture",
+		description: "Monolith vs microservices, circuit breaker și saga pattern.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "advanced",
+		tags: ["Microservices", "Circuit Breaker", "Saga"],
+		featured: false,
+		importance: "optional",
+	},
+	{
+		id: "sd-url-shortener",
+		category: "system-design",
+		title: "Case Study: URL Shortener",
+		description: "Design complet: requirements, hashing, scaling și analytics.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 3,
+		difficulty: "intermediate",
+		tags: ["Case Study", "Hashing", "Base62"],
+		featured: true,
+		importance: "optional",
+	},
+	{
+		id: "sd-social-feed",
+		category: "system-design",
+		title: "Case Study: Social Media Feed",
+		description: "Feed architecture, fan-out strategies și notificări la scară.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "advanced",
+		tags: ["Case Study", "Fan-out", "Feed"],
+		featured: false,
+		importance: "optional",
+	},
+	{
+		id: "sd-video-streaming",
+		category: "system-design",
+		title: "Case Study: Video Streaming",
+		description: "Upload pipeline, adaptive bitrate streaming și CDN strategy.",
+		totalLessons: 3,
+		completedLessons: 0,
+		estimatedHours: 4,
+		difficulty: "advanced",
+		tags: ["Case Study", "HLS", "CDN", "ABR"],
+		featured: false,
+		importance: "optional",
 	},
 
 	// ── LOGIC & CRITICAL THINKING ─────────────────────────────────────────────
@@ -438,6 +630,7 @@ export const SUBJECTS = [
 		difficulty: "beginner",
 		tags: ["Arguments", "Fallacies", "Deductive", "Inductive"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "deductive-reasoning",
@@ -450,6 +643,7 @@ export const SUBJECTS = [
 		difficulty: "intermediate",
 		tags: ["Logic Grids", "Syllogisms", "Deduction", "Puzzles"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "lsat-logical-reasoning",
@@ -462,6 +656,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["LSAT", "Assumption", "Inference", "Flaw"],
 		featured: true,
+		importance: "normal",
 	},
 	{
 		id: "gmat-critical-reasoning",
@@ -474,6 +669,7 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["GMAT", "Boldface", "Evaluate", "CR"],
 		featured: false,
+		importance: "normal",
 	},
 	{
 		id: "logic-argument-analysis",
@@ -486,5 +682,6 @@ export const SUBJECTS = [
 		difficulty: "advanced",
 		tags: ["Assumptions", "Evidence", "Counterarguments", "Analysis"],
 		featured: false,
+		importance: "normal",
 	},
 ] as Subject[];

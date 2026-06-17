@@ -26,7 +26,7 @@ export function ExampleNode({ example }: Props) {
 			</div>
 
 			<div className="space-y-2">
-				{example.states.map((state, i) => (
+				{(example.states ?? []).map((state, i) => (
 					<ArrayState key={i} state={state} />
 				))}
 			</div>

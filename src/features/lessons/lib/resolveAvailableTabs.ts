@@ -3,8 +3,13 @@ import type { LessonBlock } from "../api/lessonBlocksApi";
 
 export function resolveAvailableTabs(blocks: LessonBlock[]) {
 	const hasContent = blocks.some((b) => b.type === "content");
+	const hasDiagram = blocks.some(
+		(b) => b.type === "interactive" && b.engine.startsWith("diagram:"),
+	);
 	const hasViz = blocks.some(
-		(b) => b.type === "interactive" && b.engine.startsWith("algorithm:"),
+		(b) =>
+			b.type === "interactive" &&
+			(b.engine.startsWith("algorithm:") || b.engine.startsWith("visualizer:")),
 	);
 	const hasCode = blocks.some(
 		(b) =>
@@ -23,6 +28,7 @@ export function resolveAvailableTabs(blocks: LessonBlock[]) {
 	if (hasContent) allowed.add("watchTab");
 	if (hasViz) allowed.add("exerciseTab");
 
+	if (hasDiagram) allowed.add("diagramTab");
 	if (allowed.size === 0) allowed.add("theoryTab");
 
 	return ALL_LESSON_TABS.filter((t) => allowed.has(t.uniqueId));

@@ -106,7 +106,7 @@ export type LessonTheoryModel = {
 	recallAfterSteps?: LessonRecallQuestion[];
 	recallAfterComplexity?: LessonRecallQuestion[];
 	recallFinal?: LessonRecallQuestion[];
-	fillBlanks?: FillBlanksBlock;
+	fillBlanks?: FillBlanksBlock & { [key: string]: unknown };
 };
 
 function titleCase(value: string) {
@@ -511,27 +511,25 @@ function buildV2Fields(id: string): Partial<LessonTheoryModel> {
 			],
 			fillBlanks: {
 				type: "fill-blanks",
-				title: "Completează implementarea",
-				language: "js",
+				title: "Completează pseudo codul",
+				language: "pseudo",
 				content: [
-					"function bubbleSort(arr) {        // primește array-ul ca argument",
-					"  for (let i = 0; i < {{0}}; i++) {       // n treceri — câte unul per element",
-					"    for (let j = 0; j < {{1}} - i - 1; j++) { // ultimele i sunt deja sortate",
-					"      if (arr[j] > arr[{{2}}]) {   // vecinul din dreapta e mai mic?",
-					"        let temp = arr[j];          // salvăm valoarea curentă temporar",
-					"        arr[j] = arr[j + 1];        // mutăm elementul mic la stânga",
-					"        arr[j + 1] = {{3}};         // punem valoarea salvată în dreapta",
-					"      }",
-					"    }",
-					"  }",
-					"  return arr;                       // returnează array-ul sortat",
-					"}",
+					"procedure BUBBLE-SORT(A, n):",
+					"  for i ← 0 to n − 1:",
+					"    swapped ← {{0}}",
+					"    for j ← 0 to {{1}}:",
+					"      if A[j] > A[j + 1]:",
+					"        swap A[j] ↔ A[j + 1]",
+					"        swapped ← {{2}}",
+					"    if swapped = {{3}}:",
+					"      break",
+					"  return A",
 				].join("\n"),
 				blanks: [
-					{ id: 0, options: ["arr.length", "arr.length - 1", "n", "0"], correct: "arr.length" },
-					{ id: 1, options: ["arr.length", "arr.length - 1", "i", "n"], correct: "arr.length" },
-					{ id: 2, options: ["j + 1", "j", "i + 1", "j - 1"], correct: "j + 1" },
-					{ id: 3, options: ["temp", "arr[j]", "arr[j + 1]", "0"], correct: "temp" },
+					{ id: 0, options: ["false", "true", "0", "null"], correct: "false" },
+					{ id: 1, options: ["n-i-2", "n-1", "n-i-1", "i"], correct: "n-i-2" },
+					{ id: 2, options: ["true", "false", "1", "done"], correct: "true" },
+					{ id: 3, options: ["false", "true", "nil", "0"], correct: "false" },
 				],
 			},
 		};

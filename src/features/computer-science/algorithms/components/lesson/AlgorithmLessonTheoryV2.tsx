@@ -131,7 +131,7 @@ const AlgorithmLessonTheoryV2 = ({
 					>
 						<StepsReveal steps={model.steps} />
 					</ThinkPrompt>
-					{/* ── FILL BLANKS: completează codul după pași ── */}
+					{/* ── FILL BLANKS: completează pseudo codul după pași ── */}
 					{model.fillBlanks && <FillBlanksNode node={model.fillBlanks} />}
 					{/* ── RECALL #1: după pași ── */}
 					<TheoryInteractionBlock {...G("recall_1")}>

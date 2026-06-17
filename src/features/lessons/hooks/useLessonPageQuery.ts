@@ -10,6 +10,7 @@ export const ALL_LESSON_TABS: { id: number; uniqueId: LessonTabId; label: string
 	{ id: 3, uniqueId: "quizTab", label: "Quiz" },
 	{ id: 4, uniqueId: "watchTab", label: "Watch" },
 	{ id: 5, uniqueId: "exerciseTab", label: "Exercises" },
+	{ id: 6, uniqueId: "diagramTab", label: "Diagrame" },
 ];
 
 // Syncs the active tab with the URL ?tab= param.

@@ -1,4 +1,4 @@
-export type LessonTabId = "theoryTab" | "vizTab" | "codeTab" | "quizTab" | "watchTab" | "exerciseTab";
+export type LessonTabId = "theoryTab" | "vizTab" | "codeTab" | "quizTab" | "watchTab" | "exerciseTab" | "diagramTab";
 
 export type SidebarPrereq = {
 	name: string;

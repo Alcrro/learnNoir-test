@@ -24,4 +24,17 @@ export const lessonBlocksApi = {
 			type: "content",
 			data: { content },
 		}).then((r) => r.data),
+
+	// POST /lessons-block — creates a new diagram block for a lesson.
+	createDiagramBlock: (lessonId: string, engine: string) =>
+		apiClient.post<{ data: LessonBlock }>("/lessons-block", {
+			lessonId,
+			type: "interactive",
+			engine,
+			data: { nodes: [], edges: [] },
+		}).then((r) => r.data),
+
+	// PATCH /lessons-block/:id/data — replaces the data payload of an interactive/assessment block.
+	updateBlockData: (blockId: string, data: Record<string, unknown>) =>
+		apiClient.patch<void>(`/lessons-block/${blockId}/data`, { data }),
 };

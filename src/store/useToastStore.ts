@@ -15,7 +15,7 @@ type ToastStore = {
 export const useToastStore = create<ToastStore>((set) => ({
 	toasts: [],
 	show: (message, type = "success") => {
-		const id = crypto.randomUUID();
+		const id = crypto.randomUUID?.() ?? Math.random().toString(36).slice(2);
 		set((s) => ({ toasts: [...s.toasts, { id, message, type }] }));
 		setTimeout(() => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })), 5000);
 	},

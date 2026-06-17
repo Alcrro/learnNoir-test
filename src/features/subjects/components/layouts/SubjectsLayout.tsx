@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { SubjectsCatalogFilters } from "../organisms/SubjectsCatalogFilters";
 import { SubjectsCatalogHero } from "../organisms/SubjectsCatalogHero";
 import { SubjectsCatalogStats } from "../organisms/SubjectsCatalogStats";
@@ -6,19 +5,13 @@ import { FeaturedSubjectsSection } from "../organisms/FeaturedSubjectsSection";
 import { AllSubjectsSection } from "../organisms/AllSubjectsSection";
 import { useSubjectsCatalog } from "../../hooks/useSubjectsCatalog";
 import { useSubjectsQuery } from "../../hooks/useSubjectsQuery";
-import { mapSubjectCardToSubjectDomain } from "../../mapper/mapSubjectCardToSubjectDomain";
 import {
 	SUBJECT_AVAILABILITY_OPTIONS,
 	SUBJECT_TRACK_OPTIONS,
 } from "../../data/subjectsCatalog.data";
 
 const SubjectsLayout = () => {
-	const { data: subjectCards, isLoading, isError } = useSubjectsQuery();
-
-	const subjects = useMemo(
-		() => (subjectCards ?? []).map(mapSubjectCardToSubjectDomain),
-		[subjectCards],
-	);
+	const { data: subjects = [], isLoading, isError } = useSubjectsQuery();
 
 	const {
 		filters,

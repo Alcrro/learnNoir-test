@@ -1,4 +1,5 @@
 import type { LessonContentNode } from "./lesson-content.ts";
+import type { DiagramBlockData } from "./diagram-block.ts";
 
 export type { LessonContentNode };
 
@@ -7,12 +8,20 @@ export type { LessonContentNode };
 export type KnownInteractiveEngines = {
 	"algorithm:bubble-sort": { initialArray: number[] };
 	"math:formula": { formula: string };
+	"diagram:flowchart": DiagramBlockData;
+	"diagram:architecture": DiagramBlockData;
 };
 
 export type KnownAssessmentEngines = {
 	"quiz:mcq": { question: string; options: string[]; correctIndex: number };
 	"quiz:input": { question: string; correctAnswer: string | number };
 	"quiz:code": { question: string; correctCode: string };
+	"quiz:drag-drop": {
+		sentence: string;    // text with [blank] markers, e.g. "Sort is [blank] in worst case"
+		blanks: string[];    // correct answers in order, one per [blank]
+		items: string[];     // all draggable options (correct + distractors)
+		explanation: string;
+	};
 };
 
 export type InteractiveEngine = string;

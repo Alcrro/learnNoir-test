@@ -1,10 +1,8 @@
 import { apiClient } from "../../../libs/apiClient";
 
-type SubscriptionPlan = "free" | "pro";
-
 type SubscriptionData = {
-	plan: SubscriptionPlan;
-	creator?: boolean;
+	pro: boolean;
+	creator: boolean;
 };
 
 export const subscriptionsApi = {
@@ -18,4 +16,7 @@ export const subscriptionsApi = {
 
 	createCreatorCheckoutSession: () =>
 		apiClient.post<{ data: { url: string } }>("/subscriptions/create-checkout-session-creator", {}).then((r) => r.data.url),
+
+	createPortalSession: () =>
+		apiClient.post<{ data: { url: string } }>("/subscriptions/create-portal-session", {}).then((r) => r.data.url),
 };

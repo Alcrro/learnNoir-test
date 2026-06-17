@@ -4,8 +4,7 @@ import App from "./App";
 import RouteErrorPage from "./RouteErrorPage";
 import { authRoutes } from "./features/auth/router/auth.routes";
 import { dashboardRoutes } from "./features/dashboards/router/dashboardRoutes";
-import { computerScienceRoutes } from "./features/computer-science/computerScience.routes";
-import { mathematicsRoutes } from "./features/mathematics/router/math.routes";
+import { subjectCategoryRoutes } from "./features/subjects/router/subject.routes";
 import { subjectLoader } from "./features/subjects/lib/subjectLoader";
 import { slugToText } from "./libs/utils/slugToText";
 
@@ -16,6 +15,8 @@ const SubjectsPage = lazy(() => import("./features/subjects/pages/SubjectsPage")
 const CategoriesListPage = lazy(() => import("./features/categories/pages/CategoriesListPage"));
 const PaymentSuccessPage = lazy(() => import("./features/subscriptions/pages/PaymentSuccessPage").then((m) => ({ default: m.PaymentSuccessPage })));
 const PricingPage = lazy(() => import("./features/subscriptions/pages/PricingPage").then((m) => ({ default: m.PricingPage })));
+const PrivacyPage = lazy(() => import("./pages/legal/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/legal/TermsPage"));
 
 const s = (el: React.ReactNode) => <Suspense fallback={null}>{el}</Suspense>;
 
@@ -27,6 +28,8 @@ export const router = createBrowserRouter([
 			{ path: "/", element: s(<Home />) },
 			{ path: "pricing", element: s(<PricingPage />) },
 			{ path: "payment/success", element: s(<PaymentSuccessPage />) },
+			{ path: "privacy", element: s(<PrivacyPage />) },
+			{ path: "terms", element: s(<TermsPage />) },
 			authRoutes,
 			dashboardRoutes,
 			{
@@ -45,7 +48,7 @@ export const router = createBrowserRouter([
 						children: [
 							{ index: true, element: s(<CategoriesListPage />) },
 							{
-								children: [computerScienceRoutes, mathematicsRoutes],
+								children: [subjectCategoryRoutes],
 							},
 						],
 					},

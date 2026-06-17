@@ -18,6 +18,7 @@ export function mapCatalogToSubjects(categories: CategoryWithModules[]): Subject
 				difficulty: meta?.difficulty ?? "intermediate",
 				tags: meta?.tags ?? [],
 				featured: meta?.featured ?? false,
+				importance: module.importance,
 			};
 		}),
 	);

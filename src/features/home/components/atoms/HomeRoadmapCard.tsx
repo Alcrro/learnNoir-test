@@ -19,14 +19,16 @@ export function HomeRoadmapCard({
 }: Props) {
 	return (
 		<div className="flex flex-col gap-4 rounded-[20px] border border-(--border) bg-(--bg-card) p-5">
-			<div className={`flex h-10 w-10 items-center justify-center rounded-2xl ${iconClass}`}>
+			<div
+				className={`flex h-10 w-10 items-center justify-center rounded-2xl ${iconClass}`}
+			>
 				<Icon className="h-4 w-4" />
 			</div>
 
 			<div className="flex-1">
 				<div className="flex items-center justify-between gap-2">
 					<p className="font-medium text-(--text-primary)">{title}</p>
-					<span className="shrink-0 rounded-full border border-(--border) px-2 py-0.5 text-[11px] text-(--text-muted)">
+					<span className="shrink-0 rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-[var(--amber-text)] dark:border-amber-500/30 dark:bg-[var(--amber-bg)] dark:text-[var(--amber-text)]">
 						Soon
 					</span>
 				</div>

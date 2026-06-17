@@ -1,84 +1,40 @@
-import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { LayoutDashboard } from "lucide-react";
-import { LessonTheoryContent } from "./LessonTheoryContent";
-import { useLessonTabContext } from "../../../context/LessonTabContext";
-import { useLessonContext } from "../../../context/LessonContext";
-import { useLessonBySlugQuery } from "../../../hooks/useLessonBySlugQuery";
-import { lessonQueryKeys } from "../../../lib/lessonQueryKeys";
-import { LayoutBuilder } from "../../builder/organisms/LayoutBuilder";
 import type { LessonContentNode } from "@shared/lesson-content";
+import { useTheoryTabState } from "../../../hooks/useTheoryTabState";
+import { TheoryEmptyBuilder } from "./components/organisms/TheoryEmptyBuilder";
+import { TheoryBuilderMode } from "./components/organisms/TheoryBuilderMode";
+import { TheoryPreview } from "./components/organisms/TheoryPreview";
 
 export function TheoryTabContent() {
-	const { lessonId, contentBlocks } = useLessonTabContext();
-	const { canEdit, lessonSlug } = useLessonContext();
-	const { data: lesson } = useLessonBySlugQuery(lessonSlug);
-	const queryClient = useQueryClient();
-	const [isBuilderMode, setIsBuilderMode] = useState(false);
+	const {
+		lessonId, canEdit, contentBlocks, contentBlock,
+		hasContent, isBuilderMode, setIsBuilderMode,
+		invalidateBlocks, builderBaseProps,
+	} = useTheoryTabState();
 
-	const contentBlock = contentBlocks[0] ?? null;
-	const hasContent = (contentBlock?.data?.content?.length ?? 0) > 0;
+	const showEmptyBuilder = canEdit && !hasContent;
+	const showBuilderMode = canEdit && isBuilderMode;
 
-	function invalidateBlocks() {
-		queryClient.invalidateQueries({ queryKey: lessonQueryKeys.blocks(lessonId) });
+	if (showEmptyBuilder) {
+		return <TheoryEmptyBuilder {...builderBaseProps} onSaveSuccess={invalidateBlocks} />;
 	}
 
-	// Professor, no content yet → show builder directly
-	if (canEdit && !hasContent) {
+	if (showBuilderMode) {
 		return (
-			<LayoutBuilder
-				lessonId={lessonId}
-				lessonTitle={lesson?.title}
-				lessonDescription={lesson?.description ?? undefined}
-				blockId={contentBlock?.id ?? null}
-				initialNodes={[]}
-				onSaveSuccess={invalidateBlocks}
+			<TheoryBuilderMode
+				{...builderBaseProps}
+				initialNodes={(contentBlock?.data?.content ?? []) as LessonContentNode[]}
+				onSaveSuccess={() => { setIsBuilderMode(false); invalidateBlocks(); }}
+				onBack={() => setIsBuilderMode(false)}
 			/>
 		);
 	}
 
-	// Professor in builder mode
-	if (canEdit && isBuilderMode) {
-		return (
-			<div className="flex flex-col gap-4">
-				<button
-					type="button"
-					onClick={() => setIsBuilderMode(false)}
-					className="self-start text-sm text-(--text-secondary) hover:text-(--text-primary) transition-colors"
-				>
-					← Înapoi la preview
-				</button>
-				<LayoutBuilder
-					lessonId={lessonId}
-					lessonTitle={lesson?.title}
-					lessonDescription={lesson?.description ?? undefined}
-					blockId={contentBlock?.id ?? null}
-					initialNodes={(contentBlock?.data?.content ?? []) as LessonContentNode[]}
-					onSaveSuccess={() => { setIsBuilderMode(false); invalidateBlocks(); }}
-				/>
-			</div>
-		);
-	}
-
-	const editLayoutButton = canEdit ? (
-		<button
-			type="button"
-			onClick={() => setIsBuilderMode(true)}
-			className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-(--border) px-3 py-2 text-xs text-(--text-secondary) hover:bg-(--surface-hover) transition-colors"
-		>
-			<LayoutDashboard size={13} />
-			Edit Layout
-		</button>
-	) : null;
-
-	// Preview: all lesson types render via ContentNodeRenderer (node registry).
-	// AlgorithmLessonTheoryV2 has a hardcoded structure that ignores data.content,
-	// so builder-saved nodes would never appear through it.
 	return (
-		<LessonTheoryContent
+		<TheoryPreview
 			blocks={contentBlocks}
 			lessonId={lessonId}
-			sidebarTop={editLayoutButton}
+			canEdit={canEdit}
+			onEditLayout={() => setIsBuilderMode(true)}
 		/>
 	);
 }

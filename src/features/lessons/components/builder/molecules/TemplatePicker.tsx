@@ -7,6 +7,7 @@ import { lessonAIApi } from "../../../api/lessonAIApi";
 import { lessonBlocksApi } from "../../../api/lessonBlocksApi";
 import { LAYOUT_TEMPLATES } from "../lib/layoutTemplates";
 import { NODE_DEFAULTS } from "../lib/nodeDefaults";
+import { resolveTemplate } from "../lib/lessonTemplateRegistry";
 import type { LayoutTemplate } from "../lib/layoutTemplates";
 import type { LessonContentNode } from "@shared/lesson-content";
 import type { QuizQuestion } from "../../../types/ai.types";
@@ -16,6 +17,9 @@ type Props = {
 	lessonDescription?: string;
 	lessonId: string;
 	blockId: string | null;
+	subject?: string;
+	category?: string;
+	moduleSlug?: string;
 	onApply: (nodes: LessonContentNode[]) => void;
 };
 
@@ -34,11 +38,7 @@ function buildInlineQuiz(q: QuizQuestion): LessonContentNode {
 	return {
 		type: "inline-quiz",
 		question: q.question,
-		options: q.options.map((text, i) => ({
-			text,
-			correct: i === q.correctIndex,
-			explanation: i === q.correctIndex ? q.explanation : undefined,
-		})),
+		options: q.options,
 		correct: q.correctIndex,
 	} as unknown as LessonContentNode;
 }
@@ -57,8 +57,12 @@ function buildRecall(questions: QuizQuestion[]): LessonContentNode {
 	} as unknown as LessonContentNode;
 }
 
-export function TemplatePicker({ lessonTitle, lessonDescription, lessonId, blockId, onApply }: Props) {
-	const [selected, setSelected] = useState<LayoutTemplate | null>(null);
+export function TemplatePicker({ lessonTitle, lessonDescription, lessonId, blockId, subject = "", category = "", moduleSlug = "", onApply }: Props) {
+	const suggestedTemplate = (subject || category || moduleSlug)
+		? resolveTemplate(subject, category, moduleSlug)
+		: null;
+
+	const [selected, setSelected] = useState<LayoutTemplate | null>(suggestedTemplate);
 	const [phase, setPhase] = useState<Phase>("idle");
 	const [error, setError] = useState<string | null>(null);
 	const isCreator = useIsCreator();
@@ -150,38 +154,49 @@ export function TemplatePicker({ lessonTitle, lessonDescription, lessonId, block
 			</div>
 
 			<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-				{LAYOUT_TEMPLATES.map((tpl) => (
-					<button
-						key={tpl.id}
-						type="button"
-						onClick={() => { setSelected(tpl); setError(null); setPhase("idle"); }}
-						disabled={busy}
-						className={cn(
-							"flex flex-col gap-2 rounded-xl border p-4 text-left transition-all disabled:pointer-events-none",
-							selected?.id === tpl.id
-								? "border-(--border-active) bg-(--surface-hover) ring-1 ring-(--border-active)"
-								: "border-(--border) bg-(--bg-card) hover:bg-(--surface-hover)",
-						)}
-					>
-						<div className="flex items-center gap-2">
-							<span className="text-lg leading-none">{tpl.icon}</span>
-							<span className="text-sm font-medium text-(--text-primary)">{tpl.name}</span>
-						</div>
-						<p className="text-xs text-(--text-muted)">{tpl.description}</p>
-						<div className="flex flex-wrap gap-1 mt-1">
-							{tpl.nodeTypes
-								.filter((v, i, a) => a.indexOf(v) === i)
-								.map((type) => (
-									<span
-										key={type}
-										className="rounded-md bg-(--surface) px-1.5 py-0.5 text-[10px] font-mono text-(--text-muted)"
-									>
-										{type}
+				{LAYOUT_TEMPLATES.map((tpl) => {
+					const isSuggested = suggestedTemplate?.id === tpl.id;
+					const isSelected = selected?.id === tpl.id;
+					return (
+						<button
+							key={tpl.id}
+							type="button"
+							onClick={() => { setSelected(tpl); setError(null); setPhase("idle"); }}
+							disabled={busy}
+							className={cn(
+								"flex flex-col gap-2 rounded-xl border p-4 text-left transition-all disabled:pointer-events-none",
+								isSelected
+									? "border-(--border-active) bg-(--surface-hover) ring-1 ring-(--border-active)"
+									: "border-(--border) bg-(--bg-card) hover:bg-(--surface-hover)",
+							)}
+						>
+							<div className="flex items-center justify-between gap-2">
+								<div className="flex items-center gap-2">
+									<span className="text-lg leading-none">{tpl.icon}</span>
+									<span className="text-sm font-medium text-(--text-primary)">{tpl.name}</span>
+								</div>
+								{isSuggested && (
+									<span className="shrink-0 rounded-full bg-blue-500/15 px-2 py-0.5 text-[10px] font-semibold text-blue-400">
+										recomandat
 									</span>
-								))}
-						</div>
-					</button>
-				))}
+								)}
+							</div>
+							<p className="text-xs text-(--text-muted)">{tpl.description}</p>
+							<div className="flex flex-wrap gap-1 mt-1">
+								{tpl.nodeTypes
+									.filter((v, i, a) => a.indexOf(v) === i)
+									.map((type) => (
+										<span
+											key={type}
+											className="rounded-md bg-(--surface) px-1.5 py-0.5 text-[10px] font-mono text-(--text-muted)"
+										>
+											{type}
+										</span>
+									))}
+							</div>
+						</button>
+					);
+				})}
 			</div>
 
 			{error && <p className="text-xs text-red-500">{error}</p>}

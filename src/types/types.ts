@@ -8,7 +8,9 @@ export type SubjectAccent =
 	| "emerald"
 	| "amber"
 	| "rose"
-	| "violet";
+	| "violet"
+	| "orange"
+	| "purple";
 
 export type SubjectDomain = {
 	id: string;

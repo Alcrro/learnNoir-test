@@ -27,7 +27,7 @@ const SUBJECT_METADATA: Record<string, SubjectMetadata> = {
 		subtitle: "Algorithms, data structures and software thinking",
 		track: "technology",
 		accent: "indigo",
-		topics: ["Algorithms", "Data Structures", "Web", "Databases"],
+		topics: ["Algorithms", "Data Structures", "Web", "System Design"],
 		featured: true,
 	},
 	mathematics: {

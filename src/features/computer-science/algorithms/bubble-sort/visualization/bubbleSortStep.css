@@ -1,0 +1,12 @@
+.bssv-canvas-container {
+	position: relative;
+	padding-top: 2rem;
+}
+
+.bssv-canvas-badge {
+	position: absolute;
+	top: -0.875rem;
+	left: 50%;
+	transform: translateX(-50%);
+	white-space: nowrap;
+}

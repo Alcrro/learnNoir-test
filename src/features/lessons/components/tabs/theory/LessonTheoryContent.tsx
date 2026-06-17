@@ -1,13 +1,16 @@
-import { useState, type ReactNode } from "react";
+import { useState, useMemo, type ReactNode } from "react";
 import type { ContentBlock } from "../../../api/lessonBlocksApi";
 import { useLessonReadProgress } from "../../../hooks/useLessonReadProgress";
 import { useLessonSidebarData } from "../../../hooks/useLessonSidebarData";
 import { useUpdateBlockContent } from "../../../hooks/useUpdateBlockContent";
+import { useLessonTranslationStore } from "../../../store/useLessonTranslationStore";
+import { useLessonTranslationQuery } from "../../../hooks/useLessonTranslationQuery";
 import type { AnyNode } from "./ContentNodeRenderer";
 import { buildUpdatedContent } from "./lib/buildUpdatedContent";
 import { ReadProgressBar } from "../../atoms/ReadProgressBar";
 import { TheoryBlockList } from "../../molecules/TheoryBlockList";
 import { TheorySidebar } from "../../organisms/TheorySidebar";
+import type { TranslatedBlockPayload } from "@shared/lesson-translation";
 
 type Props = { blocks: ContentBlock[]; lessonId: string; sidebarTop?: ReactNode };
 
@@ -18,6 +21,14 @@ export function LessonTheoryContent({ blocks, lessonId, sidebarTop }: Props) {
 		useLessonSidebarData(lessonId);
 	const { scrollProgress, isCompleted, hasScrollableContent, contentRef } =
 		useLessonReadProgress(lessonId);
+
+	const activeLang = useLessonTranslationStore((s) => s.getLang(lessonId));
+	const { data: translation } = useLessonTranslationQuery(lessonId, activeLang);
+
+	const translatedBlocksMap = useMemo<Map<string, TranslatedBlockPayload>>(() => {
+		if (!translation) return new Map();
+		return new Map(translation.blocks.map((b) => [b.blockId, b]));
+	}, [translation]);
 
 	function handleUpdate(block: ContentBlock, nodeIdx: number, updated: AnyNode) {
 		setOverrides((prev) => new Map(prev).set(`${block.id}-${nodeIdx}`, updated));
@@ -41,6 +52,7 @@ export function LessonTheoryContent({ blocks, lessonId, sidebarTop }: Props) {
 					overrides={overrides}
 					contentRef={contentRef}
 					onUpdate={handleUpdate}
+					translatedBlocksMap={translatedBlocksMap}
 				/>
 				<aside className="lesson-theory__sidebar">
 					{sidebarTop}

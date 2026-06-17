@@ -1,13 +1,8 @@
 import { useState, useCallback } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { exercisesApi } from "../lib/exercisesApi";
-import type { CodeRunResult } from "../lib/exerciseTypes";
+import type { RunState } from "../lib/exerciseTypes";
 import { lessonQueryKeys } from "../../../../lib/lessonQueryKeys";
-
-type RunState =
-	| { phase: "idle" }
-	| { phase: "running" }
-	| { phase: "results"; result: CodeRunResult; submitted: boolean };
 
 export function useExerciseSession(exerciseId: string, lessonId: string, starterCode: string) {
 	const qc = useQueryClient();

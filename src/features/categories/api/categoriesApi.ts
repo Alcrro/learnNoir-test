@@ -7,6 +7,7 @@ export type ModuleCard = {
 	position: number;
 	lessonCount: number;
 	estimatedHours: number;
+	importance: "essential" | "normal" | "optional";
 };
 
 export type CategoryWithModules = {

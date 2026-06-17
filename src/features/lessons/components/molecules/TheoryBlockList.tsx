@@ -4,15 +4,17 @@ import UseGetProfile from "../../../profiles/hooks/UseGetProfile";
 import { TheoryLevelSection } from "../TheoryLevelSection";
 import type { AnyNode } from "../tabs/theory/ContentNodeRenderer";
 import { ContentNodeRenderer } from "../tabs/theory/ContentNodeRenderer";
+import type { TranslatedBlockPayload } from "@shared/lesson-translation";
 
 type Props = {
 	blocks: ContentBlock[];
 	overrides: Map<string, AnyNode>;
 	contentRef: RefObject<HTMLDivElement | null>;
 	onUpdate: (block: ContentBlock, nodeIdx: number, updated: AnyNode) => void;
+	translatedBlocksMap?: Map<string, TranslatedBlockPayload>;
 };
 
-export function TheoryBlockList({ blocks, overrides, contentRef, onUpdate }: Props) {
+export function TheoryBlockList({ blocks, overrides, contentRef, onUpdate, translatedBlocksMap }: Props) {
 	const { isAuthenticated } = UseGetProfile();
 
 	return (
@@ -27,7 +29,10 @@ export function TheoryBlockList({ blocks, overrides, contentRef, onUpdate }: Pro
 						<div key={block.id} className="flex flex-col gap-6">
 							{(block.data.content ?? []).map((node, ni) => {
 								const key = `${block.id}-${ni}`;
-								const effectiveNode = overrides.get(key) ?? (node as AnyNode);
+								// Priority: manual edit override > AI translation > original
+								// Translation cast is safe — AI preserves the exact JSON structure
+								const translatedNode = translatedBlocksMap?.get(block.id)?.nodes?.[ni] as AnyNode | undefined;
+								const effectiveNode = overrides.get(key) ?? translatedNode ?? (node as AnyNode);
 								return (
 									<ContentNodeRenderer
 										key={key}

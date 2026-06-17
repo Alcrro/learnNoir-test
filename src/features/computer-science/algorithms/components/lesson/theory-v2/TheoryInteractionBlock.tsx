@@ -3,6 +3,8 @@ import type {
 	TheoryInteractionComponentType,
 	TheoryInteractionDTO,
 } from "../../../../../../features/lessons/api/lessonTheoryInteractionsApi";
+import { useIsCreator } from "../../../../../subscriptions/hooks/useIsCreator";
+import { CreatorPaywallBanner } from "../../../../../subscriptions/components/molecules/CreatorPaywallBanner";
 
 type Props = {
 	component: TheoryInteractionComponentType;
@@ -27,8 +29,9 @@ export function TheoryInteractionBlock({
 	onApprove,
 	children,
 }: Props) {
+	const isCreator = useIsCreator();
+
 	if (!isEditing) {
-		// Student view — just render the component
 		return <>{children}</>;
 	}
 
@@ -72,7 +75,7 @@ export function TheoryInteractionBlock({
 					<button
 						className="lt-interaction-block__btn lt-interaction-block__btn--generate"
 						onClick={onGenerate}
-						disabled={isGenerating}
+						disabled={isGenerating || !isCreator}
 					>
 						{isGenerating ? (
 							<Loader2
@@ -92,6 +95,13 @@ export function TheoryInteractionBlock({
 					</button>
 				</div>
 			</div>
+
+			{!isCreator && (
+				<CreatorPaywallBanner
+					feature="Generare theory interactions AI"
+					className="mt-2"
+				/>
+			)}
 
 			{/* Content: show the rendered component, or a placeholder if nothing exists yet */}
 			{hasContent || children ? (

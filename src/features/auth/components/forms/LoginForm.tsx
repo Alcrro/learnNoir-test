@@ -1,4 +1,5 @@
 import { ArrowRight, LoaderCircle, ShieldCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 import DefaultButton from "../../../../components/atoms/DefaultButton";
 import { FormField } from "../../../../components/molecules/FormField";
 import { LOGIN_FORM } from "../../lib/authContent";
@@ -89,15 +90,25 @@ const LoginForm = ({
 					required
 				/>
 
-				<FormField
-					id="password"
-					label={LOGIN_FORM.passwordLabel}
-					type="password"
-					name="password"
-					autoComplete="current-password"
-					placeholder={LOGIN_FORM.passwordPlaceholder}
-					required
-				/>
+				<div className="space-y-1">
+					<FormField
+						id="password"
+						label={LOGIN_FORM.passwordLabel}
+						type="password"
+						name="password"
+						autoComplete="current-password"
+						placeholder={LOGIN_FORM.passwordPlaceholder}
+						required
+					/>
+					<div className="flex justify-end">
+						<Link
+							to="/auth/forgot-password"
+							className="text-xs text-(--text-secondary) hover:text-(--text-primary)"
+						>
+							Forgot password?
+						</Link>
+					</div>
+				</div>
 
 				<DefaultButton
 					type="submit"

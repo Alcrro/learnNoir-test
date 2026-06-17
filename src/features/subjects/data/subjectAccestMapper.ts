@@ -72,4 +72,26 @@ export const ACCENT_STYLES: Record<
 		topic:
 			"border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-500/30 dark:bg-violet-500/12 dark:text-violet-300",
 	},
+	orange: {
+		badge:
+			"border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-500/30 dark:bg-orange-500/12 dark:text-orange-300",
+		icon:
+			"bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300",
+		progress: "bg-orange-500 dark:bg-orange-400",
+		ring:
+			"hover:border-orange-300 dark:hover:border-orange-400/40 focus-visible:ring-orange-100 dark:focus-visible:ring-orange-500/20",
+		topic:
+			"border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-500/30 dark:bg-orange-500/12 dark:text-orange-300",
+	},
+	purple: {
+		badge:
+			"border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-500/30 dark:bg-purple-500/12 dark:text-purple-300",
+		icon:
+			"bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-300",
+		progress: "bg-purple-500 dark:bg-purple-400",
+		ring:
+			"hover:border-purple-300 dark:hover:border-purple-400/40 focus-visible:ring-purple-100 dark:focus-visible:ring-purple-500/20",
+		topic:
+			"border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-500/30 dark:bg-purple-500/12 dark:text-purple-300",
+	},
 };

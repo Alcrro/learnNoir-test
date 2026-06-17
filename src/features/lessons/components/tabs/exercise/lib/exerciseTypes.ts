@@ -56,3 +56,8 @@ export type ExerciseProgressItem = {
 };
 
 export type ExerciseStatus = "not_started" | "passed" | "failed";
+
+export type RunState =
+	| { phase: "idle" }
+	| { phase: "running" }
+	| { phase: "results"; result: CodeRunResult; submitted: boolean };
