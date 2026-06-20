@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Auth",
+    "status": "done"
+  },
+  {
+    "name": "Categories",
+    "status": "done"
+  },
+  {
+    "name": "Diagram Block Engine",
+    "status": "done"
+  },
+  {
+    "name": "Exercises",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Audio",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Page Language Switcher",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Quiz Tab",
+    "status": "done"
+  },
+  {
+    "name": "Lessons",
+    "status": "done"
+  },
+  {
+    "name": "Lessons Block",
+    "status": "done"
+  },
+  {
+    "name": "Lessons List Language Dropdown",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Theory Interactions",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Translation",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Video",
+    "status": "done"
+  },
+  {
+    "name": "Logical Reasoning Subject",
+    "status": "done"
+  },
+  {
+    "name": "Modules",
+    "status": "done"
+  },
+  {
+    "name": "Modules Roadmap View",
+    "status": "done"
+  },
+  {
+    "name": "Subjects",
+    "status": "done"
+  },
+  {
+    "name": "Subscriptions",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Theory Tab",
+    "status": "in-progress"
+  },
+  {
+    "name": "Lesson Translation V2",
+    "status": "in-progress"
+  },
+  {
+    "name": "Lesson Activities",
+    "status": "in-progress"
+  },
+  {
+    "name": "Profiles",
+    "status": "in-progress"
+  },
+  {
+    "name": "Progress",
+    "status": "in-progress"
+  },
+  {
+    "name": "Algorithm Watch Mode",
+    "status": "not-started"
+  },
+  {
+    "name": "Inline Quiz Per Node",
+    "status": "not-started"
+  },
+  {
+    "name": "Lesson Versions",
+    "status": "not-started"
+  },
+  {
+    "name": "Organizations",
+    "status": "not-started"
+  },
+  {
+    "name": "Sidebar Lesson",
+    "status": "not-started"
+  },
+  {
+    "name": "Cognitive Training Module",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Layout Builder",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Visualize Tab",
+    "status": "done"
+  },
+  {
+    "name": "Lesson Watch Interactive",
+    "status": "done"
+  },
+  {
+    "name": "Problem Solving Real Life",
+    "status": "done"
+  },
+  {
+    "name": "Spaced Repetition",
+    "status": "done"
+  },
+  {
+    "name": "Theory Levels",
+    "status": "done"
+  }
+]
