@@ -1,0 +1,16 @@
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- TanStack Query
+- Zustand
+- Monaco Editor
+- GSAP
+- React Flow
+- Node.js
+- Express
+- Supabase
+- Redis
+- OpenAI
+- Stripe
